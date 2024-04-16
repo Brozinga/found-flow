@@ -1,0 +1,20 @@
+version: '3.3'
+ 
+# Add the following YAML anchors, which can be referenced from services later
+x-hyperdx-logging: &hyperdx-logging
+  driver: fluentd
+  options:
+    fluentd-address: tls://in-otel.hyperdx.io:24225
+    labels: '__HDX_API_KEY,service.name'
+x-hyperdx-key: &hyperdx-key
+  __HDX_API_KEY: e2b38e28-7811-4bc1-9531-8a65859d8c84
+ 
+services:
+  caddy:
+    # Configure the logging driver for the service
+    logging: *hyperdx-logging
+    image: caddy:alpine
+    labels:
+      # Add the key and service name labels
+      <<: *hyperdx-key
+      service.name: caddy

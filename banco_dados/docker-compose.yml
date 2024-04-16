@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: found-flow-db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: master
+      POSTGRES_PASSWORD: S3cret
+      POSTGRES_DB: found_flow_db
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:

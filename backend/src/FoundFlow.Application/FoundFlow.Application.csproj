@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>FoundFlow.Application</RootNamespace>
+        <AssemblyName>FoundFlow.Application</AssemblyName>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);SYSLIB0051;S2139</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="FluentValidation" Version="11.9.0" />
+        <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Serilog" Version="3.1.1" />
+        <PackageReference Update="Roslynator.Analyzers" Version="4.12.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="9.23.2.88755">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FoundFlow.Domain\FoundFlow.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Common\Handlers\**" />
+      <Compile Remove="Interfaces\IRequest.cs" />
+      <Compile Remove="Common\Feature\AddUser\**" />
+      <Compile Remove="Common\Feature\Users\Add\**" />
+      <Compile Remove="Models\Response\**" />
+      <Compile Remove="Models\Request\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Common\Handlers\**" />
+      <EmbeddedResource Remove="Common\Feature\AddUser\**" />
+      <EmbeddedResource Remove="Common\Feature\Users\Add\**" />
+      <EmbeddedResource Remove="Models\Response\**" />
+      <EmbeddedResource Remove="Models\Request\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Common\Handlers\**" />
+      <None Remove="Common\Feature\AddUser\**" />
+      <None Remove="Common\Feature\Users\Add\**" />
+      <None Remove="Models\Response\**" />
+      <None Remove="Models\Request\**" />
+    </ItemGroup>
+
+</Project>
