@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
 using FoundFlow.Application.DependencyInjection;
 using FoundFlow.Infrastructure.DependencyInjection;
-using FoundFlow.Shared.Settings;
 using FoundFlow.WebApi.Extensions;
-using Orleans;
-using Sentry;
-using Serilog.Sinks.OpenTelemetry;
 
 namespace FoundFlow.WebApi;
 
@@ -24,9 +18,6 @@ public class Program
     private static void Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console()
-            .WriteTo.OpenTelemetry()
             .CreateLogger();
 
         Log.Information("Starting up");
@@ -39,6 +30,7 @@ public class Program
             builder.Services.AddInfrastructure(builder.Configuration);
 
             WebApplication app = builder.Build();
+
             app.UseInfrastructure(builder.Configuration);
 
             app.Run();

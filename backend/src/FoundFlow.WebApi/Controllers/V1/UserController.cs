@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FoundFlow.Application.Common.Feature.Users.Login;
@@ -6,7 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Sentry;
 
 namespace FoundFlow.WebApi.Controllers.V1;
 
