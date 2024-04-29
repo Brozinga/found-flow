@@ -24,10 +24,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Options;
 #pragma warning disable S1144
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
@@ -42,7 +40,8 @@ public static class ServiceCollectionExtensions
 
         services.ConfigureControllers();
         services.ConfigureProblemDetails();
-        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+        services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
 
         services.ConfigureSwagger();
         services.ConfigureDatabase(config);
@@ -99,8 +98,8 @@ public static class ServiceCollectionExtensions
     {
         var tokenSettings = configuration.GetValueOrThrow<JwtSettings>("JwtSettings");
 
-        byte[] keyBytes = Encoding.ASCII.GetBytes(tokenSettings.Key);
-        var key = new SymmetricSecurityKey(keyBytes);
+        byte[] key = Encoding.ASCII.GetBytes(tokenSettings.Key);
+        var credentials = new SymmetricSecurityKey(key);
 
         services.AddAuthentication(options =>
         {
@@ -116,24 +115,14 @@ public static class ServiceCollectionExtensions
             x.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
+                IssuerSigningKey = credentials,
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidIssuer = tokenSettings.ValidIssuer,
-                ValidAudience = tokenSettings.ValidAudience,
-                TokenDecryptionKey = key
+                ValidAudience = tokenSettings.ValidAudience
             };
         });
-
-        services.AddAuthorizationBuilder()
-            .AddPolicy("Default", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-            })
-            .SetDefaultPolicy(new AuthorizationPolicyBuilder("Default")
-                .RequireAuthenticatedUser()
-                .Build());
     }
 
     private static void ConfigureHostPaths(this IServiceCollection services)
@@ -159,7 +148,7 @@ public static class ServiceCollectionExtensions
             {
                 options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-                options.Filters.Add(typeof(ApiExceptionHandlingFilterAttribute));
+                options.Filters.Add<ApiExceptionHandlingFilterAttribute>();
             })
             .AddNewtonsoftJson(
                 options =>

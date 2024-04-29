@@ -26,12 +26,12 @@ public class Program
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Configure();
-            builder.Services.Configure();
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.Configure();
 
             var app = builder.Build();
 
-            app.UseInfrastructure(builder.Configuration);
+            app.UseInfrastructure(builder.Configuration, builder.Environment);
 
             app.Run();
         }

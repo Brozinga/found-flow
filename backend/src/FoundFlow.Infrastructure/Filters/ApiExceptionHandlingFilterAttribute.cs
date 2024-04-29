@@ -34,9 +34,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     public override async Task OnExceptionAsync(ExceptionContext context)
     {
-#pragma warning disable CA1062 // Validate arguments of public methods
         await HandleExceptionAsync(context).ConfigureAwait(false);
-#pragma warning restore CA1062 // Validate arguments of public methods
 
         await base.OnExceptionAsync(context).ConfigureAwait(false);
     }

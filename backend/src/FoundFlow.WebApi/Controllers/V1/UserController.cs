@@ -1,9 +1,10 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Users.Login;
-using HotChocolate.Authorization;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,8 @@ public class UserController : BaseController<UserController>
     [Consumes("application/json")]
     public IActionResult GetAllow(CancellationToken cancellationToken = default)
     {
-        return StatusCode(200, "Allow");
+#pragma warning disable S3928
+        throw new ArgumentNullException("teste");
+#pragma warning restore S3928
     }
 }

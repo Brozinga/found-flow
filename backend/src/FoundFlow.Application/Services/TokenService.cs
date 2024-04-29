@@ -32,6 +32,8 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = GenerateClaims(user),
+            Issuer = _jwtSettings.ValidIssuer,
+            Audience = _jwtSettings.ValidAudience,
             Expires = expires,
             SigningCredentials = credentials,
         };

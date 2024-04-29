@@ -11,20 +11,26 @@ using System.Linq;
 using Asp.Versioning.ApiExplorer;
 using FoundFlow.Infrastructure.Middleware;
 using FoundFlow.Shared.Settings;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
 [ExcludeFromCodeCoverage]
 public static class ApplicationBuilderExtensions
 {
-    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app, IConfiguration config)
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app, IConfiguration config, IWebHostEnvironment env)
     {
         const string CorsPoliceName = "CorsPolicy";
 
         if (config.GetValue<bool>("IpRateLimitSettings:EnableEndpointRateLimiting"))
             app.UseIpRateLimiting();
 
-        app.UseExceptionHandler("/error");
+        if (env.IsDevelopment())
+            app.UseDeveloperExceptionPage();
+
+        app.UseProblemDetails();
 
         var swaggerSettings = config.GetValueOrThrow<SwaggerSettings>("SwaggerSettings");
 
@@ -45,8 +51,6 @@ public static class ApplicationBuilderExtensions
 
         app.UseHttpsRedirection();
 
-        app.UseStatusCodePages();
-
         var loggingConfig = config.GetValueOrThrow<LoggingSettings>("LoggingSettings");
 
         if (loggingConfig.LogRequestEnabled)
@@ -58,11 +62,11 @@ public static class ApplicationBuilderExtensions
         if (loggingConfig.LogResponseEnabled)
             app.UseMiddleware<LogResponseMiddleware>();
 
+        app.UseWebSockets();
+        app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseWebSockets();
-        app.UseRouting();
         app.UseCors(CorsPoliceName);
         app.UseHealthChecks("/health");
         app.UseEndpoints(endpoints =>

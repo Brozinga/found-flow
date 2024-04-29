@@ -9,7 +9,7 @@ namespace FoundFlow.WebApi.Controllers;
 [ApiController]
 public class ErrorsController : ControllerBase
 {
-    [HttpGet("Error")]
+    [HttpGet("error")]
     public IActionResult Error()
     {
         return Problem();
