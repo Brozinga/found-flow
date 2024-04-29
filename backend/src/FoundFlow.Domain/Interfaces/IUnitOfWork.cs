@@ -8,5 +8,7 @@ namespace FoundFlow.Domain.Interfaces;
 public interface IUnitOfWork : IDisposable
 {
     IUsersRepository UsersRepository { get; }
+    ICategoriesRepository CategoriesRepository { get; }
+    ITransactionsRepository TransactionsRepository { get; }
     Task<int> CommitAsync(CancellationToken cancellationToken);
 }

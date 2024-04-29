@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,6 +9,8 @@ namespace FoundFlow.Domain.Entities.Base;
 public abstract class EntityBase<TId> : IEntityBase<TId>
 {
     private readonly List<DomainEventBase> _domainEvents = new();
+
+    [Key]
     public virtual TId Id { get; protected set; }
 
     [NotMapped]

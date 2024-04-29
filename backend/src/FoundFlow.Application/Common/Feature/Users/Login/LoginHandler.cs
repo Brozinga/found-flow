@@ -41,7 +41,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
         if (!isPasswordValid)
             Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, "Usuario ou senha inválidos.");
 
-        (string token, DateTime? expires) = _tokenService.Generate(user);
+        (string token, var expires) = _tokenService.Generate(user);
         LoginResponse response = new(token, expires);
         return Result<LoginResponse>.Success(response);
     }

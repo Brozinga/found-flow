@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using FoundFlow.Domain.Entities.Base;
 using FoundFlow.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FoundFlow.Infrastructure.Database.Repositories;
 
@@ -25,13 +24,13 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
 
     public Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        Task<List<T>> result = _table.ToListAsync(cancellationToken);
+        var result = _table.ToListAsync(cancellationToken);
         return result;
     }
 
     public Task<T> GetByIdAsync(TId id, CancellationToken cancellationToken)
     {
-        Task<T> result = _table.FirstOrDefaultAsync(et => et.Id.Equals(id), cancellationToken);
+        var result = _table.FirstOrDefaultAsync(et => et.Id.Equals(id), cancellationToken);
         return result;
     }
 
@@ -40,7 +39,7 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
         return Task.Run(
             () =>
         {
-            EntityEntry<T> result = _table.Add(entity);
+            var result = _table.Add(entity);
             return result.Entity;
         },
             cancellationToken);
@@ -48,13 +47,13 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
 
     public T Update(T entity)
     {
-        EntityEntry<T> result = _table.Update(entity);
+        var result = _table.Update(entity);
         return result.Entity;
     }
 
     public T Delete(T entity)
     {
-        EntityEntry<T> result = _table.Remove(entity);
+        var result = _table.Remove(entity);
         return result.Entity;
     }
 
@@ -63,7 +62,7 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
         return Task.Run(
             () =>
         {
-            T entity = _table.FirstOrDefault(et => et.Id.Equals(id));
+            var entity = _table.FirstOrDefault(et => et.Id.Equals(id));
             return entity != null;
         },
             cancellationToken);
@@ -71,19 +70,19 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
 
     public Task<T> FindOneAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
-        Task<T> result = _table.Where(predicate).FirstOrDefaultAsync(cancellationToken);
+        var result = _table.Where(predicate).FirstOrDefaultAsync(cancellationToken);
         return result;
     }
 
     public Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
-        Task<List<T>> result = _table.Where(predicate).ToListAsync(cancellationToken);
+        var result = _table.Where(predicate).ToListAsync(cancellationToken);
         return result;
     }
 
     public Task<int> CountAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
     {
-        Task<int> result = _table.Where(predicate).CountAsync();
+        var result = _table.Where(predicate).CountAsync();
         return result;
     }
 

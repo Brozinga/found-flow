@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Asp.Versioning.ApiExplorer;
 using FoundFlow.Infrastructure.Middleware;
 using FoundFlow.Shared.Settings;
 
@@ -27,14 +28,14 @@ public static class ApplicationBuilderExtensions
         app.UseExceptionHandler("/error");
         app.UseHttpsRedirection();
 
-        SwaggerSettings swaggerSettings = config.GetValueOrThrow<SwaggerSettings>("SwaggerSettings");
+        var swaggerSettings = config.GetValueOrThrow<SwaggerSettings>("SwaggerSettings");
 
         if (swaggerSettings.Enable)
         {
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                IApiVersionDescriptionProvider provider =
+                var provider =
                     app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
                 foreach (string description in provider.ApiVersionDescriptions.Select(x => x.GroupName)
                              .Where(x => x != null))
@@ -44,23 +45,27 @@ public static class ApplicationBuilderExtensions
             });
         }
 
-        app.UseSerilogRequestLogging();
-
-        LoggingSettings loggingConfig = config.GetValueOrThrow<LoggingSettings>("LoggingSettings");
+        var loggingConfig = config.GetValueOrThrow<LoggingSettings>("LoggingSettings");
 
         if (loggingConfig.LogRequestEnabled)
+        {
+            app.UseSerilogRequestLogging();
             app.UseMiddleware<LogRequestMiddleware>();
+        }
 
         if (loggingConfig.LogResponseEnabled)
             app.UseMiddleware<LogResponseMiddleware>();
 
+        app.UseWebSockets();
         app.UseRouting();
         app.UseCors(CorsPoliceName);
-        app.UseAuthorization();
         app.UseHealthChecks("/health");
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers().RequireCors(CorsPoliceName);
+
+            endpoints.MapGraphQL();
+
             endpoints.MapHealthChecks("/ready", new HealthCheckOptions()
             {
                 Predicate = (check) => check.Tags.Contains("ready"),

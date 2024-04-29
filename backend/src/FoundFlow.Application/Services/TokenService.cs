@@ -36,7 +36,7 @@ public class TokenService : ITokenService
             SigningCredentials = credentials,
         };
 
-        SecurityToken token = handler.CreateToken(tokenDescriptor);
+        var token = handler.CreateToken(tokenDescriptor);
         return (handler.WriteToken(token), expires);
     }
 

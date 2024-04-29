@@ -45,7 +45,7 @@ public class LogRequestMiddleware
         string body = await new StreamReader(demand.Body).ReadToEndAsync();
         demand.Body.Seek(0, SeekOrigin.Begin);
 
-        Activity activity = Activity.Current;
+        var activity = Activity.Current;
         activity?.AddTag("http.request.body", body.MaskSensitiveData());
         string headers = string.Join(", ", demand.Headers.Select(h => h.Key + "=" + h.Value).ToArray());
         activity?.AddTag("http.response.headers", headers);

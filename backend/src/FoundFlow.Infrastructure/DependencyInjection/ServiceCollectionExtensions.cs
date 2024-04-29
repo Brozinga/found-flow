@@ -1,17 +1,17 @@
 ﻿using System;
 using AspNetCoreRateLimit;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Serialization;
+using Asp.Versioning;
 using FoundFlow.Domain.Interfaces;
 using FoundFlow.Domain.Interfaces.Repositories;
 using FoundFlow.Infrastructure.Database;
+using FoundFlow.Infrastructure.Database.Queries;
 using FoundFlow.Infrastructure.Database.Repositories;
 using FoundFlow.Infrastructure.Database.UoW;
 using FoundFlow.Infrastructure.Extensions;
@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -71,18 +72,18 @@ public static class ServiceCollectionExtensions
         services.AddSwaggerGen();
         services.ConfigureOptions<ConfigureSwaggerOptions>();
         services.AddApiVersioning(option =>
-        {
-            option.DefaultApiVersion = new ApiVersion(1, 0);
-            option.AssumeDefaultVersionWhenUnspecified = true;
-            option.ReportApiVersions = true;
-            option.ApiVersionReader = new UrlSegmentApiVersionReader();
-        });
-
-        services.AddVersionedApiExplorer(options =>
-        {
-            options.GroupNameFormat = "'v'VVV";
-            options.SubstituteApiVersionInUrl = true;
-        });
+            {
+                option.DefaultApiVersion = new ApiVersion(1, 0);
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.ReportApiVersions = true;
+                option.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddMvc()
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
     }
 
     private static void ConfigureHostPaths(this IServiceCollection services)
@@ -94,7 +95,7 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
     {
-        CorsSettings corsSettings = configuration.GetValueOrThrow<CorsSettings>("CorsSettings");
+        var corsSettings = configuration.GetValueOrThrow<CorsSettings>("CorsSettings");
         services.AddCors(co =>
             co.AddPolicy("CorsPolicy", cpb =>
                 cpb.SetIsOriginAllowed(path => corsSettings.Origin.Count == 0 || corsSettings.Origin.Contains(path))
@@ -142,6 +143,16 @@ public static class ServiceCollectionExtensions
     private static void ConfigureRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        services.AddScoped<ITransactionsRepository, TransactionsRepository>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services
+            .AddGraphQLServer()
+            .AddQueryType<Query>()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting();
     }
 }

@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
 
     private static void AddApplication(this IServiceCollection services)
     {
-        Assembly applicationAssembly = typeof(Application.IAssemblyEntryPoint).Assembly;
+        var applicationAssembly = typeof(Application.IAssemblyEntryPoint).Assembly;
 
         services.AddValidatorsFromAssembly(applicationAssembly);
         services.AddMediatR(cfg =>

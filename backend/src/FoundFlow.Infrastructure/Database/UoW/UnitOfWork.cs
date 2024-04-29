@@ -12,13 +12,19 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(
         IApplicationDbContext dbContext,
-        IUsersRepository usersRepository)
+        IUsersRepository usersRepository,
+        ICategoriesRepository categoriesRepository,
+        ITransactionsRepository transactionsRepository)
     {
         _dbContext = dbContext;
         UsersRepository = usersRepository;
+        CategoriesRepository = categoriesRepository;
+        TransactionsRepository = transactionsRepository;
     }
 
     public IUsersRepository UsersRepository { get; }
+    public ICategoriesRepository CategoriesRepository { get; }
+    public ITransactionsRepository TransactionsRepository { get; }
 
     public Task<int> CommitAsync(CancellationToken cancellationToken)
     {

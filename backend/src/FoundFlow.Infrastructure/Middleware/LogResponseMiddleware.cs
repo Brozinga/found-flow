@@ -18,7 +18,7 @@ public class LogResponseMiddleware
     {
         _next = next;
         _logger = loggerFactory.CreateLogger<LogResponseMiddleware>();
-        _ignoredRoutes = new[] { "/sejil" };
+        _ignoredRoutes = new[] { "/graphql" };
     }
 
     public async Task Invoke(HttpContext context)
@@ -49,7 +49,7 @@ public class LogResponseMiddleware
         string body = await new StreamReader(response.Body).ReadToEndAsync();
         response.Body.Seek(0, SeekOrigin.Begin);
 
-        Activity activity = Activity.Current;
+        var activity = Activity.Current;
         activity?.AddTag("http.response.body", body.MaskSensitiveData());
         string headers = string.Join(", ", response.Headers.Select(h => h.Key + "=" + h.Value).ToArray());
         activity?.AddTag("http.response.headers", headers);

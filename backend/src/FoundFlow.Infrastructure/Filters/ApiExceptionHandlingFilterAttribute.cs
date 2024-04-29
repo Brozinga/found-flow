@@ -43,9 +43,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleExceptionAsync(ExceptionContext context)
     {
-        Type type = context.Exception.GetType();
+        var type = context.Exception.GetType();
 
-        if (_exceptionHandlers.TryGetValue(type, out Func<ExceptionContext, Task> handler))
+        if (_exceptionHandlers.TryGetValue(type, out var handler))
         {
             await handler!.Invoke(context).ConfigureAwait(false);
             return;
@@ -57,10 +57,10 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             return;
         }
 
-        Exception exception = context.Exception;
+        var exception = context.Exception;
         string message = $"Erro não tratado na API: {exception.Message}";
 
-        ILogger logger = context.HttpContext.RequestServices.GetService(typeof(ILogger<ApiExceptionHandlingFilterAttribute>)) as ILogger;
+        var logger = context.HttpContext.RequestServices.GetService(typeof(ILogger<ApiExceptionHandlingFilterAttribute>)) as ILogger;
 
         if (logger != null || logger!.IsEnabled(LogLevel.Error))
             logger.LogError(exception, "{Message}", message);
@@ -73,7 +73,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private static async Task HandleInvalidModelStateExceptionAsync(ExceptionContext context)
     {
-        ValidationProblemDetails details = new ValidationProblemDetails(context.ModelState)
+        var details = new ValidationProblemDetails(context.ModelState)
         {
             Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1"
         };
@@ -86,9 +86,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleBadRequestExceptionAsync(ExceptionContext context)
     {
-        BadRequestException exception = (BadRequestException)context.Exception;
+        var exception = (BadRequestException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status400BadRequest,
@@ -105,9 +105,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleServiceUnavailableExceptionAsync(ExceptionContext context)
     {
-        ServiceUnavailableException exception = (ServiceUnavailableException)context.Exception;
+        var exception = (ServiceUnavailableException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status503ServiceUnavailable,
@@ -128,9 +128,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleForbiddenAccessExceptionAsync(ExceptionContext context)
     {
-        ForbiddenAccessException exception = (ForbiddenAccessException)context.Exception;
+        var exception = (ForbiddenAccessException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status403Forbidden,
@@ -151,9 +151,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleNotFoundExceptionAsync(ExceptionContext context)
     {
-        NotFoundException exception = (NotFoundException)context.Exception;
+        var exception = (NotFoundException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status404NotFound,
@@ -170,9 +170,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleUnauthorizedAccessExceptionAsync(ExceptionContext context)
     {
-        UnauthorizedException exception = (UnauthorizedException)context.Exception;
+        var exception = (UnauthorizedException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status401Unauthorized,
@@ -189,9 +189,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleValidationExceptionAsync(ExceptionContext context)
     {
-        ValidationException exception = (ValidationException)context.Exception;
+        var exception = (ValidationException)context.Exception;
 
-        ValidationProblemDetails details = new ValidationProblemDetails(exception.Errors)
+        var details = new ValidationProblemDetails(exception.Errors)
         {
             Title = "Erro de validação.",
             Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1"
@@ -205,9 +205,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleInternalServerExceptionAsync(ExceptionContext context)
     {
-        InternalServerException exception = (InternalServerException)context.Exception;
+        var exception = (InternalServerException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status500InternalServerError,
@@ -231,7 +231,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
         var dbUpdateException = (DbUpdateException)context.Exception;
         var newException = new CustomDbUpdateException(dbUpdateException.Message, dbUpdateException.InnerException!);
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { newException.Message })
+        var details = new CustomProblemDetails(new List<string> { newException.Message })
         {
             Detail = newException.Message,
             Status = StatusCodes.Status400BadRequest,
@@ -248,9 +248,9 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
 
     private async Task HandleCouldNotHandleExceptionAsync(ExceptionContext context)
     {
-        CouldNotHandleException exception = (CouldNotHandleException)context.Exception;
+        var exception = (CouldNotHandleException)context.Exception;
 
-        CustomProblemDetails details = new CustomProblemDetails(new List<string> { exception.Message })
+        var details = new CustomProblemDetails(new List<string> { exception.Message })
         {
             Detail = exception.Message,
             Status = StatusCodes.Status500InternalServerError,

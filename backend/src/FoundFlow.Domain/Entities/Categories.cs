@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using FoundFlow.Domain.Entities.Base;
 
 namespace FoundFlow.Domain.Entities;
@@ -36,9 +37,10 @@ public class Categories : EntityBase<Guid>
         CreationDate = creationDate;
     }
 
-    public Guid UserId { get; private set; }
-    public string CategoryName { get; private set; }
-    public string Color { get; private set; }
-    public DateTime CreationDate { get; private set; }
-    public virtual Users User { get; private set; }
+    [ForeignKey("user_id")]
+    public Guid UserId { get; set; }
+    public string CategoryName { get; set; }
+    public string Color { get; set; }
+    public DateTime CreationDate { get; set; }
+    public virtual Users User { get; set; }
 }

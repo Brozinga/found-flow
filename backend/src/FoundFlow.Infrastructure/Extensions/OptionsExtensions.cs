@@ -10,9 +10,9 @@ public static class OptionsExtensions
     public static T GetOptions<T>(this IServiceCollection services, string sectionName)
         where T : new()
     {
-        using ServiceProvider serviceProvider = services.BuildServiceProvider();
-        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        IConfigurationSection section = configuration.GetSection(sectionName);
+        using var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        var section = configuration.GetSection(sectionName);
 
         var options = new T();
         section.Bind(options);

@@ -15,7 +15,7 @@ public sealed class LoginResponse
 
     private long SetExpires(DateTime? expireDate)
     {
-        DateTimeOffset dt = new DateTimeOffset(expireDate.Value);
+        var dt = new DateTimeOffset(expireDate.Value);
         return dt.ToUnixTimeMilliseconds();
     }
 }

@@ -37,7 +37,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
             requestCopy = request.DeepCopy();
         }
 
-        TResponse response = await next().ConfigureAwait(false);
+        var response = await next().ConfigureAwait(false);
 
         if (_loggingSettings.LogResponseEnabled)
         {

@@ -24,12 +24,12 @@ public class Program
 
         try
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
             builder.Configure();
             builder.Services.Configure();
             builder.Services.AddInfrastructure(builder.Configuration);
 
-            WebApplication app = builder.Build();
+            var app = builder.Build();
 
             app.UseInfrastructure(builder.Configuration);
 

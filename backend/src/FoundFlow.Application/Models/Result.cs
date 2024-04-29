@@ -56,7 +56,7 @@ where T : class
 
     public static void Failure(IEnumerable<ValidationResult> errors)
     {
-        IDictionary<string, string[]> validationErrors = ValidationExtension.ConvertToDictionary(errors);
+        var validationErrors = ValidationExtension.ConvertToDictionary(errors);
         throw new ValidationException("Erro de validação", validationErrors);
     }
 
