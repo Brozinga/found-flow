@@ -9,6 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Hash\**" />
+      <EmbeddedResource Remove="Hash\**" />
+      <None Remove="Hash\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="FluentValidation" Version="11.9.1" />
       <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
@@ -18,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Hash\" />
       <Folder Include="Messages\" />
     </ItemGroup>
 

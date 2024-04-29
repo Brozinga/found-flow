@@ -11,7 +11,7 @@ public abstract class EntityBase<TId> : IEntityBase<TId>
     private readonly List<DomainEventBase> _domainEvents = new();
 
     [Key]
-    public virtual TId Id { get; protected set; }
+    public virtual TId Id { get; set; }
 
     [NotMapped]
     public IEnumerable<DomainEventBase> DomainEvents => _domainEvents.AsReadOnly();

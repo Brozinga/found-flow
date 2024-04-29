@@ -40,10 +40,14 @@ public class TokenService : ITokenService
         return (handler.WriteToken(token), expires);
     }
 
-    private static ClaimsIdentity GenerateClaims(Users user)
+    private ClaimsIdentity GenerateClaims(Users user)
     {
         var ci = new ClaimsIdentity();
-        ci.AddClaim(new Claim(ClaimTypes.Name, user.Email));
+        ci.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, _jwtSettings.JwtRegisteredClaimNamesSub));
+        ci.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+        ci.AddClaim(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()));
+        ci.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+        ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
         ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
         return ci;

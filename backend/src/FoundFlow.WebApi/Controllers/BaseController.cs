@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using FoundFlow.Infrastructure.Filters;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,8 +10,6 @@ namespace FoundFlow.WebApi.Controllers;
 
 [ExcludeFromCodeCoverage]
 [ApiController]
-[AllowAnonymous]
-[ApiExceptionHandlingFilter]
 [Route("api/v{version:apiVersion}")]
 [Produces("application/json")]
 [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]

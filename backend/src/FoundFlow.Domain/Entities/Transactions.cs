@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using FoundFlow.Domain.Entities.Base;
 using FoundFlow.Domain.Enums;
 using FoundFlow.Shared.Extensions;
-using HotChocolate.Data;
 
 namespace FoundFlow.Domain.Entities;
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using FoundFlow.Domain.Interfaces;
@@ -22,8 +23,12 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+#pragma warning disable S1144
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -42,6 +47,10 @@ public static class ServiceCollectionExtensions
         services.ConfigureSwagger();
         services.ConfigureDatabase(config);
         services.ConfigureRepositories();
+
+        services.ConfigureAuthentication(config);
+
+        services.ConfigureGraphql();
 
         services.ConfigureHostPaths();
         services.ConfigureCors(config);
@@ -86,11 +95,52 @@ public static class ServiceCollectionExtensions
             });
     }
 
+    private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        var tokenSettings = configuration.GetValueOrThrow<JwtSettings>("JwtSettings");
+
+        byte[] keyBytes = Encoding.ASCII.GetBytes(tokenSettings.Key);
+        var key = new SymmetricSecurityKey(keyBytes);
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(x =>
+        {
+            x.IncludeErrorDetails = true;
+            x.RequireHttpsMetadata = false;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidIssuer = tokenSettings.ValidIssuer,
+                ValidAudience = tokenSettings.ValidAudience,
+                TokenDecryptionKey = key
+            };
+        });
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy("Default", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+            })
+            .SetDefaultPolicy(new AuthorizationPolicyBuilder("Default")
+                .RequireAuthenticatedUser()
+                .Build());
+    }
+
     private static void ConfigureHostPaths(this IServiceCollection services)
     {
+        services.AddRouting(options => options.LowercaseUrls = true);
         services.AddHealthChecks();
         services.AddMvc(x => x.EnableEndpointRouting = false);
-        services.AddRouting(options => options.LowercaseUrls = true);
     }
 
     private static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
@@ -147,9 +197,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITransactionsRepository, TransactionsRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
 
+    private static void ConfigureGraphql(this IServiceCollection services)
+    {
         services
             .AddGraphQLServer()
+            .AddAuthorization()
             .AddQueryType<Query>()
             .AddProjections()
             .AddFiltering()

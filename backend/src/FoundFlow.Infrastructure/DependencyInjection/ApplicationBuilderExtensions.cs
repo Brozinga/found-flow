@@ -3,7 +3,6 @@
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -26,7 +25,6 @@ public static class ApplicationBuilderExtensions
             app.UseIpRateLimiting();
 
         app.UseExceptionHandler("/error");
-        app.UseHttpsRedirection();
 
         var swaggerSettings = config.GetValueOrThrow<SwaggerSettings>("SwaggerSettings");
 
@@ -45,6 +43,10 @@ public static class ApplicationBuilderExtensions
             });
         }
 
+        app.UseHttpsRedirection();
+
+        app.UseStatusCodePages();
+
         var loggingConfig = config.GetValueOrThrow<LoggingSettings>("LoggingSettings");
 
         if (loggingConfig.LogRequestEnabled)
@@ -55,6 +57,9 @@ public static class ApplicationBuilderExtensions
 
         if (loggingConfig.LogResponseEnabled)
             app.UseMiddleware<LogResponseMiddleware>();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseWebSockets();
         app.UseRouting();

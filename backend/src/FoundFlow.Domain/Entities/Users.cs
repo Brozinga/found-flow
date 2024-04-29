@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FoundFlow.Domain.Entities.Base;
-using HotChocolate.Data;
 
 namespace FoundFlow.Domain.Entities;
 
@@ -51,8 +50,6 @@ public class Users : EntityBase<Guid>
     public string Password { get; set; }
     public bool? NotificationEnabled { get; set; }
     public bool? Blocked { get; set; }
-
-    [UseSorting]
     public DateTime CreationDate { get; set; }
 
     public virtual IReadOnlyCollection<Transactions> Transactions { get; init; } = new Collection<Transactions>();
