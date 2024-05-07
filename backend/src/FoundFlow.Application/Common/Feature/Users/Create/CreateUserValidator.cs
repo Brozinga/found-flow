@@ -2,13 +2,20 @@
 using FluentValidation;
 using FoundFlow.Shared.Messages;
 
-namespace FoundFlow.Application.Common.Feature.Users.Login;
+namespace FoundFlow.Application.Common.Feature.Users.Create;
 
-public class LoginValidator : AbstractValidator<LoginRequest>
+public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {
-    public LoginValidator()
+    public CreateUserValidator()
     {
         ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
+
+        RuleFor(x => x.UserName)
+            .NotEmpty()
+            .NotNull()
+            .WithMessage(ErrorMessages.UsersCreateValidationUserNameMessage)
+            .MinimumLength(3)
+            .WithMessage(ErrorMessages.UsersCreateValidationMinLengthUserNameMessage);
 
         RuleFor(x => x.Email)
             .NotEmpty()
@@ -24,5 +31,14 @@ public class LoginValidator : AbstractValidator<LoginRequest>
             .WithMessage(ErrorMessages.UsersCreateValidationMinLengthPasswordMessage)
             .Must(PasswordExtensions.ValidatePasswordComplexity)
             .WithMessage(ErrorMessages.UsersCreateValidationPasswordComplexityMessage);
+
+        RuleFor(x => x.ConfirmPassword)
+            .Equal(x => x.Password)
+            .WithMessage(ErrorMessages.UsersCreateValidationConfirmPasswordMessage);
+
+        RuleFor(x => x.Notification)
+            .NotEmpty()
+            .NotNull()
+            .WithMessage(ErrorMessages.UsersCreateValidationNotificationMessage);
     }
 }

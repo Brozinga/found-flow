@@ -53,8 +53,17 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
         options.CustomSchemaIds(type => type.ToString());
 
-        string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+        foreach (string filePath in
+                 Directory.GetFiles(
+                     Path.Combine(
+                         Path.GetDirectoryName(
+                             Assembly.GetExecutingAssembly().Location) ?? string.Empty),
+                     "*.xml"))
+        {
+            options.IncludeXmlComments(filePath);
+        }
+
+        options.MapType<DateOnly>(() => new OpenApiSchema { Type = "string", Format = "date" });
     }
 
     private OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)

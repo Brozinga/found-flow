@@ -22,4 +22,9 @@ public static class PasswordExtensions
 
         return text;
     }
+
+    public static bool ValidatePasswordComplexity(string password)
+    {
+        return Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$");
+    }
 }

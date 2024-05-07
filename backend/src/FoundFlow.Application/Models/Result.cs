@@ -41,11 +41,13 @@ where T : class
         return new Result<T>(true, result, (int)HttpStatusCode.OK);
     }
 
-    public static void Failure(HttpStatusCode status, string[] errors)
+    public static void Failure(HttpStatusCode status, params string[] errors)
     {
         string[] errorMessage = errors ?? Array.Empty<string>();
         throw status switch
         {
+            HttpStatusCode.ServiceUnavailable => new ServiceUnavailableException(string.Join(", ", errorMessage)),
+            HttpStatusCode.InternalServerError => new InternalServerException(string.Join(", ", errorMessage)),
             HttpStatusCode.BadRequest => new BadRequestException(string.Join(", ", errorMessage)),
             HttpStatusCode.NotFound => new NotFoundException(string.Join(", ", errorMessage)),
             HttpStatusCode.Forbidden => new ForbiddenAccessException(string.Join(", ", errorMessage)),

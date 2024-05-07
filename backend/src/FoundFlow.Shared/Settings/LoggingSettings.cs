@@ -8,4 +8,5 @@ public class LoggingSettings : IAppSettings
 {
     public bool LogRequestEnabled { get; set; }
     public bool LogResponseEnabled { get; set; }
+    public bool LogDatabase { get; set; }
 }

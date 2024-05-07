@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using FoundFlow.Domain.Entities.Base;
 
 namespace FoundFlow.Domain.Entities;
@@ -21,8 +22,8 @@ public class Users : EntityBase<Guid>
         DateTime creationDate = default)
     {
         Id = id;
-        UserName = userName;
-        Email = email;
+        UserName = userName.ToLower(CultureInfo.CurrentCulture);
+        Email = email.ToLower(CultureInfo.CurrentCulture);
         Password = password;
         NotificationEnabled = notificationEnabled;
         Blocked = blocked;
@@ -37,20 +38,21 @@ public class Users : EntityBase<Guid>
         bool? blocked,
         DateTime creationDate = default)
     {
-        UserName = userName;
-        Email = email;
+        Id = Guid.NewGuid();
+        UserName = userName.ToLower(CultureInfo.CurrentCulture);
+        Email = email.ToLower(CultureInfo.CurrentCulture);
         Password = password;
         NotificationEnabled = notificationEnabled;
         Blocked = blocked;
         CreationDate = creationDate;
     }
 
-    public string UserName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public bool? NotificationEnabled { get; set; }
-    public bool? Blocked { get; set; }
-    public DateTime CreationDate { get; set; }
+    public string UserName { get; }
+    public string Email { get; }
+    public string Password { get; }
+    public bool? NotificationEnabled { get; }
+    public bool? Blocked { get; }
+    public DateTime CreationDate { get; }
 
     public virtual IReadOnlyCollection<Transactions> Transactions { get; init; } = new Collection<Transactions>();
     public virtual IReadOnlyCollection<Categories> Categories { get; init; } = new Collection<Categories>();

@@ -25,7 +25,10 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+
 #pragma warning disable S1144
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
@@ -173,10 +176,22 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"))
-            .UseLazyLoadingProxies());
-        services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+        var logsInfo = configuration.GetValueOrThrow<LoggingSettings>("LoggingSettings");
+        if (logsInfo.LogDatabase)
+        {
+            services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(
+                    configuration.GetConnectionString("ApplicationDababase"))
+                .UseLazyLoadingProxies()
+                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddSerilog())));
+        }
+        else
+        {
+            services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(
+                    configuration.GetConnectionString("ApplicationDababase"))
+                .UseLazyLoadingProxies());
+        }
+
+        services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
     }
 
     private static void ConfigureRepositories(this IServiceCollection services)
@@ -184,7 +199,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         services.AddScoped<ITransactionsRepository, TransactionsRepository>();
-
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

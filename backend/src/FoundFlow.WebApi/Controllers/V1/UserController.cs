@@ -1,10 +1,9 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Asp.Versioning;
+using FoundFlow.Application.Common.Feature.Users.Create;
 using FoundFlow.Application.Common.Feature.Users.Login;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,6 +19,11 @@ public class UserController : BaseController<UserController>
     {
     }
 
+    /// <summary>
+    /// Rota responsável por retornar o Bearer Token para acesso as Rotas bloqueadas.
+    /// </summary>
+    /// <param name="request">Formulário de login.</param>
+    /// <param name="cancellationToken"></param>
     [HttpPost("login")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -28,26 +32,23 @@ public class UserController : BaseController<UserController>
     public async Task<IActionResult> GetToken([FromBody] LoginRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
-        return StatusCode(result.Status, result);
+        return StatusCode(result.Status, result.Data);
     }
 
-    [Authorize]
-    [HttpGet("block")]
+    /// <summary>
+    /// Rota responsável por registrar um novo usuário.
+    /// </summary>
+    /// <param name="request">Formulário de cadastro.</param>
+    /// <param name="cancellationToken"></param>
+    [HttpPost("register")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public IActionResult Get(CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Register([FromBody] CreateUserRequest request, CancellationToken cancellationToken = default)
     {
-        return StatusCode(200, "Blocked");
-    }
-
-    [AllowAnonymous]
-    [HttpGet("testing")]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    public IActionResult GetAllow(CancellationToken cancellationToken = default)
-    {
-#pragma warning disable S3928
-        throw new ArgumentNullException("teste");
-#pragma warning restore S3928
+        var result = await Sender.Send(request, cancellationToken);
+        return StatusCode(result.Status, result.Data);
     }
 }

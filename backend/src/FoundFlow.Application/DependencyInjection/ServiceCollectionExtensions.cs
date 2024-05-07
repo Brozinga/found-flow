@@ -2,19 +2,19 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using FoundFlow.Application.Common.Behaviours;
 using FoundFlow.Application.Interfaces;
 using FoundFlow.Application.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace FoundFlow.Application.DependencyInjection;
 
 [ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection Configure(this IServiceCollection services)
+    public static IServiceCollection Configure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.RegisterServices();
+        services.RegisterServices(configuration);
         services.AddApplication();
         return services;
     }
@@ -34,8 +34,13 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    private static void RegisterServices(this IServiceCollection services)
+    private static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<ITokenService, TokenService>();
+        services.AddSingleton<IKeyDBService>(_ =>
+        {
+            string connectionString = configuration.GetConnectionString("CacheDatabase");
+            return new KeyDBService(connectionString);
+        });
     }
 }

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FoundFlow.Domain.Entities.Base;
+using FoundFlow.Domain.Interfaces;
 using FoundFlow.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +14,10 @@ namespace FoundFlow.Infrastructure.Database.Repositories;
 public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
     where T : class, IEntityBase<TId>
 {
-    protected readonly ApplicationDbContext _database;
+    protected readonly IApplicationDbContext _database;
     protected readonly DbSet<T> _table;
 
-    protected RepositoryBase(ApplicationDbContext database)
+    protected RepositoryBase(IApplicationDbContext database)
     {
         _database = database;
         _table = database.Set<T>();
