@@ -34,10 +34,24 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 
         string loginAttemptsKey = $"loginAttempts:{request.Email}";
 
-        int loginAttempts = await _cacheDbService.GetValueAsync<int>(loginAttemptsKey);
+        var blockData = await _cacheDbService.GetValueAsync<BlockInfo>(loginAttemptsKey);
 
-        if (loginAttempts >= 3)
-            Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UsersLoginAccountIsBlocked);
+        if (blockData is not null && blockData.Attempts >= 3)
+        {
+            if (blockData.BlockedSince.HasValue &&
+                DateTime.UtcNow - blockData.BlockedSince.Value > TimeSpan.FromHours(1))
+            {
+                await _cacheDbService.SetValueAsync(loginAttemptsKey, new BlockInfo
+                {
+                    Attempts = 0,
+                    BlockedSince = null
+                });
+            }
+            else
+            {
+                Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UserLoginAccountTemporaryBlocked);
+            }
+        }
 
         var user = await _unitOfWork.UsersRepository
             .FindOneAsync(
@@ -55,13 +69,21 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 
         if (!isPasswordValid)
         {
-            loginAttempts++;
-            await _cacheDbService.SetValueAsync(loginAttemptsKey, loginAttempts);
+            var newAttemptsData = new BlockInfo()
+            {
+                Attempts = blockData?.Attempts + 1 ?? 1,
+                BlockedSince = blockData?.BlockedSince ?? DateTime.UtcNow
+            };
+            await _cacheDbService.SetValueAsync(loginAttemptsKey, newAttemptsData);
 
             Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrect);
         }
 
-        await _cacheDbService.SetValueAsync(loginAttemptsKey, 0);
+        await _cacheDbService.SetValueAsync(loginAttemptsKey, new BlockInfo
+        {
+            Attempts = 0,
+            BlockedSince = null
+        });
 
         (string token, var expires) = _tokenService.Generate(user);
         LoginResponse response = new(token, expires);

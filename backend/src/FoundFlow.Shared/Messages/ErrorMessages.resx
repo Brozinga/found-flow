@@ -120,6 +120,9 @@
   <data name="DatabaseSaveError" xml:space="preserve">
     <value>Não foi possível salvar o(s) registro(s) no banco de dados, fale com um administrador.</value>
   </data>
+  <data name="UserLoginAccountTemporaryBlocked" xml:space="preserve">
+    <value>O usuário está temporáriamente bloqueado.</value>
+  </data>
   <data name="UsersCreateEmailIsRegistered" xml:space="preserve">
     <value>O email já foi cadastrado.</value>
   </data>

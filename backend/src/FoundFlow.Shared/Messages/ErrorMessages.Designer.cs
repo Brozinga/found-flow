@@ -70,6 +70,15 @@ namespace FoundFlow.Shared.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O usuário está temporáriamente bloqueado..
+        /// </summary>
+        public static string UserLoginAccountTemporaryBlocked {
+            get {
+                return ResourceManager.GetString("UserLoginAccountTemporaryBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O email já foi cadastrado..
         /// </summary>
         public static string UsersCreateEmailIsRegistered {
