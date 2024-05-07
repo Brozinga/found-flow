@@ -180,14 +180,14 @@ public static class ServiceCollectionExtensions
         if (logsInfo.LogDatabase)
         {
             services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(
-                    configuration.GetConnectionString("ApplicationDababase"))
+                    configuration.GetConnectionString("ApplicationDatabase"))
                 .UseLazyLoadingProxies()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddSerilog())));
         }
         else
         {
             services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(
-                    configuration.GetConnectionString("ApplicationDababase"))
+                    configuration.GetConnectionString("ApplicationDatabase"))
                 .UseLazyLoadingProxies());
         }
 
