@@ -60,6 +60,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 
         string loginAttemptsKey = $"loginAttempts:{request.Email}";
         string collectionName = "BlockInfo";
+        bool blockToTimeIsEnable = false;
 
         var blockData = await _cacheDbService.GetValueAsync<BlockInfo>(collectionName, "EmailKey", loginAttemptsKey);
 
@@ -68,12 +69,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
             if (blockData.BlockedSince.HasValue &&
                 DateTime.UtcNow - blockData.BlockedSince.Value > TimeSpan.FromHours(1))
             {
-                await _cacheDbService.UpdateValueAsync(collectionName, "EmailKey", loginAttemptsKey, new BlockInfo
-                {
-                    EmailKey = loginAttemptsKey,
-                    Attempts = 0,
-                    BlockedSince = null
-                });
+                blockToTimeIsEnable = true;
             }
             else
             {
@@ -88,7 +84,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
                 cancellationToken);
 
         if (user == null)
-            Result<LoginResponse>.Failure(HttpStatusCode.NotFound, ErrorMessages.UsersLoginIncorrect);
+            Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrect);
 
         if (user!.Blocked.HasValue && user.Blocked.Value)
             Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UsersLoginAccountIsBlocked);
@@ -97,7 +93,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 
         if (!isPasswordValid)
         {
-            await BlockCheck(blockData, loginAttemptsKey, collectionName);
+            await BlockCheck(blockData, loginAttemptsKey, collectionName, blockToTimeIsEnable);
 
             Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrect);
         }
