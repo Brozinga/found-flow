@@ -27,7 +27,7 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             builder.Configure();
             builder.Services.AddInfrastructure(builder.Configuration);
-            builder.Services.Configure(builder.Configuration);
+            builder.Services.Configure();
 
             var app = builder.Build();
 

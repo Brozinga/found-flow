@@ -14,6 +14,7 @@ public static class SettingExtensions
             .Configure<IpRateLimitSettings>(config.GetSection(nameof(IpRateLimitSettings)))
             .Configure<LoggingSettings>(config.GetSection(nameof(LoggingSettings)))
             .Configure<JwtSettings>(config.GetSection(nameof(JwtSettings)))
+            .Configure<MongoDBSettings>(config.GetSection(nameof(MongoDBSettings)))
             .Configure<CorsSettings>(config.GetSection(nameof(CorsSettings)))
             .Configure<SwaggerSettings>(config.GetSection(nameof(SwaggerSettings)));
     }

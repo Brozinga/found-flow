@@ -12,9 +12,9 @@ namespace FoundFlow.Application.DependencyInjection;
 [ExcludeFromCodeCoverage]
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection Configure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection Configure(this IServiceCollection services)
     {
-        services.RegisterServices(configuration);
+        services.RegisterServices();
         services.AddApplication();
         return services;
     }
@@ -34,13 +34,8 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    private static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
+    private static void RegisterServices(this IServiceCollection services)
     {
         services.AddTransient<ITokenService, TokenService>();
-        services.AddSingleton<IKeyDBService>(_ =>
-        {
-            string connectionString = configuration.GetConnectionString("CacheDatabase");
-            return new KeyDBService(connectionString);
-        });
     }
 }

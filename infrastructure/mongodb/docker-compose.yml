@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: found-flow-cache
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: flowmagicuser
+      MONGO_INITDB_ROOT_PASSWORD: F0und#Fl0wPaxx
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongodb_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  mongodb_network:
+    driver: bridge

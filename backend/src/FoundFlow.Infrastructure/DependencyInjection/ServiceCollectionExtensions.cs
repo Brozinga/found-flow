@@ -28,8 +28,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-
-#pragma warning disable S1144
+using FoundFlow.Application.Interfaces;
+using FoundFlow.Application.Services;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddSettings(config);
+        services.ConfigureManagerDb();
         services.ConfigureRateLimit(config);
 
         services.ConfigureControllers();
@@ -200,6 +201,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         services.AddScoped<ITransactionsRepository, TransactionsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+
+    private static void ConfigureManagerDb(this IServiceCollection services)
+    {
+        services.AddScoped<IManagerDbService, ManagerDbService>();
     }
 
     private static void ConfigureGraphql(this IServiceCollection services)
