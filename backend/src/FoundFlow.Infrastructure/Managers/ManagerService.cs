@@ -1,25 +1,47 @@
-﻿using System.Threading.Tasks;
-using FoundFlow.Application.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FoundFlow.Domain.Interfaces;
 using FoundFlow.Shared.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+#pragma warning disable S1006
 
-namespace FoundFlow.Application.Services;
+namespace FoundFlow.Infrastructure.Managers;
 
-public class ManagerDbService : IManagerDbService
+public class ManagerService : IManagerService
 {
     private readonly IMongoDatabase _database;
 
-    public ManagerDbService(IOptions<MongoDBSettings> settings)
+    public ManagerService(IOptions<MongoDBSettings> settings)
     {
         var client = new MongoClient(settings.Value.ConnectionString);
         _database = client.GetDatabase(settings.Value.DatabaseName);
     }
 
-    public async Task<T> GetValueAsync<T>(string collectionName, string keyField, string keyValue)
+    public async Task<List<T>> GetListAsync<T>(string collectionName, string keyField = null, string keyValue = null)
         where T : IManagerModel
     {
         var collection = _database.GetCollection<T>(collectionName);
+
+        if (string.IsNullOrEmpty(keyField) || string.IsNullOrEmpty(keyValue))
+        {
+            return await collection.Find(_ => true).ToListAsync();
+        }
+
+        var filter = Builders<T>.Filter.Eq(keyField, keyValue);
+        return await collection.Find(filter).ToListAsync();
+    }
+
+    public async Task<T> GetValueAsync<T>(string collectionName, string keyField = null, string keyValue = null)
+        where T : IManagerModel
+    {
+        var collection = _database.GetCollection<T>(collectionName);
+
+        if (string.IsNullOrEmpty(keyField) || string.IsNullOrEmpty(keyValue))
+        {
+            return await collection.Find(_ => true).FirstOrDefaultAsync();
+        }
+
         var filter = Builders<T>.Filter.Eq(keyField, keyValue);
         return await collection.Find(filter).FirstOrDefaultAsync();
     }

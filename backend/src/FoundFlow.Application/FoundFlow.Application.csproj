@@ -39,7 +39,6 @@
 
     <ItemGroup>
       <Compile Remove="Common\Handlers\**" />
-      <Compile Remove="Interfaces\IRequest.cs" />
       <Compile Remove="Common\Feature\AddUser\**" />
       <Compile Remove="Common\Feature\Users\Add\**" />
       <Compile Remove="Models\Response\**" />

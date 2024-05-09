@@ -1,5 +1,5 @@
 ﻿using System;
-using FoundFlow.Application.Interfaces;
+using FoundFlow.Domain.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

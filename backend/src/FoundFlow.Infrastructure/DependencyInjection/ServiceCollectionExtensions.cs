@@ -17,6 +17,7 @@ using FoundFlow.Infrastructure.Database.Repositories;
 using FoundFlow.Infrastructure.Database.UoW;
 using FoundFlow.Infrastructure.Extensions;
 using FoundFlow.Infrastructure.Filters;
+using FoundFlow.Infrastructure.Managers;
 using FoundFlow.Infrastructure.Swagger;
 using FoundFlow.Shared.Settings;
 using Hellang.Middleware.ProblemDetails.Mvc;
@@ -28,8 +29,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using FoundFlow.Application.Interfaces;
-using FoundFlow.Application.Services;
+using Microsoft.Extensions.Options;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSettings(config);
         services.ConfigureManagerDb();
+        services.LoadSettings(config);
         services.ConfigureRateLimit(config);
 
         services.ConfigureControllers();
@@ -205,7 +206,19 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureManagerDb(this IServiceCollection services)
     {
-        services.AddScoped<IManagerDbService, ManagerDbService>();
+        services.AddScoped<IManagerService, ManagerService>();
+    }
+
+    private static void LoadSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var mongoDBSettings = configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>();
+        var settingsWrapper = new OptionsWrapper<MongoDBSettings>(mongoDBSettings);
+        var managerService = new ManagerService(settingsWrapper);
+
+        var result = managerService.GetValueAsync<ConfigurationsManager>("Configurations").Result;
+
+        Console.WriteLine(result);
+
     }
 
     private static void ConfigureGraphql(this IServiceCollection services)

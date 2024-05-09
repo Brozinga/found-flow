@@ -9,20 +9,19 @@ using FoundFlow.Domain.Interfaces;
 using FoundFlow.Shared.Extensions;
 using FoundFlow.Shared.Messages;
 using MediatR;
-#pragma warning disable S2589
 
 namespace FoundFlow.Application.Common.Feature.Users.Login;
 
 public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
 {
     private readonly ITokenService _tokenService;
-    private readonly IManagerDbService _cacheDbService;
+    private readonly IManagerService _cacheDbService;
     private readonly IUnitOfWork _unitOfWork;
 
     public LoginHandler(
         ITokenService tokenService,
         IUnitOfWork unitOfWork,
-        IManagerDbService cacheDbService)
+        IManagerService cacheDbService)
     {
         _tokenService = tokenService;
         _unitOfWork = unitOfWork;

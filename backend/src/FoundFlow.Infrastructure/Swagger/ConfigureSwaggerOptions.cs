@@ -76,7 +76,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             Contact = new OpenApiContact()
             {
                 Name = _settings.ContactName,
-                Url = _settings.ContactUrl
+                Url = new Uri(_settings.ContactUrl)
             }
         };
         return info;
