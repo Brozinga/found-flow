@@ -18,6 +18,7 @@ using FoundFlow.Infrastructure.Database.UoW;
 using FoundFlow.Infrastructure.Extensions;
 using FoundFlow.Infrastructure.Filters;
 using FoundFlow.Infrastructure.Managers;
+using FoundFlow.Infrastructure.Services;
 using FoundFlow.Infrastructure.Swagger;
 using FoundFlow.Shared.Settings;
 using Hellang.Middleware.ProblemDetails.Mvc;
@@ -41,6 +42,8 @@ public static class ServiceCollectionExtensions
         services.AddSettings(config);
         services.ConfigureManagerDb();
         services.ConfigureRateLimit(config);
+
+        services.RegisterServices();
 
         services.ConfigureControllers();
         services.ConfigureProblemDetails();
@@ -206,6 +209,11 @@ public static class ServiceCollectionExtensions
     private static void ConfigureManagerDb(this IServiceCollection services)
     {
         services.AddScoped<IManagerService, ManagerService>();
+    }
+
+    private static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddTransient<ITokenService, TokenService>();
     }
 
     private static void ConfigureGraphql(this IServiceCollection services)

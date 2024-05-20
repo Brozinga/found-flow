@@ -3,9 +3,6 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using FoundFlow.Application.Common.Behaviours;
-using FoundFlow.Application.Interfaces;
-using FoundFlow.Application.Services;
-using Microsoft.Extensions.Configuration;
 
 namespace FoundFlow.Application.DependencyInjection;
 
@@ -14,7 +11,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection Configure(this IServiceCollection services)
     {
-        services.RegisterServices();
         services.AddApplication();
         return services;
     }
@@ -31,11 +27,7 @@ public static class ServiceCollectionExtensions
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
         });
-    }
-
-    private static void RegisterServices(this IServiceCollection services)
-    {
-        services.AddTransient<ITokenService, TokenService>();
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using FoundFlow.Application.Interfaces;
 using FoundFlow.Domain.Entities;
+using FoundFlow.Domain.Interfaces;
 using FoundFlow.Shared.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace FoundFlow.Application.Services;
+namespace FoundFlow.Infrastructure.Services;
 
 public class TokenService : ITokenService
 {
@@ -40,6 +41,31 @@ public class TokenService : ITokenService
 
         var token = handler.CreateToken(tokenDescriptor);
         return (handler.WriteToken(token), expires);
+    }
+
+    public (string UserName, string Email, Guid UserId) Read(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+
+        tokenHandler.ValidateToken(
+            token,
+            new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            },
+            out var validatedToken);
+
+        var jwtToken = (JwtSecurityToken)validatedToken;
+        string userName = jwtToken.Claims.First(x => x.Type == "unique_name").Value;
+        string email = jwtToken.Claims.First(x => x.Type == "email").Value;
+        var userId = Guid.Parse(jwtToken.Claims.First(x => x.Type == "nameid").Value);
+
+        return (userName, email, userId);
     }
 
     private ClaimsIdentity GenerateClaims(Users user)
