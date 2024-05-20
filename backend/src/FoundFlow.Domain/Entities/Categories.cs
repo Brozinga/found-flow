@@ -19,7 +19,8 @@ public class Categories : EntityBase<Guid>
     {
         Id = id;
         UserId = user.Id;
-        CategoryName = categoryName;
+        User = user;
+        CategoryName = categoryName.ToLower();
         Color = color;
         CreationDate = creationDate;
     }
@@ -30,17 +31,17 @@ public class Categories : EntityBase<Guid>
         string color,
         DateTime creationDate = default)
     {
+        Id = Guid.NewGuid();
         UserId = user.Id;
         User = user;
-        CategoryName = categoryName;
+        CategoryName = categoryName.ToLower();
         Color = color;
         CreationDate = creationDate;
     }
 
-    [ForeignKey("user_id")]
-    public Guid UserId { get; set; }
-    public string CategoryName { get; set; }
-    public string Color { get; set; }
-    public DateTime CreationDate { get; set; }
-    public virtual Users User { get; set; }
+    public Guid UserId { get; private set; }
+    public string CategoryName { get; private set; }
+    public string Color { get; private set; }
+    public DateTime CreationDate { get; private set; }
+    public virtual Users User { get; private set; }
 }

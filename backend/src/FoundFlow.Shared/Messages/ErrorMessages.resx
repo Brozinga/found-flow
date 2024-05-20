@@ -156,4 +156,28 @@
   <data name="UsersLoginValidationEmailMessage" xml:space="preserve">
     <value>O email informado está incorreto.</value>
   </data>
+  <data name="CategoriesCreateValidationRequiredNameMessage" xml:space="preserve">
+      <value>O nome da categoria é inválido.</value>
+  </data>
+  <data name="CategoriesCreateValidationNameMinimumLengthMessage" xml:space="preserve">
+      <value>O nome da categoria precisa ter no mínimo {MinLength} caracter(es).</value>
+  </data>
+  <data name="CategoriesCreateValidationColorFormatMessage" xml:space="preserve">
+      <value>A cor deve estar no formato hexadecimal (ex: #FFFFFF).</value>
+  </data>
+  <data name="CategoriesCreateValidationColorRequiredMessage" xml:space="preserve">
+      <value>A cor é obrigatória.</value>
+  </data>
+  <data name="CategoriesCreateValidationUserIdMessage" xml:space="preserve">
+      <value>O Id do usuário é obrigatório.</value>
+  </data>
+  <data name="CategoriesCreateCategorieExistsMessage" xml:space="preserve">
+      <value>A categoria já está cadastrada.</value>
+  </data>
+  <data name="UserNotFoundMessage" xml:space="preserve">
+      <value>O usuário não foi encontrado.</value>
+  </data>
+  <data name="TokenJwtNotSentCorrectlyMessage" xml:space="preserve">
+      <value>O Bearer token não foi enviado corretamente.</value>
+  </data>
 </root>
