@@ -3,4 +3,4 @@ using FoundFlow.Domain.Entities;
 
 namespace FoundFlow.Domain.Interfaces.Repositories;
 
-public interface ITransactionsRepository : IRepositoryBase<Users, Guid>;
+public interface ITransactionsRepository : IRepositoryBase<Transactions, Guid>;

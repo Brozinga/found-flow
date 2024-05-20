@@ -20,9 +20,9 @@ public class UserController : BaseController<UserController>
     }
 
     /// <summary>
-    /// Rota responsável por retornar o Bearer Token para acesso as Rotas bloqueadas.
+    /// Rota responsÃ¡vel por retornar o Bearer Token para acesso as Rotas bloqueadas.
     /// </summary>
-    /// <param name="request">Formulário de login.</param>
+    /// <param name="request">FormulÃ¡rio de login.</param>
     /// <param name="cancellationToken"></param>
     [HttpPost("login")]
     [Produces("application/json")]
@@ -36,9 +36,9 @@ public class UserController : BaseController<UserController>
     }
 
     /// <summary>
-    /// Rota responsável por registrar um novo usuário.
+    /// Rota responsÃ¡vel por registrar um novo usuÃ¡rio.
     /// </summary>
-    /// <param name="request">Formulário de cadastro.</param>
+    /// <param name="request">FormulÃ¡rio de cadastro.</param>
     /// <param name="cancellationToken"></param>
     [HttpPost("register")]
     [Produces("application/json")]

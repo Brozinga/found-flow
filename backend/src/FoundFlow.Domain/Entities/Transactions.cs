@@ -81,21 +81,21 @@ public class Transactions : EntityBase<Guid>
     }
 
     [ForeignKey("category_id")]
-    public Guid CategoryId { get; set; }
+    public Guid CategoryId { get; private set; }
 
     [ForeignKey("user_id")]
-    public Guid UserId { get; set; }
-    public string TransactionName { get; set; }
-    public decimal Amount { get; set; }
+    public Guid UserId { get; private set; }
+    public string TransactionName { get; private set; }
+    public decimal Amount { get; private set; }
 
-    public string TransactionType { get; set; }
+    public string TransactionType { get; private set; }
 
-    public DateTime CreationDate { get; set; }
+    public DateTime CreationDate { get; private set; }
 
-    public DateTime PaymentDate { get; set; }
+    public DateTime PaymentDate { get; private set; }
 
-    public string PaymentStatus { get; set; }
+    public string PaymentStatus { get; private set; }
 
-    public virtual Users User { get; set; }
-    public virtual Categories Category { get; set; }
+    public virtual Users User { get; private set; }
+    public virtual Categories Category { get; private set; }
 }

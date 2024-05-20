@@ -5,7 +5,7 @@ using FoundFlow.Domain.Interfaces.Repositories;
 
 namespace FoundFlow.Infrastructure.Database.Repositories;
 
-public sealed class TransactionsRepository : RepositoryBase<Users, Guid>, ITransactionsRepository
+public sealed class TransactionsRepository : RepositoryBase<Transactions, Guid>, ITransactionsRepository
 {
     public TransactionsRepository(IApplicationDbContext database)
         : base(database)

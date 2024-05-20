@@ -12,7 +12,7 @@ public class UsersEntityTypeConfiguration : IEntityTypeConfiguration<Users>
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Id)
             .HasColumnName("user_id")
-            .HasDefaultValueSql("uuid_generate_v4()"); // UUID default generation
+            .HasDefaultValueSql("uuid_generate_v4()");
         builder.Property(u => u.UserName)
             .HasColumnName("user_name")
             .IsRequired()
@@ -31,6 +31,6 @@ public class UsersEntityTypeConfiguration : IEntityTypeConfiguration<Users>
         builder.Property(u => u.CreationDate)
             .HasColumnName("creation_date")
             .IsRequired()
-            .HasDefaultValueSql("NOW()"); // Default value as current timestamp
+            .HasDefaultValueSql("NOW()");
     }
 }
