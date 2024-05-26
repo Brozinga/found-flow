@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Categories.Create;
+using FoundFlow.Application.Common.Feature.Categories.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,19 +23,38 @@ public class CategorieController : BaseController<CategorieController>
     /// <summary>
     /// Rota responsável por criar uma categoria no banco de dados.
     /// </summary>
-    /// <param name="request">Formulário de categoria.</param>
+    /// <param name="request">Formulário de inserção de categoria.</param>
     /// <param name="cancellationToken"></param>
     [Authorize]
-    [HttpPost("add")]
+    [HttpPost]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(CreateCategorieResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Insert([FromBody] CreateCategorieRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Create([FromBody] CreateCategorieRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);
+    }
+
+    /// <summary>
+    /// Rota responsável por atualizar uma categoria no banco de dados.
+    /// </summary>
+    /// <param name="request">Formulário de atualização de categoria.</param>
+    /// <param name="cancellationToken"></param>
+    [Authorize]
+    [HttpPut]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(UpdateCategorieResponse), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Update([FromBody] UpdateCategorieRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return StatusCode(result.Status);
     }
 }

@@ -11,7 +11,7 @@ public class CreateCategorieRequest : MediatR.IRequest<Result<CreateCategorieRes
     /// Nome da categoria.
     /// </summary>
     /// <example>Trabalho</example>
-    public string CategorieName { get; set; }
+    public string Name { get; set; }
 
     /// <summary>
     /// Cor em hexadecimal.

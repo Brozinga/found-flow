@@ -62,54 +62,90 @@ namespace FoundFlow.Shared.Messages {
         /// <summary>
         ///   Looks up a localized string similar to A categoria já está cadastrada..
         /// </summary>
-        public static string CategoriesCreateCategorieExistsMessage {
+        public static string CategoriesCategorieIsRegisteredMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateCategorieExistsMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesCategorieIsRegisteredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Já existe uma categoria com esse nome..
+        /// </summary>
+        public static string CategoriesCategorieIsRegisteredWithNameMessage {
+            get {
+                return ResourceManager.GetString("CategoriesCategorieIsRegisteredWithNameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A categoria não foi encontrada..
+        /// </summary>
+        public static string CategoriesCategorieNotFoundMessage {
+            get {
+                return ResourceManager.GetString("CategoriesCategorieNotFoundMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to A cor deve estar no formato hexadecimal (ex: #FFFFFF)..
         /// </summary>
-        public static string CategoriesCreateValidationColorFormatMessage {
+        public static string CategoriesValidationColorFormatMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateValidationColorFormatMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesValidationColorFormatMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to A cor é obrigatória..
         /// </summary>
-        public static string CategoriesCreateValidationColorRequiredMessage {
+        public static string CategoriesValidationColorRequiredMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateValidationColorRequiredMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesValidationColorRequiredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O Id de categoria precisa ser um GUID..
+        /// </summary>
+        public static string CategoriesValidationIdCategorieInvalidMessage {
+            get {
+                return ResourceManager.GetString("CategoriesValidationIdCategorieInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O Id da categoria é obrigatório..
+        /// </summary>
+        public static string CategoriesValidationIdCategorieRequireMessage {
+            get {
+                return ResourceManager.GetString("CategoriesValidationIdCategorieRequireMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O nome da categoria precisa ter no mínimo {MinLength} caracter(es)..
         /// </summary>
-        public static string CategoriesCreateValidationNameMinimumLengthMessage {
+        public static string CategoriesValidationNameMinimumLengthMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateValidationNameMinimumLengthMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesValidationNameMinimumLengthMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O nome da categoria é inválido..
         /// </summary>
-        public static string CategoriesCreateValidationRequiredNameMessage {
+        public static string CategoriesValidationRequiredNameMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateValidationRequiredNameMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesValidationRequiredNameMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O Id do usuário é obrigatório..
         /// </summary>
-        public static string CategoriesCreateValidationUserIdMessage {
+        public static string CategoriesValidationUserIdMessage {
             get {
-                return ResourceManager.GetString("CategoriesCreateValidationUserIdMessage", resourceCulture);
+                return ResourceManager.GetString("CategoriesValidationUserIdMessage", resourceCulture);
             }
         }
         

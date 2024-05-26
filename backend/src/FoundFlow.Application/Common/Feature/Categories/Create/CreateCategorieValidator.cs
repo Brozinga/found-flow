@@ -10,18 +10,18 @@ public class CreateCategorieValidator : AbstractValidator<CreateCategorieRequest
     {
         ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
 
-        RuleFor(x => x.CategorieName)
+        RuleFor(x => x.Name)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.CategoriesCreateValidationRequiredNameMessage)
+            .WithMessage(ErrorMessages.CategoriesValidationRequiredNameMessage)
             .MinimumLength(3)
-            .WithMessage(ErrorMessages.CategoriesCreateValidationNameMinimumLengthMessage);
+            .WithMessage(ErrorMessages.CategoriesValidationNameMinimumLengthMessage);
 
         RuleFor(x => x.Color)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.CategoriesCreateValidationColorRequiredMessage)
+            .WithMessage(ErrorMessages.CategoriesValidationColorRequiredMessage)
             .Matches("^#([A-Fa-f0-9]{6})$")
-            .WithMessage(ErrorMessages.CategoriesCreateValidationColorFormatMessage);
+            .WithMessage(ErrorMessages.CategoriesValidationColorFormatMessage);
     }
 }

@@ -21,7 +21,7 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
     {
         var categorie = new Domain.Entities.Categories(
             user,
-            request.CategorieName,
+            request.Name,
             request.Color,
             DateTime.UtcNow);
 
@@ -40,12 +40,12 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
         var categorie = await _unitOfWork.CategoriesRepository
             .FindOneAsync(
                 categorie =>
-                    categorie.CategoryName == request.CategorieName.ToLower() &&
+                    categorie.CategoryName == request.Name.ToLower() &&
                     categorie.UserId == request.UserId,
                 cancellationToken);
 
         if (categorie is not null)
-            Result<CreateCategorieResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.CategoriesCreateCategorieExistsMessage);
+            Result<CreateCategorieResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.CategoriesCategorieIsRegisteredMessage);
 
         var entity = ConvertToAgreggate(request, user);
 
