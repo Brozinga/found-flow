@@ -31,6 +31,6 @@ public class UsersEntityTypeConfiguration : IEntityTypeConfiguration<Users>
         builder.Property(u => u.CreationDate)
             .HasColumnName("creation_date")
             .IsRequired()
-            .HasDefaultValueSql("NOW()");
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
     }
 }

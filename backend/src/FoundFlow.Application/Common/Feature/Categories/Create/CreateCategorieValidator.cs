@@ -8,8 +8,6 @@ public class CreateCategorieValidator : AbstractValidator<CreateCategorieRequest
 {
     public CreateCategorieValidator()
     {
-        ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
-
         RuleFor(x => x.Name)
             .NotEmpty()
             .NotNull()

@@ -48,8 +48,17 @@ public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
 
     public T Update(T entity)
     {
-        var result = _table.Update(entity);
-        return result.Entity;
+        var local = _table
+            .Local
+            .FirstOrDefault(entry => entry.Id.Equals(entity.Id));
+
+        if (local != null)
+            _table.Entry(local).State = EntityState.Detached;
+
+        _table.Attach(entity);
+        _table.Entry(entity).State = EntityState.Modified;
+
+        return entity;
     }
 
     public T Delete(T entity)

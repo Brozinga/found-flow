@@ -43,7 +43,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<Creat
                 cancellationToken);
 
         if (user is not null)
-            Result<CreateUserResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersCreateEmailIsRegistered);
+            Result<CreateUserResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersEmailIsRegisteredMessage);
 
         string hashedPassword = Crypto.Hash(request.Password);
 
@@ -53,7 +53,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<Creat
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
 
         if (isSaved <= 0)
-            Result<CreateUserResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveError);
+            Result<CreateUserResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<CreateUserResponse>.Success(HttpStatusCode.Created, new (entity.Id));
     }

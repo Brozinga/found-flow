@@ -72,7 +72,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
             }
             else
             {
-                Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UserLoginAccountTemporaryBlocked);
+                Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UserLoginAccountTemporaryBlockedMessage);
             }
         }
 
@@ -83,10 +83,10 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
                 cancellationToken);
 
         if (user == null)
-            Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrect);
+            Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrectMessage);
 
         if (user!.Blocked.HasValue && user.Blocked.Value)
-            Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UsersLoginAccountIsBlocked);
+            Result<LoginResponse>.Failure(HttpStatusCode.Forbidden, ErrorMessages.UsersLoginAccountIsBlockedMessage);
 
         bool isPasswordValid = Crypto.Verify(request.Password, user!.Password);
 
@@ -94,7 +94,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
         {
             await BlockCheck(blockData, loginAttemptsKey, collectionName, blockToTimeIsEnable);
 
-            Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrect);
+            Result<LoginResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.UsersLoginIncorrectMessage);
         }
 
         await BlockCheck(blockData, loginAttemptsKey, collectionName, true);

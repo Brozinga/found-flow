@@ -39,7 +39,7 @@ public class DeleteCategorieHandler : IRequestHandler<DeleteCategorieRequest, Re
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
 
         if (isSaved <= 0)
-            Result<DeleteCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveError);
+            Result<DeleteCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<DeleteCategorieResponse>.Success(HttpStatusCode.OK, new DeleteCategorieResponse(entity.Id));
     }

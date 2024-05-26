@@ -53,7 +53,7 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
 
         if (isSaved <= 0)
-            Result<CreateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveError);
+            Result<CreateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<CreateCategorieResponse>.Success(HttpStatusCode.Created, new CreateCategorieResponse(entity.Id));
     }

@@ -32,7 +32,7 @@ public class CategoriesEntityTypeConfiguration : IEntityTypeConfiguration<Catego
 
         builder.Property(c => c.CreationDate)
             .HasColumnName("creation_date")
-            .HasDefaultValueSql("NOW()");
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
         builder.HasOne(c => c.User)
             .WithMany(u => u.Categories)

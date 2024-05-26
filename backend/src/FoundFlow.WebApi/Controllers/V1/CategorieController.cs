@@ -49,7 +49,7 @@ public class CategorieController : BaseController<CategorieController>
     [HttpPut]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(UpdateCategorieResponse), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]

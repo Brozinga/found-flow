@@ -29,7 +29,7 @@ public class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tran
         builder.Property(t => t.CreationDate)
             .HasColumnName("creation_date")
             .IsRequired()
-            .HasDefaultValueSql("NOW()");
+            .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
         builder.Property(t => t.PaymentDate)
             .HasColumnName("payment_date");
 

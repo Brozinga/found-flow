@@ -25,7 +25,7 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
             user,
             request.Name,
             request.Color,
-            categorieData.CreationDate);
+            DateTime.SpecifyKind(categorieData.CreationDate, DateTimeKind.Utc));
 
         return categorie;
     }
@@ -63,7 +63,7 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
 
         if (isSaved <= 0)
-            Result<UpdateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveError);
+            Result<UpdateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<UpdateCategorieResponse>.Success(HttpStatusCode.NoContent, new UpdateCategorieResponse(entity.Id));
     }

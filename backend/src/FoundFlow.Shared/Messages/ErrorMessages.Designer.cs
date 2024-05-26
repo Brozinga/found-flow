@@ -152,9 +152,9 @@ namespace FoundFlow.Shared.Messages {
         /// <summary>
         ///   Looks up a localized string similar to Não foi possível salvar o(s) registro(s) no banco de dados, fale com um administrador..
         /// </summary>
-        public static string DatabaseSaveError {
+        public static string DatabaseSaveErrorMessage {
             get {
-                return ResourceManager.GetString("DatabaseSaveError", resourceCulture);
+                return ResourceManager.GetString("DatabaseSaveErrorMessage", resourceCulture);
             }
         }
         
@@ -170,9 +170,9 @@ namespace FoundFlow.Shared.Messages {
         /// <summary>
         ///   Looks up a localized string similar to O usuário está temporáriamente bloqueado..
         /// </summary>
-        public static string UserLoginAccountTemporaryBlocked {
+        public static string UserLoginAccountTemporaryBlockedMessage {
             get {
-                return ResourceManager.GetString("UserLoginAccountTemporaryBlocked", resourceCulture);
+                return ResourceManager.GetString("UserLoginAccountTemporaryBlockedMessage", resourceCulture);
             }
         }
         
@@ -188,99 +188,108 @@ namespace FoundFlow.Shared.Messages {
         /// <summary>
         ///   Looks up a localized string similar to O email já foi cadastrado..
         /// </summary>
-        public static string UsersCreateEmailIsRegistered {
+        public static string UsersEmailIsRegisteredMessage {
             get {
-                return ResourceManager.GetString("UsersCreateEmailIsRegistered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A confirmação de senha e a senha precisam ser iguais..
-        /// </summary>
-        public static string UsersCreateValidationConfirmPasswordMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationConfirmPasswordMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A senha precisa ter no mínimo {MinLength} caracter(es)..
-        /// </summary>
-        public static string UsersCreateValidationMinLengthPasswordMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationMinLengthPasswordMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to O nome do usuário deve conter ao menos {MinLength} caracter(es)..
-        /// </summary>
-        public static string UsersCreateValidationMinLengthUserNameMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationMinLengthUserNameMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to O campo Notificação é obrigatório..
-        /// </summary>
-        public static string UsersCreateValidationNotificationMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationNotificationMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A senha preicsa conter ao menos 1 letra maiúscula, 1 letra mínuscula e 1 número..
-        /// </summary>
-        public static string UsersCreateValidationPasswordComplexityMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationPasswordComplexityMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A senha é inválida..
-        /// </summary>
-        public static string UsersCreateValidationPasswordMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationPasswordMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to O nome do usuário é inválido..
-        /// </summary>
-        public static string UsersCreateValidationUserNameMessage {
-            get {
-                return ResourceManager.GetString("UsersCreateValidationUserNameMessage", resourceCulture);
+                return ResourceManager.GetString("UsersEmailIsRegisteredMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O usuário está bloqueado na plataforma..
         /// </summary>
-        public static string UsersLoginAccountIsBlocked {
+        public static string UsersLoginAccountIsBlockedMessage {
             get {
-                return ResourceManager.GetString("UsersLoginAccountIsBlocked", resourceCulture);
+                return ResourceManager.GetString("UsersLoginAccountIsBlockedMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Usuario ou senha inválido..
         /// </summary>
-        public static string UsersLoginIncorrect {
+        public static string UsersLoginIncorrectMessage {
             get {
-                return ResourceManager.GetString("UsersLoginIncorrect", resourceCulture);
+                return ResourceManager.GetString("UsersLoginIncorrectMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O usuário não foi encontrado..
+        /// </summary>
+        public static string UsersNotFoundMessage {
+            get {
+                return ResourceManager.GetString("UsersNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A confirmação de senha e a senha precisam ser iguais..
+        /// </summary>
+        public static string UsersValidationConfirmPasswordMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationConfirmPasswordMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to O email informado está incorreto..
         /// </summary>
-        public static string UsersLoginValidationEmailMessage {
+        public static string UsersValidationEmailMessage {
             get {
-                return ResourceManager.GetString("UsersLoginValidationEmailMessage", resourceCulture);
+                return ResourceManager.GetString("UsersValidationEmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A senha precisa ter no mínimo {MinLength} caracter(es)..
+        /// </summary>
+        public static string UsersValidationMinLengthPasswordMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationMinLengthPasswordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O nome do usuário deve conter ao menos {MinLength} caracter(es)..
+        /// </summary>
+        public static string UsersValidationMinLengthUserNameMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationMinLengthUserNameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O campo Notificação é obrigatório..
+        /// </summary>
+        public static string UsersValidationNotificationMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationNotificationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A senha preicsa conter ao menos 1 letra maiúscula, 1 letra mínuscula e 1 número..
+        /// </summary>
+        public static string UsersValidationPasswordComplexityMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationPasswordComplexityMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A senha é inválida..
+        /// </summary>
+        public static string UsersValidationPasswordMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationPasswordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O nome do usuário é inválido..
+        /// </summary>
+        public static string UsersValidationUserNameMessage {
+            get {
+                return ResourceManager.GetString("UsersValidationUserNameMessage", resourceCulture);
             }
         }
     }

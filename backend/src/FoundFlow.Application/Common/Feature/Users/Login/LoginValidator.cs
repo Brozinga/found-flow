@@ -8,21 +8,19 @@ public class LoginValidator : AbstractValidator<LoginRequest>
 {
     public LoginValidator()
     {
-        ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
-
         RuleFor(x => x.Email)
             .NotEmpty()
             .NotNull()
             .EmailAddress()
-            .WithMessage(ErrorMessages.UsersLoginValidationEmailMessage);
+            .WithMessage(ErrorMessages.UsersValidationEmailMessage);
 
         RuleFor(x => x.Password)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.UsersCreateValidationPasswordMessage)
+            .WithMessage(ErrorMessages.UsersValidationPasswordMessage)
             .MinimumLength(6)
-            .WithMessage(ErrorMessages.UsersCreateValidationMinLengthPasswordMessage)
+            .WithMessage(ErrorMessages.UsersValidationMinLengthPasswordMessage)
             .Must(PasswordExtensions.ValidatePasswordComplexity)
-            .WithMessage(ErrorMessages.UsersCreateValidationPasswordComplexityMessage);
+            .WithMessage(ErrorMessages.UsersValidationPasswordComplexityMessage);
     }
 }

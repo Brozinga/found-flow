@@ -117,43 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DatabaseSaveError" xml:space="preserve">
+  <data name="DatabaseSaveErrorMessage" xml:space="preserve">
     <value>Não foi possível salvar o(s) registro(s) no banco de dados, fale com um administrador.</value>
   </data>
-  <data name="UserLoginAccountTemporaryBlocked" xml:space="preserve">
+  <data name="UserLoginAccountTemporaryBlockedMessage" xml:space="preserve">
     <value>O usuário está temporáriamente bloqueado.</value>
   </data>
-  <data name="UsersCreateEmailIsRegistered" xml:space="preserve">
+  <data name="UsersEmailIsRegisteredMessage" xml:space="preserve">
     <value>O email já foi cadastrado.</value>
   </data>
-  <data name="UsersCreateValidationConfirmPasswordMessage" xml:space="preserve">
+  <data name="UsersValidationConfirmPasswordMessage" xml:space="preserve">
     <value>A confirmação de senha e a senha precisam ser iguais.</value>
   </data>
-  <data name="UsersCreateValidationMinLengthPasswordMessage" xml:space="preserve">
+  <data name="UsersValidationMinLengthPasswordMessage" xml:space="preserve">
     <value>A senha precisa ter no mínimo {MinLength} caracter(es).</value>
   </data>
-  <data name="UsersCreateValidationMinLengthUserNameMessage" xml:space="preserve">
+  <data name="UsersValidationMinLengthUserNameMessage" xml:space="preserve">
     <value>O nome do usuário deve conter ao menos {MinLength} caracter(es).</value>
   </data>
-  <data name="UsersCreateValidationNotificationMessage" xml:space="preserve">
+  <data name="UsersValidationNotificationMessage" xml:space="preserve">
     <value>O campo Notificação é obrigatório.</value>
   </data>
-  <data name="UsersCreateValidationPasswordComplexityMessage" xml:space="preserve">
+  <data name="UsersValidationPasswordComplexityMessage" xml:space="preserve">
     <value>A senha preicsa conter ao menos 1 letra maiúscula, 1 letra mínuscula e 1 número.</value>
   </data>
-  <data name="UsersCreateValidationPasswordMessage" xml:space="preserve">
+  <data name="UsersValidationPasswordMessage" xml:space="preserve">
     <value>A senha é inválida.</value>
   </data>
-  <data name="UsersCreateValidationUserNameMessage" xml:space="preserve">
+  <data name="UsersValidationUserNameMessage" xml:space="preserve">
     <value>O nome do usuário é inválido.</value>
   </data>
-  <data name="UsersLoginAccountIsBlocked" xml:space="preserve">
+  <data name="UsersLoginAccountIsBlockedMessage" xml:space="preserve">
     <value>O usuário está bloqueado na plataforma.</value>
   </data>
-  <data name="UsersLoginIncorrect" xml:space="preserve">
+  <data name="UsersLoginIncorrectMessage" xml:space="preserve">
     <value>Usuario ou senha inválido.</value>
   </data>
-  <data name="UsersLoginValidationEmailMessage" xml:space="preserve">
+  <data name="UsersValidationEmailMessage" xml:space="preserve">
     <value>O email informado está incorreto.</value>
   </data>
   <data name="CategoriesValidationRequiredNameMessage" xml:space="preserve">
@@ -191,5 +191,8 @@
   </data>
   <data name="CategoriesCategorieNotFoundMessage" xml:space="preserve">
       <value>A categoria não foi encontrada.</value>
+  </data>
+  <data name="UsersNotFoundMessage" xml:space="preserve">
+      <value>O usuário não foi encontrado.</value>
   </data>
 </root>

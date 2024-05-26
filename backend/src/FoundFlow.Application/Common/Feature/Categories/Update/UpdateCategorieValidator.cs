@@ -9,8 +9,6 @@ public class UpdateCategorieValidator : AbstractValidator<UpdateCategorieRequest
 {
     public UpdateCategorieValidator()
     {
-        ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
-
         RuleFor(x => x.Id.ToString())
             .NotEmpty()
             .NotNull()

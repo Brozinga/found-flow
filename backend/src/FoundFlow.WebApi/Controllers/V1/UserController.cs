@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Users.Create;
 using FoundFlow.Application.Common.Feature.Users.Login;
+using FoundFlow.Application.Common.Feature.Users.Update;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,5 +52,23 @@ public class UserController : BaseController<UserController>
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);
+    }
+
+    /// <summary>
+    /// Rota responsável por atualizar um usuário.
+    /// </summary>
+    /// <param name="request">Formulário de atualização de usuário.</param>
+    /// <param name="cancellationToken"></param>
+    [Authorize]
+    [HttpPut]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Update([FromBody] UpdateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return StatusCode(result.Status);
     }
 }

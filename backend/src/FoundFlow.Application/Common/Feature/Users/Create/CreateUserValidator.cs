@@ -8,37 +8,35 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
 {
     public CreateUserValidator()
     {
-        ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member.Name;
-
         RuleFor(x => x.UserName)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.UsersCreateValidationUserNameMessage)
+            .WithMessage(ErrorMessages.UsersValidationUserNameMessage)
             .MinimumLength(3)
-            .WithMessage(ErrorMessages.UsersCreateValidationMinLengthUserNameMessage);
+            .WithMessage(ErrorMessages.UsersValidationMinLengthUserNameMessage);
 
         RuleFor(x => x.Email)
             .NotEmpty()
             .NotNull()
             .EmailAddress()
-            .WithMessage(ErrorMessages.UsersLoginValidationEmailMessage);
+            .WithMessage(ErrorMessages.UsersValidationEmailMessage);
 
         RuleFor(x => x.Password)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.UsersCreateValidationPasswordMessage)
+            .WithMessage(ErrorMessages.UsersValidationPasswordMessage)
             .MinimumLength(6)
-            .WithMessage(ErrorMessages.UsersCreateValidationMinLengthPasswordMessage)
+            .WithMessage(ErrorMessages.UsersValidationMinLengthPasswordMessage)
             .Must(PasswordExtensions.ValidatePasswordComplexity)
-            .WithMessage(ErrorMessages.UsersCreateValidationPasswordComplexityMessage);
+            .WithMessage(ErrorMessages.UsersValidationPasswordComplexityMessage);
 
         RuleFor(x => x.ConfirmPassword)
             .Equal(x => x.Password)
-            .WithMessage(ErrorMessages.UsersCreateValidationConfirmPasswordMessage);
+            .WithMessage(ErrorMessages.UsersValidationConfirmPasswordMessage);
 
         RuleFor(x => x.Notification)
             .NotEmpty()
             .NotNull()
-            .WithMessage(ErrorMessages.UsersCreateValidationNotificationMessage);
+            .WithMessage(ErrorMessages.UsersValidationNotificationMessage);
     }
 }
