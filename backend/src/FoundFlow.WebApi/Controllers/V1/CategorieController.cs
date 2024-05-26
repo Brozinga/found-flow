@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Categories.Create;
+using FoundFlow.Application.Common.Feature.Categories.Delete;
 using FoundFlow.Application.Common.Feature.Categories.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -56,5 +57,24 @@ public class CategorieController : BaseController<CategorieController>
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status);
+    }
+
+    /// <summary>
+    /// Rota responsável por deletar uma categoria no banco de dados.
+    /// </summary>
+    /// <param name="request">Formulário de deleção de categoria.</param>
+    /// <param name="cancellationToken"></param>
+    [Authorize]
+    [HttpDelete]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(DeleteCategorieResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> Delete([FromBody] DeleteCategorieRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return StatusCode(result.Status, result.Data);
     }
 }
