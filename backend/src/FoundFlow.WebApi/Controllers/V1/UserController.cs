@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Users.Create;
 using FoundFlow.Application.Common.Feature.Users.Login;
+using FoundFlow.Application.Common.Feature.Users.ResetPassword;
 using FoundFlow.Application.Common.Feature.Users.Update;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,23 @@ public class UserController : BaseController<UserController>
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await Sender.Send(request, cancellationToken);
+        return StatusCode(result.Status, result.Data);
+    }
+
+    /// <summary>
+    /// Rota responsável por resetar a senha de um usuário.
+    /// </summary>
+    /// <param name="request">Formulário de reset de senha.</param>
+    /// <param name="cancellationToken"></param>
+    [HttpPost("reset-password")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(ResetPasswordResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);

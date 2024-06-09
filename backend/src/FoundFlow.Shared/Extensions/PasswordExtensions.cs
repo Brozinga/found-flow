@@ -27,4 +27,24 @@ public static class PasswordExtensions
     {
         return Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$");
     }
+
+    public static string GenerateRandomPassword(int length = 6)
+    {
+        var random = new Random();
+
+        const string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        const string digits = "0123456789";
+        const string allChars = upperCase + lowerCase + digits;
+
+        char[] password = new char[length];
+        password[0] = upperCase[random.Next(upperCase.Length)];
+        password[1] = lowerCase[random.Next(lowerCase.Length)];
+        password[2] = digits[random.Next(digits.Length)];
+
+        for (int i = 3; i < length; i++)
+            password[i] = allChars[random.Next(allChars.Length)];
+
+        return new string(password.OrderBy(x => random.Next()).ToArray());
+    }
 }
