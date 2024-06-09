@@ -43,7 +43,7 @@ CREATE TABLE transactions (
     user_id UUID NOT NULL,
     transaction_name VARCHAR(255) NOT NULL,
     amount NUMERIC NOT NULL,
-    transaction_type VARCHAR(20) CHECK (transaction_type IN ('receita', 'despesa')) NOT NULL,
+    transaction_type VARCHAR(20) CHECK (transaction_type IN ('RECEITA', 'DESPESA')) NOT NULL,
     creation_date TIMESTAMP NOT NULL,
     payment_date TIMESTAMP NULL,
     payment_status VARCHAR(100) NULL,

@@ -33,17 +33,20 @@ public class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tran
         builder.Property(t => t.PaymentDate)
             .HasColumnName("payment_date");
 
-        // Relations
-        builder.Property(t => t.CategoryId).HasColumnName("category_id");
+        // Relationships
+        builder.Property(t => t.CategoryId)
+            .HasColumnName("category_id");
+
         builder.HasOne(t => t.Category)
-            .WithMany() // If 'Categories' class has collection of 'Transactions' use it here instead of 'WithMany()'
+            .WithMany()
             .HasForeignKey(t => t.CategoryId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(t => t.UserId).HasColumnName("user_id");
+        builder.Property(t => t.UserId)
+            .HasColumnName("user_id");
         builder.HasOne(t => t.User)
-            .WithMany() // If 'Users' class has collection of 'Transactions' use it here instead of 'WithMany()'
+            .WithMany(u => u.Transactions)
             .HasForeignKey(t => t.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);

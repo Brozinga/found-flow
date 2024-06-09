@@ -61,8 +61,4 @@
       <None Remove="Models\Request\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Common\Feature\Transactions\" />
-    </ItemGroup>
-
 </Project>

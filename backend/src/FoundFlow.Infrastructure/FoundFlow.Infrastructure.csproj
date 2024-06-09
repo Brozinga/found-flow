@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Managers\ConfigurationsManager.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     </ItemGroup>
 

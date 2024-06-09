@@ -4,7 +4,6 @@ using FoundFlow.Domain.Interfaces;
 using FoundFlow.Shared.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-#pragma warning disable S1006
 
 namespace FoundFlow.Infrastructure.Managers;
 
@@ -32,7 +31,7 @@ public class ManagerService : IManagerService
         return await collection.Find(filter).ToListAsync();
     }
 
-    public async Task<T> GetValueAsync<T>(string collectionName, string keyField = null, string keyValue = null)
+    public async Task<T> GetValueAsync<T>(string collectionName, string keyField, string keyValue)
         where T : IManagerModel
     {
         var collection = _database.GetCollection<T>(collectionName);

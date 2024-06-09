@@ -4,7 +4,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -30,7 +29,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using Microsoft.Extensions.Options;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 

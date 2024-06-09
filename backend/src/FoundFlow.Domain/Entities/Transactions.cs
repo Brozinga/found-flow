@@ -19,9 +19,9 @@ public class Transactions : EntityBase<Guid>
         string transactionName,
         decimal amount,
         TransactionType transactionType,
+        PaymentType paymentStatus,
         DateTime creationDate = default,
-        DateTime paymentDate = default,
-        string paymentStatus = null)
+        DateTime paymentDate = default)
     {
         Id = id;
         CategoryId = category.Id;
@@ -33,7 +33,7 @@ public class Transactions : EntityBase<Guid>
         TransactionType = transactionType.GetDescription();
         CreationDate = creationDate;
         PaymentDate = paymentDate;
-        PaymentStatus = paymentStatus;
+        PaymentStatus = paymentStatus.GetDescription();
     }
 
     public Transactions(
@@ -42,10 +42,11 @@ public class Transactions : EntityBase<Guid>
         string transactionName,
         decimal amount,
         TransactionType transactionType,
+        PaymentType paymentStatus,
         DateTime creationDate = default,
-        DateTime paymentDate = default,
-        string paymentStatus = null)
+        DateTime paymentDate = default)
     {
+        Id = Guid.NewGuid();
         CategoryId = category.Id;
         Category = category;
         UserId = user.Id;
@@ -55,19 +56,21 @@ public class Transactions : EntityBase<Guid>
         TransactionType = transactionType.GetDescription();
         CreationDate = creationDate;
         PaymentDate = paymentDate;
-        PaymentStatus = paymentStatus;
+        PaymentStatus = paymentStatus.GetDescription();
     }
 
     public Transactions(
+        Guid id,
         Categories category,
         Users user,
         string transactionName,
         decimal amount,
         string transactionType,
+        string paymentStatus,
         DateTime creationDate = default,
-        DateTime paymentDate = default,
-        string paymentStatus = null)
+        DateTime paymentDate = default)
     {
+        Id = id;
         CategoryId = category.Id;
         Category = category;
         UserId = user.Id;
