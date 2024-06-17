@@ -1,5 +1,12 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
+import {Toaster} from 'react-hot-toast';
+import {
+    validateName,
+    validateEmail,
+    validatePassword,
+    validatePasswordConfirm
+} from "../../../shared/Validations";
 // Chakra imports
 import {
     Box,
@@ -21,14 +28,10 @@ import DefaultAuth from "layouts/auth/Default";
 import illustration from "assets/img/auth/auth.png";
 import {MdOutlineRemoveRedEye} from "react-icons/md";
 import {RiEyeCloseLine} from "react-icons/ri";
-import {validateEmail, validatePassword} from "../../../shared/Validations";
-import {notifyError, notifyWarning} from "../../../components/notifications/Types";
-import {Toaster} from "react-hot-toast";
-import * as UsuarioRepository from "../../../repository/UserRepository";
+import SwitchField from "../../../components/fields/SwitchField";
+import {notifyError} from "../../../components/notifications/Types";
 
-function SignIn() {
-    // Chakra color mode
-
+function Register() {
     const textColor = useColorModeValue("navy.700", "white");
     const textColorSecondary = "gray.400";
     const textColorDetails = useColorModeValue("navy.700", "secondaryGray.600");
@@ -36,22 +39,31 @@ function SignIn() {
     const brandStars = useColorModeValue("brand.500", "brand.400");
 
     const [show, setShow] = React.useState(false);
-    const handleClick = () => setShow(!show);
+    const [showConfirm, setShowConfirm] = React.useState(false);
+    const showPassword = () => setShow(!show);
+    const showPasswordConfirm = () => setShowConfirm(!showConfirm);
 
+    const [userName, setUserName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const handleSubmit = async () => {
+    const [passwordConfirm, setPasswordConfirm] = React.useState("");
+    const [notification, setNotification] = React.useState(true);
+
+    const handleSubmit = () => {
+        console.log("UserName: " + userName);
+        console.log("Email: " + email);
+        console.log("Password: " + password);
+        console.log("PasswordConfirm: " + passwordConfirm);
+        console.log("Notification: " + notification);
+
         let errors = "";
+        errors += validateName(userName);
         errors += validateEmail(email);
         errors += validatePassword(password);
+        errors += validatePasswordConfirm(password, passwordConfirm);
         notifyError(errors)
-
-        if (errors === "") {
-            const result = await UsuarioRepository.Login(email, password);
-            if(result.errors)
-                notifyError(result.errors.General.join(""))
-        }
     }
+
     return (
         <DefaultAuth illustrationBackground={illustration} image={illustration}>
             <Flex maxW={{base: "100%", md: "max-content"}}
@@ -59,7 +71,7 @@ function SignIn() {
                   mx={{base: "auto", lg: "0px"}}
                   me='auto'
                   h='100%'
-                  alignItems='start'
+                  alignItems='center'
                   justifyContent='center'
                   mb={{base: "30px", md: "60px"}}
                   px={{base: "25px", md: "0px"}}
@@ -68,7 +80,7 @@ function SignIn() {
                 <Flex flexDirection='column'>
                     <Box me='auto'>
                         <Heading color={textColor} fontSize='36px' mb='10px'>
-                            Bem Vindo!
+                            Bora se cadastrar?
                         </Heading>
                         <Text
                             mb='36px'
@@ -76,7 +88,7 @@ function SignIn() {
                             color={textColorSecondary}
                             fontWeight='400'
                             fontSize='md'>
-                            Coloque o seu email e a sua senha para acessar o sistema.
+                            Coloque os seus dados e vamos começar.
                         </Text>
                     </Box>
                     <Flex
@@ -90,6 +102,29 @@ function SignIn() {
                         me='auto'
                         mb={{base: "20px", md: "auto"}}>
                         <FormControl>
+                            <FormLabel
+                                display='flex'
+                                ms='4px'
+                                fontSize='sm'
+                                fontWeight='500'
+                                color={textColor}
+                                mb='8px'>
+                                Nome<Text color={brandStars}>*</Text>
+                            </FormLabel>
+                            <Input
+                                isInvalid={true}
+                                isRequired={true}
+                                variant='auth'
+                                fontSize='sm'
+                                ms={{base: "0px", md: "0px"}}
+                                type='text'
+                                placeholder='Nome completo'
+                                mb='24px'
+                                fontWeight='500'
+                                size='lg'
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                            />
                             <FormLabel
                                 display='flex'
                                 ms='4px'
@@ -137,30 +172,57 @@ function SignIn() {
                                         color={textColorSecondary}
                                         _hover={{cursor: "pointer"}}
                                         as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
-                                        onClick={handleClick}
+                                        onClick={showPassword}
                                     />
                                 </InputRightElement>
                             </InputGroup>
-                            <Flex justifyContent='space-between' align='center' mb='24px'>
-                                <NavLink to='/auth/forgot-password'>
-                                    <Text
-                                        color={textColorBrand}
-                                        fontSize='sm'
-                                        w='124px'
-                                        fontWeight='500'>
-                                        Esqueceu a senha?
-                                    </Text>
-                                </NavLink>
-                            </Flex>
+                            <FormLabel
+                                ms='4px'
+                                fontSize='sm'
+                                fontWeight='500'
+                                color={textColor}
+                                display='flex'>
+                                Confirmação de Senha<Text color={brandStars}>*</Text>
+                            </FormLabel>
+                            <InputGroup size='md'>
+                                <Input
+                                    isRequired={true}
+                                    fontSize='sm'
+                                    placeholder='Min. 6 caracteres'
+                                    mb='24px'
+                                    size='lg'
+                                    type={showConfirm ? "text" : "password"}
+                                    variant='auth'
+                                    value={passwordConfirm}
+                                    onChange={e => setPasswordConfirm(e.target.value)}
+                                />
+                                <InputRightElement display='flex' alignItems='center' mt='4px'>
+                                    <Icon
+                                        color={textColorSecondary}
+                                        _hover={{cursor: "pointer"}}
+                                        as={showConfirm ? RiEyeCloseLine : MdOutlineRemoveRedEye}
+                                        onClick={showPasswordConfirm}
+                                    />
+                                </InputRightElement>
+                            </InputGroup>
+                            <SwitchField
+                                isChecked={notification}
+                                reversed={true}
+                                fontSize="sm"
+                                mb="20px"
+                                id="notification"
+                                label="Receber notificações"
+                                onChange={() => setNotification(!notification)}
+                            />
                             <Button
                                 fontSize='sm'
                                 variant='brand'
                                 fontWeight='500'
                                 w='100%'
                                 h='50'
-                                mb='24px'
-                                onClick={handleSubmit}>
-                                Entrar
+                                onClick={handleSubmit}
+                                mb='24px'>
+                                Concluir
                             </Button>
                         </FormControl>
                         <Flex
@@ -170,14 +232,14 @@ function SignIn() {
                             maxW='100%'
                             mt='0px'>
                             <Text color={textColorDetails} fontWeight='400' fontSize='14px'>
-                                Não está registrado?
-                                <NavLink to='/auth/register'>
+                                Ja está registrado?
+                                <NavLink to='/auth/sign-in'>
                                     <Text
                                         color={textColorBrand}
                                         as='span'
                                         ms='5px'
                                         fontWeight='500'>
-                                        Criar uma conta
+                                        Entre!
                                     </Text>
                                 </NavLink>
                             </Text>
@@ -190,4 +252,4 @@ function SignIn() {
     );
 }
 
-export default SignIn;
+export default Register;

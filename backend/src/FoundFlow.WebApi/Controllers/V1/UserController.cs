@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-[Route("user")]
 public class UserController : BaseController<UserController>
 {
     public UserController(ISender sender, ILogger<UserController> logger)

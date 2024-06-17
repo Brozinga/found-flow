@@ -13,6 +13,7 @@ import Profile from "./views/app/profile";
 
 // Auth Imports
 import SignInCentered from "views/auth/signIn";
+import Register from "./views/auth/register";
 
 const routes = [
   {
@@ -35,6 +36,13 @@ const routes = [
     path: "/sign-in",
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered,
+  },
+  {
+    name: "Register",
+    layout: "/auth",
+    path: "/register",
+    icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
+    component: Register,
   }
 ];
 

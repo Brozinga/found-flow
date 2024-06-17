@@ -9,7 +9,7 @@ namespace FoundFlow.WebApi.Controllers;
 
 [ExcludeFromCodeCoverage]
 [ApiController]
-[Route("api/v{version:apiVersion}")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
 [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]

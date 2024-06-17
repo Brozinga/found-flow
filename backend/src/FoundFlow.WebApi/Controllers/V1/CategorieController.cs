@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-[Route("categorie")]
 public class CategorieController : BaseController<CategorieController>
 {
     public CategorieController(ISender sender, ILogger<CategorieController> logger)
