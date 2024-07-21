@@ -51,6 +51,10 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
         <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="1.2.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.6.2" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
         <PackageReference Update="Roslynator.Analyzers" Version="4.12.2">
           <PrivateAssets>all</PrivateAssets>

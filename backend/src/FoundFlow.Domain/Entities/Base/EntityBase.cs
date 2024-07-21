@@ -10,6 +10,10 @@ public abstract class EntityBase<TId> : IEntityBase<TId>
 {
     private readonly List<DomainEventBase> _domainEvents = new();
 
+    /// <summary>
+    /// Código de identificação.
+    /// </summary>
+    /// <example>e281dbd8-e8a8-4b8d-aafd-a54eccc3e7c8</example>
     [Key]
     public virtual TId Id { get; set; }
 

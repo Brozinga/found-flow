@@ -47,6 +47,12 @@ public static class ApplicationBuilderExtensions
                     options.SwaggerEndpoint($"/swagger/{description}/swagger.json", description.ToUpperInvariant());
                 }
             });
+
+            app.UseReDoc(c =>
+            {
+                c.DocumentTitle = "Found Flow API - Documentação"; // Título da documentação
+                c.SpecUrl = "/swagger/v1/swagger.json"; // Caminho para o arquivo Swagger JSON
+            });
         }
 
         app.UseHttpsRedirection();

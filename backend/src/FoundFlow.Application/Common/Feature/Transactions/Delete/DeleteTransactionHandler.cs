@@ -9,14 +9,28 @@ using MediatR;
 
 namespace FoundFlow.Application.Common.Feature.Transactions.Delete;
 
+/// <summary>
+/// Manipulador (Handler) para a solicitação de exclusão de uma transação (`DeleteTransactionRequest`).
+/// </summary>
 public class DeleteTransactionHandler : IRequestHandler<DeleteTransactionRequest, Result<DeleteTransactionResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteTransactionHandler(
-        IUnitOfWork unitOfWork) =>
-        _unitOfWork = unitOfWork;
+    /// <summary>
+    /// Cria uma nova instância de `DeleteTransactionHandler`.
+    /// </summary>
+    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+    public DeleteTransactionHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
+    /// <summary>
+    /// Manipula a solicitação de exclusão de uma transação.
+    /// </summary>
+    /// <param name="request">A solicitação contendo o ID da transação a ser excluída.</param>
+    /// <param name="cancellationToken">O token de cancelamento.</param>
+    /// <returns>
+    /// Um resultado (`Result`) contendo a resposta `DeleteTransactionResponse` se a transação for excluída com sucesso,
+    /// ou uma mensagem de erro em caso de falha (por exemplo, transação não encontrada, usuário não encontrado ou erro no banco de dados).
+    /// </returns>
     public async Task<Result<DeleteTransactionResponse>> Handle(DeleteTransactionRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -43,5 +57,4 @@ public class DeleteTransactionHandler : IRequestHandler<DeleteTransactionRequest
 
         return Result<DeleteTransactionResponse>.Success(HttpStatusCode.OK, new DeleteTransactionResponse(entity.Id));
     }
-
 }

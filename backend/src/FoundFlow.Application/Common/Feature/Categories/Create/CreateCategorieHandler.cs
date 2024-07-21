@@ -9,14 +9,25 @@ using MediatR;
 
 namespace FoundFlow.Application.Common.Feature.Categories.Create;
 
+/// <summary>
+/// Manipulador (Handler) para a solicitação de criação de uma nova categoria (`CreateCategorieRequest`).
+/// </summary>
 public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Result<CreateCategorieResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCategorieHandler(
-        IUnitOfWork unitOfWork) =>
-        _unitOfWork = unitOfWork;
+    /// <summary>
+    /// Cria uma nova instância de `CreateCategorieHandler`.
+    /// </summary>
+    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+    public CreateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
+    /// <summary>
+    /// Converte uma solicitação `CreateCategorieRequest` em uma entidade `Categories`.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da nova categoria.</param>
+    /// <param name="user">O usuário associado à categoria.</param>
+    /// <returns>A entidade `Categories` convertida.</returns>
     private Domain.Entities.Categories ConvertToAgreggate(CreateCategorieRequest request, Domain.Entities.Users user)
     {
         var categorie = new Domain.Entities.Categories(
@@ -28,6 +39,12 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
         return categorie;
     }
 
+    /// <summary>
+    /// Manipula a solicitação de criação de uma nova categoria.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da nova categoria.</param>
+    /// <param name="cancellationToken">O token de cancelamento.</param>
+    /// <returns>Um resultado (`Result`) contendo a resposta `CreateCategorieResponse` se a categoria for criada com sucesso, ou uma mensagem de erro em caso de falha.</returns>
     public async Task<Result<CreateCategorieResponse>> Handle(CreateCategorieRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -57,5 +74,4 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
 
         return Result<CreateCategorieResponse>.Success(HttpStatusCode.Created, new CreateCategorieResponse(entity.Id));
     }
-
 }

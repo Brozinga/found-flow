@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using FoundFlow.Domain.Entities.Base;
 
 namespace FoundFlow.Domain.Entities;
@@ -39,9 +38,32 @@ public class Categories : EntityBase<Guid>
         CreationDate = creationDate;
     }
 
-    public Guid UserId { get; private set; }
-    public string CategoryName { get; private set; }
-    public string Color { get; private set; }
-    public DateTime CreationDate { get; private set; }
-    public virtual Users User { get; private set; }
+    /// <summary>
+    /// Id de co-relação com a tabela de usuários (Users).
+    /// </summary>
+    /// <example>e281dbd8-e8a8-4b8d-aafd-a54eccc3e7c8</example>
+    public Guid UserId { get; }
+
+    /// <summary>
+    /// Nome da categoria.
+    /// </summary>
+    /// <example>Casa</example>
+    public string CategoryName { get; }
+
+    /// <summary>
+    /// Hexadecimal com o valor da cor.
+    /// </summary>
+    /// <example>#FFFFFF</example>
+    public string Color { get; }
+
+    /// <summary>
+    /// Data da criação.
+    /// </summary>
+    /// <example>2024-01-01T22:40:32</example>
+    public DateTime CreationDate { get; }
+
+    /// <summary>
+    /// Usuário à qual esta categoria pertence. Consulte a documentação de <see cref="Users"/> para mais detalhes.
+    /// </summary>
+    public virtual Users User { get; }
 }

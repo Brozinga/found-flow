@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using Asp.Versioning.ApiExplorer;
 using FoundFlow.Shared.Settings;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FoundFlow.Infrastructure.Swagger;
 
@@ -51,8 +52,6 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             });
         }
 
-        options.CustomSchemaIds(type => type.ToString());
-
         foreach (string filePath in
                  Directory.GetFiles(
                      Path.Combine(
@@ -62,6 +61,9 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
         {
             options.IncludeXmlComments(filePath);
         }
+
+        options.ExampleFilters();
+        options.EnableAnnotations();
 
         options.MapType<DateOnly>(() => new OpenApiSchema { Type = "string", Format = "date" });
     }

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-public class TransactionController : BaseController<TransactionController>
+public class TransactionController : BaseController
 {
     public TransactionController(ISender sender, ILogger<TransactionController> logger)
         : base(sender, logger)

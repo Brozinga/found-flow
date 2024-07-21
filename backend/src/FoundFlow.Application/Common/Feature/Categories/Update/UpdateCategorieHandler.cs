@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,26 +9,45 @@ using MediatR;
 
 namespace FoundFlow.Application.Common.Feature.Categories.Update;
 
+/// <summary>
+/// Manipulador (Handler) para a solicitação de atualização de uma categoria (`UpdateCategorieRequest`).
+/// </summary>
 public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Result<UpdateCategorieResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCategorieHandler(
-        IUnitOfWork unitOfWork) =>
-        _unitOfWork = unitOfWork;
+    /// <summary>
+    /// Cria uma nova instância de `UpdateCategorieHandler`.
+    /// </summary>
+    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+    public UpdateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
+    /// <summary>
+    /// Converte uma solicitação `UpdateCategorieRequest` em uma entidade `Categories`.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da categoria a ser atualizada.</param>
+    /// <param name="categorieData">Os dados atuais da categoria a ser atualizada.</param>
+    /// <param name="user">O usuário associado à categoria.</param>
+    /// <returns>A entidade `Categories` convertida e atualizada.</returns>
     private Domain.Entities.Categories ConvertToAgreggate(UpdateCategorieRequest request, Domain.Entities.Categories categorieData, Domain.Entities.Users user)
     {
-        var categorie = new Domain.Entities.Categories(
+        return new Domain.Entities.Categories(
             request.Id,
             user,
             request.Name,
             request.Color,
             DateTime.SpecifyKind(categorieData.CreationDate, DateTimeKind.Utc));
-
-        return categorie;
     }
 
+    /// <summary>
+    /// Manipula a solicitação de atualização de uma categoria.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da categoria a ser atualizada.</param>
+    /// <param name="cancellationToken">O token de cancelamento.</param>
+    /// <returns>
+    /// Um resultado (`Result`) contendo a resposta `UpdateCategorieResponse` se a categoria for atualizada com sucesso,
+    /// ou uma mensagem de erro em caso de falha (por exemplo, categoria não encontrada, nome da categoria já existe para o usuário ou erro no banco de dados).
+    /// </returns>
     public async Task<Result<UpdateCategorieResponse>> Handle(UpdateCategorieRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -47,7 +65,7 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
 
         var categorie = categoriesList.Find(categorie => categorie.Id == request.Id);
 
-        if(categorie is null)
+        if (categorie is null)
             Result<UpdateCategorieResponse>.Failure(HttpStatusCode.NotFound, ErrorMessages.CategoriesCategorieNotFoundMessage);
 
         bool categorieExists = categoriesList.Exists(categorie =>
@@ -67,5 +85,4 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
 
         return Result<UpdateCategorieResponse>.Success(HttpStatusCode.NoContent, new UpdateCategorieResponse(entity.Id));
     }
-
 }

@@ -29,6 +29,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
+using FoundFlow.Application.Examples;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -83,6 +85,14 @@ public static class ServiceCollectionExtensions
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddSwaggerExamples();
+        services.AddSwaggerExamplesFromAssemblyOf<ValidationProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<NotFoundProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<BadRequestProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<UnauthorizedProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<ForbiddenProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<InternalServerProblemDetailsExample>();
+        services.AddSwaggerExamplesFromAssemblyOf<ServiceUnavailableProblemDetailsExample>();
         services.ConfigureOptions<ConfigureSwaggerOptions>();
         services.AddApiVersioning(option =>
             {

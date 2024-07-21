@@ -5,16 +5,23 @@ using FoundFlow.Application.Common.Feature.Users.Create;
 using FoundFlow.Application.Common.Feature.Users.Login;
 using FoundFlow.Application.Common.Feature.Users.ResetPassword;
 using FoundFlow.Application.Common.Feature.Users.Update;
+using FoundFlow.Shared.ProblemDetails;
+using FoundFlow.Application.Examples;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-public class UserController : BaseController<UserController>
+[SwaggerTag("Controlador responsável pelo gerenciamento de usuários da API." +
+    "Este controlador lida com operações relacionadas ao login de usuários, " +
+    "registro de novos usuários, redefinição de senhas e atualização das informações do usuário.")]
+public class UserController : BaseController
 {
     public UserController(ISender sender, ILogger<UserController> logger)
         : base(sender, logger)
@@ -22,15 +29,18 @@ public class UserController : BaseController<UserController>
     }
 
     /// <summary>
-    /// Rota responsável por retornar o Bearer Token para acesso as Rotas bloqueadas.
+    /// Realiza o login do usuário e retorna um token de acesso (Bearer Token).
     /// </summary>
-    /// <param name="request">Formulário de login.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="request">Os dados para autenticação do usuário.</param>
+    /// <param name="cancellationToken">Token para cancelar a operação.</param>
+    /// <returns>Um objeto `LoginResponse` contendo o token de acesso e informações sobre sua validade.</returns>
     [HttpPost("login")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponse(StatusCodes.Status200OK, "Login realizado com sucesso.", typeof(LoginResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(InternalServerProblemDetailsExample))]
     public async Task<IActionResult> GetToken([FromBody] LoginRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
@@ -38,16 +48,22 @@ public class UserController : BaseController<UserController>
     }
 
     /// <summary>
-    /// Rota responsável por registrar um novo usuário.
+    /// Registra um novo usuário no sistema.
     /// </summary>
-    /// <param name="request">Formulário de cadastro.</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="request">Os dados para cadastro do novo usuário.</param>
+    /// <param name="cancellationToken">Token para cancelar a operação.</param>
+    /// <returns>Um objeto `CreateUserResponse` indicando se o usuário foi criado com sucesso e seu ID.</returns>
     [HttpPost("register")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponse(StatusCodes.Status201Created, "Usuário criado com sucesso.", typeof(CreateUserResponse))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou usuário já existente.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(InternalServerProblemDetailsExample))]
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
@@ -62,9 +78,12 @@ public class UserController : BaseController<UserController>
     [HttpPost("reset-password")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(ResetPasswordResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponse(StatusCodes.Status200OK, "Solicitação de redefinição de senha processada com sucesso.", typeof(ResetPasswordResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
@@ -80,9 +99,14 @@ public class UserController : BaseController<UserController>
     [HttpPut]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [SwaggerResponse(StatusCodes.Status204NoContent, "Usuário atualizado com sucesso.")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Usuário não enviado corretamente.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
     public async Task<IActionResult> Update([FromBody] UpdateUserRequest request, CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);

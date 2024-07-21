@@ -1,9 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-#pragma warning disable S6672
 
 namespace FoundFlow.WebApi.Controllers;
 
@@ -11,18 +9,27 @@ namespace FoundFlow.WebApi.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
-[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status401Unauthorized)]
-[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-public abstract class BaseController<T> : ControllerBase
-    where T : BaseController<T>
+[Consumes("application/json")]
+public abstract class BaseController : ControllerBase
 {
-    protected BaseController(ISender sender, ILogger<T> logger)
+    /// <summary>
+    /// Cria uma nova instância de `BaseController`.
+    /// </summary>
+    /// <param name="sender">O objeto `ISender` usado para enviar solicitações MediatR.</param>
+    /// <param name="logger">O objeto `ILogger` usado para registrar logs.</param>
+    protected BaseController(ISender sender, ILogger logger)
     {
         Sender = sender;
-        Logger = logger;
+        Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
     }
 
-    protected ILogger<T> Logger { get; }
+    /// <summary>
+    /// O objeto `ILogger` usado para registrar logs.
+    /// </summary>
+    protected ILogger Logger { get; }
+
+    /// <summary>
+    /// O objeto `ISender` usado para enviar solicitações MediatR.
+    /// </summary>
     protected ISender Sender { get; }
 }

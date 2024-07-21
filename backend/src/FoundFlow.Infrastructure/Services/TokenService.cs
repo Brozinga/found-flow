@@ -11,15 +11,28 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FoundFlow.Infrastructure.Services;
 
+/// <summary>
+/// Serviço responsável por gerar e validar tokens JWT (JSON Web Tokens).
+/// </summary>
 public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
+
+    /// <summary>
+    /// Cria uma nova instância de `TokenService`.
+    /// </summary>
+    /// <param name="jwtSettings">As configurações para a geração e validação de tokens JWT.</param>
     public TokenService(IOptions<JwtSettings> jwtSettings)
     {
         ArgumentNullException.ThrowIfNull(jwtSettings);
         _jwtSettings = jwtSettings.Value;
     }
 
+    /// <summary>
+    /// Gera um novo token JWT para o usuário especificado.
+    /// </summary>
+    /// <param name="user">O usuário para o qual o token será gerado.</param>
+    /// <returns>Uma tupla contendo o token JWT gerado e sua data de expiração.</returns>
     public (string Token, DateTime? Expires) Generate(Users user)
     {
         JwtSecurityTokenHandler handler = new();
@@ -43,6 +56,11 @@ public class TokenService : ITokenService
         return (handler.WriteToken(token), expires);
     }
 
+    /// <summary>
+    /// Lê as informações (nome de usuário, e-mail e ID do usuário) contidas em um token JWT.
+    /// </summary>
+    /// <param name="token">O token JWT a ser lido.</param>
+    /// <returns>Uma tupla contendo o nome de usuário, o e-mail e o ID do usuário extraídos do token.</returns>
     public (string UserName, string Email, Guid UserId) Read(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -68,6 +86,11 @@ public class TokenService : ITokenService
         return (userName, email, userId);
     }
 
+    /// <summary>
+    /// Gera as claims (declarações) a serem incluídas no token JWT.
+    /// </summary>
+    /// <param name="user">O usuário para o qual as claims serão geradas.</param>
+    /// <returns>Um objeto `ClaimsIdentity` contendo as claims do usuário.</returns>
     private ClaimsIdentity GenerateClaims(Users user)
     {
         var ci = new ClaimsIdentity();
