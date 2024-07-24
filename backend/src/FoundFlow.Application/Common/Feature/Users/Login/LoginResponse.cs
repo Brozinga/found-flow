@@ -27,7 +27,7 @@ public sealed class LoginResponse
     public string Token { get; }
 
     /// <summary>
-    /// A data e hora de expiração do token em milissegundos com o formato Unix (1 de janeiro de 1970).
+    /// A data e hora de expiração do token em milissegundos com o formato <a href="https://developer.mozilla.org/en-US/docs/Glossary/Unix_time">(Unix)</a>.
     /// Se o token não tiver data de expiração, o valor será 0.
     /// </summary>
     /// <example>1677628800000</example>
