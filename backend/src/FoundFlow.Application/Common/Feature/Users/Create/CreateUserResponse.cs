@@ -19,7 +19,7 @@ public sealed class CreateUserResponse
     }
 
     /// <summary>
-    /// O identificador único (UUID) do usuário criado.
+    /// O identificador único de um usuário criado <a href="https://www.rfc-editor.org/rfc/rfc4122">(UUID) de acordo com a RFC4122</a>.
     /// </summary>
     /// <example>32bf3b72-db19-498c-ad3a-e2d6edde080f</example>
     public Guid UserId { get; }

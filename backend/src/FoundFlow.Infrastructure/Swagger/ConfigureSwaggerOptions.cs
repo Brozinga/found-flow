@@ -9,6 +9,9 @@ using System.Reflection;
 using Asp.Versioning.ApiExplorer;
 using FoundFlow.Shared.Settings;
 using Swashbuckle.AspNetCore.Filters;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
+using System.Collections.Generic;
 
 namespace FoundFlow.Infrastructure.Swagger;
 
@@ -31,7 +34,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "Header de autorização utilizando JWT. Example: \"Authorization: Bearer {token}\"",
+                Description = "Header de autorização utilizando JWT. <u>Examplo:</u> \"Authorization: Bearer {token}\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey
@@ -79,6 +82,16 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             {
                 Name = _settings.ContactName,
                 Url = new Uri(_settings.ContactUrl)
+            },
+            Extensions = new Dictionary<string, IOpenApiExtension>
+            {
+                {
+                    "x-logo", new OpenApiObject
+                    {
+                        { "url", new OpenApiString("/images/logo.png") },
+                        { "altText", new OpenApiString("found flow logo") }
+                    }
+                }
             }
         };
         return info;

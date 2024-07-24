@@ -81,4 +81,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\images\logo-with-text-02.png" />
+    </ItemGroup>
+
 </Project>

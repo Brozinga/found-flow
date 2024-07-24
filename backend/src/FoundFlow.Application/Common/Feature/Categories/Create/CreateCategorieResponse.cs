@@ -19,7 +19,7 @@ public sealed class CreateCategorieResponse
     }
 
     /// <summary>
-    /// O identificador único da categoria criada.
+    /// O identificador único de uma categoria criada <a href="https://www.rfc-editor.org/rfc/rfc4122">(UUID) de acordo com a RFC4122</a>.
     /// </summary>
     /// <example>32bf3b72-db19-498c-ad3a-e2d6edde080f</example>
     public Guid CategorieId { get; }

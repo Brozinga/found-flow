@@ -5,13 +5,10 @@ using FoundFlow.Application.Models;
 
 namespace FoundFlow.Application.Common.Feature.Transactions.Delete;
 
-/// <summary>
-/// Representa uma solicitação para excluir uma transação existente.
-/// </summary>
 public class DeleteTransactionRequest : MediatR.IRequest<Result<DeleteTransactionResponse>>, IAuthorize
 {
     /// <summary>
-    /// O identificador único (UUID) da transação a ser excluída.
+    /// O identificador único da transação a ser excluída <a href="https://www.rfc-editor.org/rfc/rfc4122">(UUID) de acordo com a RFC4122</a>.
     /// </summary>
     /// <example>32bf3b72-db19-498c-ad3a-e2d6edde080f</example>
     public Guid Id { get; set; }

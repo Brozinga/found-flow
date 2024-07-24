@@ -69,6 +69,7 @@ public static class ApplicationBuilderExtensions
             app.UseMiddleware<LogResponseMiddleware>();
 
         app.UseWebSockets();
+        app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();

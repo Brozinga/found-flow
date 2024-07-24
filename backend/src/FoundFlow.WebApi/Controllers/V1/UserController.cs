@@ -18,16 +18,18 @@ using Swashbuckle.AspNetCore.Filters;
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-[Tags("Usuários")]
+[Tags("Usuário")]
 public class UserController(ISender sender, ILogger<UserController> logger) : BaseController(sender, logger)
 {
     [HttpPost("login")]
     [SwaggerOperation("Login", "Endpoint responsável por solicitar um token JWT para acesso as rotas internas.")]
     [SwaggerResponse(StatusCodes.Status200OK, "Login realizado com sucesso.", typeof(LoginResponse), Description = "Um objeto `LoginResponse` contendo o token de acesso e informações sobre sua validade.")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário ou senha não encontrados.", typeof(CustomProblemDetails))]
     [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     public async Task<IActionResult> GetToken(
-        [FromBody][SwaggerParameter("Formulário para autenticação do usuário.", Required = true)]
+        [FromBody][SwaggerParameter("Representa uma solicitação para autenticar um usuário existente.", Required = true)]
         LoginRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -44,9 +46,8 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
-    [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(InternalServerProblemDetailsExample))]
     public async Task<IActionResult> Register(
-        [FromBody][SwaggerParameter("Formulário de criação de usuário.", Required = true)]
+        [FromBody][SwaggerParameter("Representa uma solicitação para adicionar um novo usuário.", Required = true)]
         CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -63,7 +64,7 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
 
     public async Task<IActionResult> ResetPassword(
-        [FromBody][SwaggerParameter("Formulário de reset de senha.", Required = true)]
+        [FromBody][SwaggerParameter("Representa uma solicitação para redefinir a senha de um usuário.", Required = true)]
         ResetPasswordRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -78,12 +79,15 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Usuário não enviado corretamente.", typeof(CustomProblemDetails))]
     [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
     [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
-    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status403Forbidden, typeof(ForbiddenProblemDetailsExample))]
     public async Task<IActionResult> Update(
-        [FromBody][SwaggerParameter("Formulário de atualização de usuário.", Required = true)]
+        [FromBody][SwaggerParameter("Representa uma solicitação para atualizar um usuário existente.", Required = true)]
         UpdateUserRequest request,
         CancellationToken cancellationToken = default)
     {

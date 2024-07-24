@@ -8,9 +8,9 @@ public class UnauthorizedProblemDetailsExample : IExamplesProvider<CustomProblem
 {
     public CustomProblemDetails GetExamples()
     {
-        return new CustomProblemDetails(new List<string> { "Não tem autorização para acesso." })
+        return new CustomProblemDetails(new List<string> { "A autenticação não é válida." })
         {
-            Detail = "Não tem autorização para acesso.",
+            Detail = "A autenticação não é válida.",
             Status = StatusCodes.Status401Unauthorized,
             Title = "Acesso não autorizado.",
             Type = "https://www.rfc-editor.org/rfc/rfc7235#section-3.1",

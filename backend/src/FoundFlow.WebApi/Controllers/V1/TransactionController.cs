@@ -4,74 +4,86 @@ using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Transactions.Create;
 using FoundFlow.Application.Common.Feature.Transactions.Delete;
 using FoundFlow.Application.Common.Feature.Transactions.Update;
+using FoundFlow.Application.Examples;
+using FoundFlow.Shared.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FoundFlow.WebApi.Controllers.V1;
 
 [ApiVersion("1.0")]
-public class TransactionController : BaseController
+[Tags("Transação")]
+public class TransactionController(ISender sender, ILogger<TransactionController> logger) : BaseController(sender, logger)
 {
-    public TransactionController(ISender sender, ILogger<TransactionController> logger)
-        : base(sender, logger)
-    {
-    }
-
-    /// <summary>
-    /// Rota responsável por criar uma transação no banco de dados.
-    /// </summary>
-    /// <param name="request">Formulário de inserção de transação.</param>
-    /// <param name="cancellationToken"></param>
     [Authorize]
     [HttpPost]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [ProducesResponseType(typeof(CreateTransactionResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Create([FromBody] CreateTransactionRequest request, CancellationToken cancellationToken = default)
+    [SwaggerOperation("Adicionar", "Endpoint responsável por criar uma transação.")]
+    [SwaggerResponse(StatusCodes.Status201Created, "Transação criada com sucesso.", typeof(CreateTransactionResponse), Description = "Um objeto `CreateTransactionResponse` indicando se a transação foi criada com sucesso e seu ID.")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou transação já existe.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status403Forbidden, typeof(ForbiddenProblemDetailsExample))]
+    public async Task<IActionResult> Create(
+    [FromBody][SwaggerParameter("Representa uma solicitação para adicionar uma nova transação.", Required = true)]
+    CreateTransactionRequest request,
+    CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);
     }
 
-    /// <summary>
-    /// Rota responsável por atualizar uma transação no banco de dados.
-    /// </summary>
-    /// <param name="request">Formulário de atualização de transação.</param>
-    /// <param name="cancellationToken"></param>
     [Authorize]
     [HttpPut]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Update([FromBody] UpdateTransactionRequest request, CancellationToken cancellationToken = default)
+    [SwaggerOperation("Atualizar", "Endpoint responsável por atualizar uma transação.")]
+    [SwaggerResponse(StatusCodes.Status204NoContent, "Transação atualizada com sucesso.")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status403Forbidden, typeof(ForbiddenProblemDetailsExample))]
+    public async Task<IActionResult> Update(
+    [FromBody][SwaggerParameter("Representa uma solicitação para atualizar uma transação existente.", Required = true)]
+    UpdateTransactionRequest request,
+    CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status);
     }
 
-    /// <summary>
-    /// Rota responsável por deletar uma transação no banco de dados.
-    /// </summary>
-    /// <param name="request">Formulário de deleção de transação.</param>
-    /// <param name="cancellationToken"></param>
     [Authorize]
     [HttpDelete]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [ProducesResponseType(typeof(DeleteTransactionResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-    public async Task<IActionResult> Delete([FromBody] DeleteTransactionRequest request, CancellationToken cancellationToken = default)
+    [SwaggerOperation("Deletar", "Endpoint responsável por deletar uma transação.")]
+    [SwaggerResponse(StatusCodes.Status200OK, "Transação deletada com sucesso.", typeof(DeleteTransactionResponse))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status401Unauthorized, typeof(UnauthorizedProblemDetailsExample))]
+    [SwaggerResponseExample(StatusCodes.Status403Forbidden, typeof(ForbiddenProblemDetailsExample))]
+    public async Task<IActionResult> Delete(
+    [FromBody][SwaggerParameter("Representa uma solicitação para excluir uma transação existente.", Required = true)]
+    DeleteTransactionRequest request,
+    CancellationToken cancellationToken = default)
     {
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);
