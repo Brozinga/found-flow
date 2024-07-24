@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using FoundFlow.Application.Interfaces;
 using FoundFlow.Application.Models;
@@ -11,6 +12,7 @@ public class DeleteTransactionRequest : MediatR.IRequest<Result<DeleteTransactio
     /// O identificador único da transação a ser excluída <a href="https://www.rfc-editor.org/rfc/rfc4122">(UUID) de acordo com a RFC4122</a>.
     /// </summary>
     /// <example>32bf3b72-db19-498c-ad3a-e2d6edde080f</example>
+    [Required]
     public Guid Id { get; set; }
 
     /// <summary>

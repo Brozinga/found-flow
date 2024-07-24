@@ -41,18 +41,21 @@ public class UpdateTransactionRequest : MediatR.IRequest<Result<UpdateTransactio
     /// Tipo da transação, pode ser RECEITA, ou DESPESA.
     /// </summary>
     /// <example>RECEITA</example>
+    [Required]
     public TransactionType TransactionType { get; set; }
 
     /// <summary>
     /// Data do pagamento da despesa ou data do crédito de receita.
     /// </summary>
     /// <example>2024-02-10T00:00:00</example>
+    [Required]
     public DateTime PaymentDate { get; set; }
 
     /// <summary>
     /// Se o pagamento da despesa ou o crédito da receita já está - OK ou PENDENTE.
     /// </summary>
     /// <example>OK</example>
+    [Required]
     public PaymentType PaymentStatus { get; set; }
 
     [JsonIgnore]

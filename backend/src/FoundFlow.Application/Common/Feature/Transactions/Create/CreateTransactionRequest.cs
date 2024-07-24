@@ -35,12 +35,14 @@ public class CreateTransactionRequest : MediatR.IRequest<Result<CreateTransactio
     /// </summary>
     /// <example>RECEITA</example>
     /// <example>DESPESA</example>
+    [Required]
     public TransactionType TransactionType { get; set; }
 
     /// <summary>
     /// Data do pagamento da despesa ou data do crédito de receita no formato <a href="https://www.w3.org/TR/NOTE-datetime">(ISO 8601)</a>.
     /// </summary>
     /// <example>2024-02-10T12:37:56</example>
+    [Required]
     public DateTime PaymentDate { get; set; }
 
     /// <summary>
@@ -49,6 +51,7 @@ public class CreateTransactionRequest : MediatR.IRequest<Result<CreateTransactio
     /// <example>OK</example>
     /// <example>PENDENTE</example>
     /// <example>CANCELADO</example>
+    [Required]
     public PaymentType PaymentStatus { get; set; }
 
     /// <summary>
