@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using FoundFlow.Application.Interfaces;
 using FoundFlow.Application.Models;
@@ -14,18 +15,21 @@ public class UpdateUserRequest : MediatR.IRequest<Result<UpdateUserResponse>>, I
     /// O novo nome de usuário desejado.
     /// </summary>
     /// <example>Luiz Antônio</example>
+    [Required]
     public string UserName { get; set; }
 
     /// <summary>
     /// A nova senha para o usuário.
     /// </summary>
     /// <example>NovaSenha123!</example>
+    [MinLength(6)]
     public string Password { get; set; }
 
     /// <summary>
     /// A confirmação da nova senha, que deve ser idêntica à senha informada.
     /// </summary>
     /// <example>NovaSenha123!</example>
+    [MinLength(6)]
     public string ConfirmPassword { get; set; }
 
     /// <summary>

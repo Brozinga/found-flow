@@ -106,5 +106,4 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, Result<Updat
 
         return Result<UpdateUserResponse>.Success(HttpStatusCode.NoContent, new UpdateUserResponse(entity.Id));
     }
-
 }

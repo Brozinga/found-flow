@@ -1,8 +1,5 @@
 ﻿namespace FoundFlow.Application.Common.Feature.Users.ResetPassword;
 
-/// <summary>
-/// Representa a resposta da solicitação de redefinição de senha, contendo a nova senha gerada.
-/// </summary>
 public class ResetPasswordResponse
 {
     /// <summary>
