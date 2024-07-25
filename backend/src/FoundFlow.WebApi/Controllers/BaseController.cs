@@ -1,12 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
-using FoundFlow.Application.Examples;
-using FoundFlow.Shared.ProblemDetails;
+using FoundFlow.Shared.Documentation.Examples;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
+using FoundFlow.Shared.Documentation.Responses;
 
 namespace FoundFlow.WebApi.Controllers;
 
@@ -15,7 +15,7 @@ namespace FoundFlow.WebApi.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-[SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno no servidor.", typeof(CustomProblemDetails))]
+[SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno no servidor.", typeof(ErrorResponse))]
 [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(InternalServerProblemDetailsExample))]
 
 public abstract class BaseController : ControllerBase

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
-using System.Collections.Generic;
 
-namespace FoundFlow.Application.Examples;
+namespace FoundFlow.Shared.Documentation.Examples;
 public class ValidationProblemDetailsExample : IExamplesProvider<ValidationProblemDetails>
 {
     public ValidationProblemDetails GetExamples()
@@ -18,7 +17,7 @@ public class ValidationProblemDetailsExample : IExamplesProvider<ValidationProbl
             Title = "Erro de validação.",
             Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1",
             Status = 422,
-            Instance = "https://example.com/api/v1/items"
+            Instance = "https://example.com/api/v1/items",
         };
     }
 }

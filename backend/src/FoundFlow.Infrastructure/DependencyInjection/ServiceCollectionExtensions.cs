@@ -30,7 +30,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
-using FoundFlow.Application.Examples;
+using FoundFlow.Shared.Documentation.Examples;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 

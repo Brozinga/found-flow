@@ -1,9 +1,8 @@
 ﻿using FoundFlow.Shared.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Filters;
-using System.Collections.Generic;
 
-namespace FoundFlow.Application.Examples;
+namespace FoundFlow.Shared.Documentation.Examples;
 public class BadRequestProblemDetailsExample : IExamplesProvider<CustomProblemDetails>
 {
     public CustomProblemDetails GetExamples()

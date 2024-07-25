@@ -4,8 +4,8 @@ using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Transactions.Create;
 using FoundFlow.Application.Common.Feature.Transactions.Delete;
 using FoundFlow.Application.Common.Feature.Transactions.Update;
-using FoundFlow.Application.Examples;
-using FoundFlow.Shared.ProblemDetails;
+using FoundFlow.Shared.Documentation.Examples;
+using FoundFlow.Shared.Documentation.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +24,11 @@ public class TransactionController(ISender sender, ILogger<TransactionController
     [HttpPost]
     [SwaggerOperation("Adicionar", "Endpoint responsável por criar uma transação.")]
     [SwaggerResponse(StatusCodes.Status201Created, "Transação criada com sucesso.", typeof(CreateTransactionResponse), Description = "Um objeto `CreateTransactionResponse` indicando se a transação foi criada com sucesso e seu ID.")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou transação já existe.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou transação já existe.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
@@ -47,11 +47,11 @@ public class TransactionController(ISender sender, ILogger<TransactionController
     [HttpPut]
     [SwaggerOperation("Atualizar", "Endpoint responsável por atualizar uma transação.")]
     [SwaggerResponse(StatusCodes.Status204NoContent, "Transação atualizada com sucesso.")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
@@ -70,11 +70,11 @@ public class TransactionController(ISender sender, ILogger<TransactionController
     [HttpDelete]
     [SwaggerOperation("Deletar", "Endpoint responsável por deletar uma transação.")]
     [SwaggerResponse(StatusCodes.Status200OK, "Transação deletada com sucesso.", typeof(DeleteTransactionResponse))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Transação inválida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Transação não encontrada.", typeof(ErrorResponse))]
     [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]

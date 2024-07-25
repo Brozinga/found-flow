@@ -14,6 +14,8 @@ using FoundFlow.Shared.Settings;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using SharpCompress.Common;
+using System.IO;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -50,8 +52,10 @@ public static class ApplicationBuilderExtensions
 
             app.UseReDoc(c =>
             {
-                c.DocumentTitle = "Found Flow API - Documentação"; // Título da documentação
-                c.SpecUrl = "/swagger/v1/swagger.json"; // Caminho para o arquivo Swagger JSON
+                c.DocumentTitle = "Found Flow API - Documentação";
+                c.SpecUrl = "/swagger/v1/swagger.json";
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "redoc.html");
+                c.IndexStream = () => new FileStream(filePath, FileMode.Open, FileAccess.Read);
             });
         }
 
@@ -68,8 +72,8 @@ public static class ApplicationBuilderExtensions
         if (loggingConfig.LogResponseEnabled)
             app.UseMiddleware<LogResponseMiddleware>();
 
-        app.UseWebSockets();
         app.UseStaticFiles();
+        app.UseWebSockets();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();

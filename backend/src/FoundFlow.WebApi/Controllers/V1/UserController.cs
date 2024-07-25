@@ -6,7 +6,6 @@ using FoundFlow.Application.Common.Feature.Users.Login;
 using FoundFlow.Application.Common.Feature.Users.ResetPassword;
 using FoundFlow.Application.Common.Feature.Users.Update;
 using FoundFlow.Shared.ProblemDetails;
-using FoundFlow.Application.Examples;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
+using FoundFlow.Shared.Documentation.Examples;
+using FoundFlow.Shared.Documentation.Responses;
 
 namespace FoundFlow.WebApi.Controllers.V1;
 
@@ -22,10 +23,10 @@ namespace FoundFlow.WebApi.Controllers.V1;
 public class UserController(ISender sender, ILogger<UserController> logger) : BaseController(sender, logger)
 {
     [HttpPost("login")]
-    [SwaggerOperation("Login", "Endpoint responsável por solicitar um token JWT para acesso as rotas internas.")]
+    [SwaggerOperation(Summary = "Login", Description = "Endpoint responsável por solicitar um token JWT para acesso as rotas internas.")]
     [SwaggerResponse(StatusCodes.Status200OK, "Login realizado com sucesso.", typeof(LoginResponse), Description = "Um objeto `LoginResponse` contendo o token de acesso e informações sobre sua validade.")]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário ou senha não encontrados.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário ou senha não encontrados.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     public async Task<IActionResult> GetToken(
@@ -40,9 +41,9 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [HttpPost("register")]
     [SwaggerOperation("Adicionar", "Endpoint responsável para redefinir a senha de um usuário.")]
     [SwaggerResponse(StatusCodes.Status201Created, "Usuário criado com sucesso.", typeof(CreateUserResponse), Description = "Um objeto `CreateUserResponse` indicando se o usuário foi criado com sucesso e seu ID.")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou usuário já existente.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Requisição inválida ou usuário já existente.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
@@ -58,8 +59,8 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [HttpPost("reset-password")]
     [SwaggerOperation("Redefinir a senha", "Endpoint responsável para redefinir a senha de um usuário.")]
     [SwaggerResponse(StatusCodes.Status200OK, "Solicitação de redefinição de senha processada com sucesso.", typeof(ResetPasswordResponse), Description = "Representa a resposta, contendo a nova senha gerada.")]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]
 
@@ -76,11 +77,11 @@ public class UserController(ISender sender, ILogger<UserController> logger) : Ba
     [HttpPut]
     [SwaggerOperation("Atualizar", "Endpoint responsável por atualizar um usuário.")]
     [SwaggerResponse(StatusCodes.Status204NoContent, "Usuário atualizado com sucesso.")]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Usuário não enviado corretamente.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ValidationProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(CustomProblemDetails))]
-    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(CustomProblemDetails))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Usuário não enviado corretamente.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Usuário não encontrado.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Erro de validação nos dados da requisição.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized, "A requisição não foi bem-sucedida porque falta autenticação válida.", typeof(ErrorResponse))]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "O cliente não tem permissão para acessar o recurso solicitado.", typeof(ErrorResponse))]
     [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BadRequestProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status404NotFound, typeof(NotFoundProblemDetailsExample))]
     [SwaggerResponseExample(StatusCodes.Status422UnprocessableEntity, typeof(ValidationProblemDetailsExample))]

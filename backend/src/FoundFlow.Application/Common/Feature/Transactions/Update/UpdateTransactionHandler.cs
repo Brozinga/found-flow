@@ -11,13 +11,10 @@ using MediatR;
 
 namespace FoundFlow.Application.Common.Feature.Transactions.Update;
 
-public class UpdateTransactionHandler : IRequestHandler<UpdateTransactionRequest, Result<UpdateTransactionResponse>>
+public class UpdateTransactionHandler(
+    IUnitOfWork unitOfWork) : IRequestHandler<UpdateTransactionRequest, Result<UpdateTransactionResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public UpdateTransactionHandler(
-        IUnitOfWork unitOfWork) =>
-        _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<Result<UpdateTransactionResponse>> Handle(UpdateTransactionRequest request, CancellationToken cancellationToken)
     {
