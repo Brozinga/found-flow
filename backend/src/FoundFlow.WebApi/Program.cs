@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Builder;
 using Serilog;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using FoundFlow.Application.DependencyInjection;
 using FoundFlow.Infrastructure.DependencyInjection;
@@ -15,7 +13,7 @@ public class Program
     {
     }
 
-    private static void Main(string[] args)
+    private static void Main()
     {
         Log.Logger = new LoggerConfiguration()
             .CreateLogger();
@@ -24,8 +22,9 @@ public class Program
 
         try
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder();
             builder.Configure();
+            builder.AddServiceDefaults();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.Configure();
 

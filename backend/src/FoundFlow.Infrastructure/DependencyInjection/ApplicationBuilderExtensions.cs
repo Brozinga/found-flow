@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using SharpCompress.Common;
 using System.IO;
+using Microsoft.Extensions.Options;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -39,24 +40,29 @@ public static class ApplicationBuilderExtensions
         if (swaggerSettings.Enable)
         {
             app.UseSwagger();
+
+            var provider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+            var descriptions = provider.ApiVersionDescriptions.Select(x => x.GroupName).Where(x => x != null);
+
             app.UseSwaggerUI(options =>
             {
-                var provider =
-                    app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
-                foreach (string description in provider.ApiVersionDescriptions.Select(x => x.GroupName)
-                             .Where(x => x != null))
+                foreach (string? description in descriptions)
                 {
                     options.SwaggerEndpoint($"/swagger/{description}/swagger.json", description.ToUpperInvariant());
                 }
             });
 
-            app.UseReDoc(c =>
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "redoc.html");
+
+            foreach (string? description in descriptions)
             {
-                c.DocumentTitle = "Found Flow API - Documentação";
-                c.SpecUrl = "/swagger/v1/swagger.json";
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "redoc.html");
-                c.IndexStream = () => new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            });
+                app.UseReDoc(c =>
+                {
+                    c.IndexStream = () => new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                    c.RoutePrefix = $"api-docs/{description}";
+                });
+            }
+
         }
 
         app.UseHttpsRedirection();

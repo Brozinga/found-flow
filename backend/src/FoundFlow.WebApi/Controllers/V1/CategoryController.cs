@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using FoundFlow.Application.Common.Feature.Categories.Create;
 using FoundFlow.Application.Common.Feature.Categories.Delete;
 using FoundFlow.Application.Common.Feature.Categories.Update;
@@ -8,9 +6,7 @@ using FoundFlow.Shared.Documentation.Examples;
 using FoundFlow.Shared.Documentation.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 

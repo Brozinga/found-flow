@@ -2,39 +2,45 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>FoundFlow.WebApi</RootNamespace>
-        <AssemblyName>FoundFlow.WebApi</AssemblyName>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <UserSecretsId>5f7ff978-2770-41b7-9723-2109b55eca29</UserSecretsId>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>d8b316f3-e6e4-4719-8305-fab7bab779f9</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
-        <DockerfileFile>..\..\Dockerfile</DockerfileFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-    </ItemGroup>
-
-    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.8.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="8.1.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-        <PackageReference Include="MediatR" Version="12.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
-        <PackageReference Include="NSwag.Annotations" Version="14.1.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+        <PackageReference Include="MediatR" Version="12.4.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+        <PackageReference Include="OpenTelemetry" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Api" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
         <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
         <PackageReference Include="Serilog.Formatting.Elasticsearch" Version="10.0.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.MongoDB" Version="5.4.1" />
-        <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="1.2.0" />
-        <PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />
+        <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.7.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.6.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.7.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,45 +50,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="appsettings.Development.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="appsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\cache.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\database.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\ipratelimit.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\serilog.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\security.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="Configurations\swagger.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Update="Roslynator.Analyzers" Version="4.12.2">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Update="SonarAnalyzer.CSharp" Version="9.24.0.89429">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="wwwroot\images\logo-with-text-02.png" />
+        <PackageReference Update="Roslynator.Analyzers" Version="4.12.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="9.32.0.97167">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>
