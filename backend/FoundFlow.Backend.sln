@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundFlow.Shared", "src\Fou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundFlow.WebApi", "src\FoundFlow.WebApi\FoundFlow.WebApi.csproj", "{0CF687EA-A20C-4CDF-8400-370B19034F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundFlow.Backend.AppHost", "FoundFlow.Backend.AppHost\FoundFlow.Backend.AppHost.csproj", "{1C7273CE-54BE-4321-8F14-8226D40FFD25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundFlow.Backend.AppHost", "src\FoundFlow.Backend.AppHost\FoundFlow.Backend.AppHost.csproj", "{1C7273CE-54BE-4321-8F14-8226D40FFD25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
