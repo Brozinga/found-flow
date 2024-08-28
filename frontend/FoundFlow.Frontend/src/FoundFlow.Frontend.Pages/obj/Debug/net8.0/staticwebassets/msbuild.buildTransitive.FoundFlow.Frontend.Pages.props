@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\FoundFlow.Frontend.Pages.props" />
+</Project>

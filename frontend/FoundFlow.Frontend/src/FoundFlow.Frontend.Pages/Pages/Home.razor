@@ -1,0 +1,13 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<div class="mb-3">
+    <CurrencyInput TValue="int" @bind-Value="@amount1" Placeholder="Enter amount" />
+</div>
+
+Welcome to your new app.
+
+@code {
+    private int amount1 = 12345678;
+}

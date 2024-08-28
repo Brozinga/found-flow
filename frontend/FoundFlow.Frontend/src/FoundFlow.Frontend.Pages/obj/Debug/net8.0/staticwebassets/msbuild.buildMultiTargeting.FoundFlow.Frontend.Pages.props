@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\FoundFlow.Frontend.Pages.props" />
+</Project>
