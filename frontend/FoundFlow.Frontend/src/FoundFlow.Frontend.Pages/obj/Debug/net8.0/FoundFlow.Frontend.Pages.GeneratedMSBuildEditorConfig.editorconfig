@@ -22,16 +22,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages
 build_property._RazorSourceGeneratorDebug = 
 
-[E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+[E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Pages/Home.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+[E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/PROJETOS/APRENDENDO/FoundFlow/frontend/FoundFlow.Frontend/src/FoundFlow.Frontend.Pages/Routes.razor]

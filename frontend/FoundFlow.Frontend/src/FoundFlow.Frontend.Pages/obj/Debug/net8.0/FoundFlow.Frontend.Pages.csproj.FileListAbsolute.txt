@@ -1030,8 +1030,3 @@ E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Front
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\obj\Debug\net8.0\refint\FoundFlow.Frontend.Pages.dll
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\obj\Debug\net8.0\FoundFlow.Frontend.Pages.pdb
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\obj\Debug\net8.0\ref\FoundFlow.Frontend.Pages.dll
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\bin\Debug\net8.0\wwwroot\_framework\BlazorBootstrap.wasm
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\bin\Debug\net8.0\wwwroot\_framework\BlazorBootstrap.wasm.gz
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\bin\Debug\net8.0\BlazorBootstrap.dll
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\obj\Debug\net8.0\webcil\BlazorBootstrap.wasm
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Pages\obj\Debug\net8.0\compressed\41sdymhkc7.gz

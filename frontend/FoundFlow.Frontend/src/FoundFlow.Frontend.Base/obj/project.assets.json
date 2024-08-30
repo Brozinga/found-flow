@@ -2,24 +2,6 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "Blazor.Bootstrap/3.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNetCore.Components.Web": "8.0.4"
-        },
-        "compile": {
-          "lib/net8.0/BlazorBootstrap.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/BlazorBootstrap.dll": {}
-        },
-        "build": {
-          "buildTransitive/Blazor.Bootstrap.props": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/Blazor.Bootstrap.props": {}
-        }
-      },
       "Microsoft.AspNetCore.Authorization/8.0.8": {
         "type": "package",
         "dependencies": {
@@ -514,7 +496,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Blazor.Bootstrap": "3.0.0",
           "Microsoft.AspNetCore.Components.WebAssembly": "8.0.8",
           "System.Text.Json": "8.0.4"
         },
@@ -528,33 +509,6 @@
     }
   },
   "libraries": {
-    "Blazor.Bootstrap/3.0.0": {
-      "sha512": "ZfVF0D+Ey33QKcyyZNHgK2WrHYnyqJMBPuBOKPqEO9Io4n24YPDi0RVzcrnTOe1B3YdBAisCofOqlF8Gleky8g==",
-      "type": "package",
-      "path": "blazor.bootstrap/3.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "128X128.png",
-        "README.md",
-        "blazor.bootstrap.3.0.0.nupkg.sha512",
-        "blazor.bootstrap.nuspec",
-        "build/Blazor.Bootstrap.props",
-        "build/Microsoft.AspNetCore.StaticWebAssets.props",
-        "buildMultiTargeting/Blazor.Bootstrap.props",
-        "buildTransitive/Blazor.Bootstrap.props",
-        "lib/net6.0/BlazorBootstrap.dll",
-        "lib/net8.0/BlazorBootstrap.dll",
-        "staticwebassets/Blazor.Bootstrap.bundle.scp.css",
-        "staticwebassets/blazor.bootstrap.css",
-        "staticwebassets/blazor.bootstrap.js",
-        "staticwebassets/blazor.bootstrap.pdf.js",
-        "staticwebassets/blazor.bootstrap.sortable-list.js",
-        "staticwebassets/icon/128X128.png",
-        "staticwebassets/pdfjs-4.0.379.min.js",
-        "staticwebassets/pdfjs-4.0.379.worker.min.js"
-      ]
-    },
     "Microsoft.AspNetCore.Authorization/8.0.8": {
       "sha512": "e+ehkJTx0bqUb9zzM9ohV830LhoK3fy5lfVGPWAozbq6I2rJpyq7L0OUgEGNEQLMTzawkDjpNlJ4WU1ck/TDjw==",
       "type": "package",
@@ -1371,7 +1325,6 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Blazor.Bootstrap >= 3.0.0",
       "FoundFlow.Frontend.Pages >= 1.0.0",
       "Microsoft.AspNetCore.Components.WebAssembly.Server >= 8.0.8"
     ]
@@ -1430,10 +1383,6 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
-          "Blazor.Bootstrap": {
-            "target": "Package",
-            "version": "[3.0.0, )"
-          },
           "Microsoft.AspNetCore.Components.WebAssembly.Server": {
             "target": "Package",
             "version": "[8.0.8, )"

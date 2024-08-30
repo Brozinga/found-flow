@@ -54,4 +54,4 @@ E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Front
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\obj\Debug\net8.0\FoundFlow.Frontend.Base.pdb
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\obj\Debug\net8.0\FoundFlow.Frontend.Base.genruntimeconfig.cache
 E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\obj\Debug\net8.0\ref\FoundFlow.Frontend.Base.dll
-E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\bin\Debug\net8.0\BlazorBootstrap.dll
+E:\PROJETOS\APRENDENDO\FoundFlow\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\bin\Debug\net8.0\libman.json

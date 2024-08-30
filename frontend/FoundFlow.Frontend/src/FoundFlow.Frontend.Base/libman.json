@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/bootstrap@5.3.3/",
+      "files": [
+        "js/bootstrap.bundle.min.js",
+        "css/bootstrap-reboot.min.css",
+        "css/bootstrap-reboot.min.css.map",
+        "css/bootstrap.min.css",
+        "css/bootstrap.min.css.map",
+        "js/bootstrap.bundle.min.js.map"
+      ]
+    },
+    {
+      "library": "bootstrap-icons@1.11.3",
+      "destination": "wwwroot/bootstrap-icons@1.11.3/",
+      "files": [
+        "bootstrap-icons.svg",
+        "font/bootstrap-icons.min.css",
+        "font/bootstrap-icons.json",
+        "font/bootstrap-icons.css"
+      ]
+    },
+    {
+      "library": "popper.js@2.11.8",
+      "destination": "wwwroot/popper.js/",
+      "files": [
+        "umd/popper.min.js"
+      ]
+    }
+  ]
+}
