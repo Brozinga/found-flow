@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Pages", "2 - Pages", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Components", "3 - Components", "{C2B58ACB-646A-4F29-8FCD-A0B89B55ADFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundFlow.Frontend.Components", "src\FoundFlow.Frontend.Components\FoundFlow.Frontend.Components.csproj", "{3D78D135-846D-463B-875C-59DEFB47EF4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundFlow.Frontend.Components", "src\FoundFlow.Frontend.Components\FoundFlow.Frontend.Components.csproj", "{3D78D135-846D-463B-875C-59DEFB47EF4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,29 +1,46 @@
 ﻿@inherits LayoutComponentBase
-<div class="d-flex h-100 bg-principal">
+@using FoundFlow.Frontend.Components
+@inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
+<div class="d-flex h-100">
     <NavMenu />
     <div class="w-100">
         <div>
             <!-- Top Menu -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light p-3">
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                    <i class="fas fa-align-left"></i>
-                    <span>Toggle Sidebar</span>
+            <nav class="navbar navbar-expand-lg bg-light p-3 d-flex justify-content-end">
+                <button id="notification-trigger" type="button" class="btn btn-notification">
+                    <i class="feather-bell"></i>
                 </button>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Search</a>
-                        </li>
-                    </ul>
-                </div>
             </nav>
         </div>
+        <Toast Message="Olá Mundo" />
+
         <main class="container-fluid">
             @Body
         </main>
     </div>
 </div>
+
+@code {
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
+                "./MainLayout.js");
+
+            await module.InvokeVoidAsync("addHandlers");
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}

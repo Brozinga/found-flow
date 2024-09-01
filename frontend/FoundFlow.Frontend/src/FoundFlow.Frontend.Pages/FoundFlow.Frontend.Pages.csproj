@@ -9,8 +9,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\MainLayout.razor.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\MainLayout.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoundFlow.Frontend.Components\FoundFlow.Frontend.Components.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Layout\MainLayout.razor.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
