@@ -8,6 +8,8 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddBlazorBootstrap();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();

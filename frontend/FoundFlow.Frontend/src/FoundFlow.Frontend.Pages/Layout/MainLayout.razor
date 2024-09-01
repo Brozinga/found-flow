@@ -1,46 +1,34 @@
-﻿@inherits LayoutComponentBase
-@using FoundFlow.Frontend.Components
+﻿@using FoundFlow.Frontend.Components
+@inherits LayoutComponentBase
 @inject IJSRuntime JsRuntime
-@implements IAsyncDisposable
+@rendermode InteractiveWebAssembly
+
+
 <div class="d-flex h-100">
     <NavMenu />
     <div class="w-100">
         <div>
             <!-- Top Menu -->
             <nav class="navbar navbar-expand-lg bg-light p-3 d-flex justify-content-end">
-                <button id="notification-trigger" type="button" class="btn btn-notification">
+                <button id="notification-trigger" type="button" class="btn btn-notification" @onclick="ShowToast">
                     <i class="feather-bell"></i>
                 </button>
             </nav>
         </div>
-        <Toast Message="Olá Mundo" />
 
         <main class="container-fluid">
             @Body
         </main>
     </div>
 </div>
+<Toast @ref="toastComponent" Mensagens="@mensagens" />
 
 @code {
+    private List<string> mensagens = new() { "Mensagem 1", "Mensagem 2", "Mensagem 3" };
+    private Toast toastComponent;
 
-    private IJSObjectReference? module;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task ShowToast()
     {
-        if (firstRender)
-        {
-            module = await JsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./MainLayout.js");
-
-            await module.InvokeVoidAsync("addHandlers");
-        }
-    }
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        if (module is not null)
-        {
-            await module.DisposeAsync();
-        }
+        await toastComponent.ShowToast();
     }
 }

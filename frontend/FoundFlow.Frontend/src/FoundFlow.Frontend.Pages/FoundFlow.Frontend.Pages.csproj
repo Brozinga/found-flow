@@ -27,10 +27,4 @@
     <ProjectReference Include="..\FoundFlow.Frontend.Components\FoundFlow.Frontend.Components.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Layout\MainLayout.razor.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

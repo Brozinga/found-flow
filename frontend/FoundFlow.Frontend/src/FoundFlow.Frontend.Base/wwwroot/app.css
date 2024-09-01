@@ -42,7 +42,7 @@ html, body, main {
 
 .btn.btn-notification {
     border-radius: 10px;
-    font-size: 14pt;
+    font-size: 16pt;
     color: var(--notification-text)
 }
 
