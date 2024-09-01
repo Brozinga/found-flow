@@ -21,14 +21,14 @@
         </main>
     </div>
 </div>
-<Toast @ref="toastComponent" Mensagens="@mensagens" />
+<Toast @ref="_toastComponent" Messages="@_messages" />
 
 @code {
-    private List<string> mensagens = new() { "Mensagem 1", "Mensagem 2", "Mensagem 3" };
-    private Toast toastComponent;
+    private readonly List<string> _messages = ["Mensagem 1", "Mensagem 2", "Mensagem 3"];
+    private Toast? _toastComponent;
 
     private async Task ShowToast()
     {
-        await toastComponent.ShowToast();
+        await _toastComponent!.ShowToast();
     }
 }
