@@ -1,4 +1,6 @@
-﻿@rendermode InteractiveWebAssembly
+﻿@inject NavigationManager Navigation
+
+@rendermode InteractiveWebAssembly
 
 <!-- Sidebar -->
 <nav id="sidebar" class="bg-light sidebar">
@@ -11,24 +13,30 @@
         <p>MENU PRINCIPAL</p>
     </div>
     <ul class="list-unstyled nav-menu-items">
-        <li class="active">
-            <a href="#">
+        <li class="@GetActiveClass(DashboardUrl)">
+            <a href="@DashboardUrl" 
+               @onclick="@(e => Navigation.NavigateTo(DashboardUrl))" 
+               @onclick:preventDefault>
                 <span class="menu-icon me-2">
                     <i class="feather-bar-chart-2"></i>
                 </span>
                 Dashboard
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li class="@GetActiveClass(TransactionUrl)">
+            <a href="@TransactionUrl" 
+               @onclick="@(e => Navigation.NavigateTo(TransactionUrl))" 
+               @onclick:preventDefault>
                 <span class="menu-icon me-2">
                     <i class="feather-repeat"></i>
                 </span>
                 Transações
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li class="@GetActiveClass(CategoryUrl)">
+            <a href="@CategoryUrl" 
+               @onclick="@(e => Navigation.NavigateTo(CategoryUrl))" 
+               @onclick:preventDefault>
                 <span class="menu-icon me-2">
                     <i class="feather-layers"></i>
                 </span>
@@ -42,8 +50,10 @@
         <p>CONTA</p>
     </div>
     <ul class="list-unstyled nav-menu-items">
-        <li>
-            <a href="#">
+        <li class="@GetActiveClass(UserUrl)" @onclick:preventDefault>
+            <a href="@UserUrl" 
+               @onclick="@(e => Navigation.NavigateTo(CategoryUrl))" 
+               @onclick:preventDefault>
                 <span class="menu-icon me-2">
                     <i class="feather-user"></i>
                 </span>
@@ -60,3 +70,32 @@
         </li>
     </ul>
 </nav>
+
+    @code
+    {
+    private const string DashboardUrl = "/dashboard";
+    private const string TransactionUrl = "/transacao";
+    private const string CategoryUrl = "/categoria";
+    private const string UserUrl = "/usuario";
+
+    private string GetActiveClass(string href)
+    {
+        var currentUri = Navigation.ToBaseRelativePath(Navigation.Uri);
+        return currentUri.Equals(href.TrimStart('/'), StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
+    }
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+    }

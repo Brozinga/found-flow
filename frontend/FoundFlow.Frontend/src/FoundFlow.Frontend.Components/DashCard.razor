@@ -1,0 +1,47 @@
+﻿<div class="card col-24 dash-card">
+    <div class="card-body">
+        <h5 class="card-title">@Title</h5>
+        <div class="d-flex flex-row @(QtdItems > 0 ? "justify-content-between" : "")">
+
+            @if (QtdItems > 0)
+                {
+                    <div class="max-register">
+                        <small class="mb-2 d-flex">REGISTROS</small>
+                        <p class="card-text">
+                            <span class="dash-icon">
+                                <i class="feather-info"></i>
+                            </span>
+                            <span class="dash-text">
+                                @QtdItems
+                            </span>
+                        </p>
+                    </div>
+                }
+            <div class="@(QtdItems > 0 ? "ms-4" : "") value">
+                <small class="mb-2 d-flex">VALOR</small>
+                <p class="card-text">
+                    <span class="dash-icon">
+                        <i class="@IconClass"></i>
+                    </span> 
+                    <span class="dash-text">
+                        @Value.ToString("C")
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; } = String.Empty;
+
+    [Parameter]
+    public decimal Value { get; set; } = 0M;
+
+    [Parameter]
+    public int QtdItems { get; set; } = 0;
+
+    [Parameter]
+    public string IconClass { get; set; } = string.Empty;
+}

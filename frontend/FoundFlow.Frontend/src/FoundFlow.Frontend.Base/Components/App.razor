@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     <link href="./bootstrap@5.3.3/css/bootstrap-reboot.min.css" rel="stylesheet">
     <link href="./bootstrap@5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./grid24.min.css" rel="stylesheet">
     <link href="./bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="./feather-icons/css/feather.css" rel="stylesheet" />
     <link href="app.css" rel="stylesheet" />
@@ -20,7 +21,24 @@
 
 <body>
     <Routes @rendermode="InteractiveWebAssembly" />
-    <script src="_framework/blazor.webassembly.js"></script>
+
+    <div id="wasm-error" style="display: none;">
+        <p>Este navegador não suporta WebAssembly, necessário para o funcionamento desta aplicação.</p>
+    </div>
+
+    <script>
+        // Checa suporte ao WASM e exibe uma mensagem se não for suportado
+        if (!('WebAssembly' in window)) {
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('wasm-error').style.display = 'block';
+        } else {
+            // Carrega Blazor caso o WASM seja suportado
+            const script = document.createElement('script');
+            script.src = '_framework/blazor.webassembly.js';
+            document.body.appendChild(script);
+        }
+    </script>
+
     <script src="./popper.js/umd/popper.min.js"></script>
     <script src="./bootstrap@5.3.3/js/bootstrap.bundle.min.js"></script>
     <script src="./chartjs@4.0.1/js/chart.umd.js"></script>

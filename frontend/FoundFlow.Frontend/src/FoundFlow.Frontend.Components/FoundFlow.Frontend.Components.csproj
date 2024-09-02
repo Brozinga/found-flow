@@ -17,4 +17,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="DashCard.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="DashCard.razor" />
+  </ItemGroup>
+
 </Project>

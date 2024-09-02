@@ -6,6 +6,7 @@
     --light-color: #ffffff;
     --border-color: #e5e5e5;
     --principal-text-color: #181818;
+    --second-text-color: #404e59;
     --notification-text: #404e59;
     --notification-hover: #6fb9f9;
     --menu-enable-text-color: #5f8dea;
@@ -15,6 +16,7 @@
     --menu-active-item: #e6eefe;
     --menu-separator-color: #9b9b9b;
     --menu-icon-color: #8e94a4;
+    --bs-toast-bg: #ffffff;
 }
 
 .noto-sans-jp-base {
@@ -32,7 +34,10 @@
 html, body, main {
     height: 100%;
     width: 100%;
-    color: var(--principal-text-color);
+}
+
+h1, h2, h3, h4, h5, h5.card-title, p, label, small, select, .form-select {
+    color: var(--second-text-color);
 }
 
 .container-fluid {
@@ -89,29 +94,93 @@ html, body, main {
     margin-right: 13px;
     margin-bottom: 6px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
     .nav-menu-items > li > a:hover, .nav-menu-items > li > a:hover > .menu-icon {
         background-color: var(--menu-active-item);
         color: var(--menu-enable-text-color);
+        ;
     }
 
 .nav-menu-items > li.active > a, .nav-menu-items > li.active > a .menu-icon {
     background-color: var(--menu-active-item);
     color: var(--menu-enable-text-color);
+    ;
 }
 
 hr.separator {
     background-color: var(--menu-separator-color);
     height: 2px;
     max-width: 216px;
-    margin-left: 12px;
+    margin-left: 17px;
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
 .menu-icon {
     color: var(--menu-icon-color);
+}
+
+.card {
+    border: 1px solid var(--border-color);
+}
+
+.dash-card {
+    margin-top: 16px;
+    padding: 12px;
+    min-height: 190px;
+}
+
+    .dash-card > .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .dash-card .card-title {
+        font-weight: 400;
+        font-size: 20pt;
+    }
+
+    .dash-card .card-text {
+        font-size: 18pt;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+    .toast {
+        background-color: #ffffff !important;
+    }
+
+.dash-icon {
+    color: #4e7fe8;
+    background-color: #ecf1fd;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    width: 56px;
+    border-radius: 100%;
+    display: block;
+    text-align: center;
+    height: 56px;
+    margin-right: 10px;
+}
+
+.value .dash-text {
+    min-width: 200px;
+}
+
+.max-register .dash-text {
+    min-width: 50px;
+}
+
+.dash-text {
+    font-weight: bold;
+}
+
+.form-select {
+    height: 47px;
 }
 
 #content {
