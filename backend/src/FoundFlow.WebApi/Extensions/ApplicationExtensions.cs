@@ -1,5 +1,6 @@
 #pragma warning disable SA1010
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Npgsql;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -22,13 +23,15 @@ public static class ApplicationExtensions
         return builder;
     }
 
-    public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
+    private static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.IncludeFormattedMessage = true;
             logging.IncludeScopes = true;
         });
+
+        builder.Services.AddApplicationInsightsTelemetry();
 
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
@@ -40,6 +43,9 @@ public static class ApplicationExtensions
             .WithTracing(tracing =>
             {
                 tracing.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
+                    .AddNpgsql()
                     .AddHttpClientInstrumentation();
             });
 
@@ -60,7 +66,7 @@ public static class ApplicationExtensions
         return builder;
     }
 
-    public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
+    private static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);

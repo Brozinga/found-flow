@@ -31,6 +31,8 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using FoundFlow.Shared.Documentation.Examples;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -42,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddSettings(config);
         services.ConfigureManagerDb();
         services.ConfigureRateLimit(config);
+        services.ConfigureDefaultCulture();
 
         services.RegisterServices();
 
@@ -236,5 +239,13 @@ public static class ServiceCollectionExtensions
             .AddProjections()
             .AddFiltering()
             .AddSorting();
+    }
+
+    private static void ConfigureDefaultCulture(this IServiceCollection service)
+    {
+        service.Configure<RequestLocalizationOptions>(options =>
+        {
+            options.DefaultRequestCulture = new RequestCulture("pt-BR");
+        });
     }
 }

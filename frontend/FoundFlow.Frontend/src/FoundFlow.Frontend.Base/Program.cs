@@ -1,16 +1,22 @@
+using System.Globalization;
 using FoundFlow.Frontend.Base.Components;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+builder.Services.AddLocalization();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddBlazorBootstrap();
-
 var app = builder.Build();
+
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .AddSupportedCultures("pt-BR")
+    .AddSupportedUICultures("pt-BR"));
 
 app.MapDefaultEndpoints();
 
@@ -34,4 +40,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(FoundFlow.Frontend.Pages._Imports).Assembly);
 
-app.Run();
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
+
+await app.RunAsync();

@@ -10,16 +10,28 @@ services:
       POSTGRES_DB: found_flow_db
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+       - database:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - database
     restart: unless-stopped
-  
+  mongodb:
+    image: mongo
+    container_name: found-flow-cache
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: flowmagicuser
+      MONGO_INITDB_ROOT_PASSWORD: F0und#Fl0wPaxx
+    volumes:
+      - database:/data/db
+    networks:
+      - database
 networks:
-  postgres:
+  database:
     driver: bridge
 
 volumes:
-    postgres:
+    database:
