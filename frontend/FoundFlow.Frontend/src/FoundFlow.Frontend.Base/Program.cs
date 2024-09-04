@@ -1,6 +1,5 @@
 using System.Globalization;
 using FoundFlow.Frontend.Base.Components;
-using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 

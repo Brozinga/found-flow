@@ -5,8 +5,8 @@
 
 <PageTitle>Dashboard</PageTitle>
 
-<div class="row p-2">
-    <div class="mb-3 col-sm-24 col-md-12 col-lg-6">
+<div class="row p-2 pt-3">
+    <div class="mb-3 col-sm-24 col-md-12 col-xl-6">
         <label for="mes" class="form-label">Mês</label>
         <select id="mes" class="form-select" aria-label="Seleção de mês para análise" @bind="SelectedMonth">
             <option value="1" selected="@((1 == _currentMonth) ? true : null)">Janeiro</option>
@@ -23,7 +23,7 @@
             <option value="12" selected="@((12 == _currentMonth) ? true : null)">Dezembro</option>
         </select>
     </div>
-    <div class="mb-3 col-sm-24 col-md-12 col-lg-4">
+    <div class="mb-3 col-sm-24 col-md-12 col-xl-4">
         <label for="ano" class="form-label">Ano</label>
         <select id="ano" class="form-select" aria-label="Seleção do ano para análise" @bind="SelectedYear">
             @foreach (var year in _years)
@@ -34,25 +34,22 @@
     </div>
 </div>
 <div class="row justify-content-between p-2">
-    <div class="col-md-24 col-lg-24 col-xl-8">
+    <div class="col-md-24 col-lg-12 col-xl-8">
         <DashCard
             Title="Receitas" 
             Value="8515.86M" 
-            QtdItems="6"
             IconClass="feather-trending-up" />
     </div>
-    <div class="col-md-24 col-lg-24 col-xl-8">
+    <div class="col-md-24 col-lg-12 col-xl-8">
         <DashCard 
             Title="Despesas" 
             Value="7434.91M" 
-            QtdItems="23"
             IconClass="feather-trending-down" />
     </div>
     <div class="col-md-24 col-lg-24 col-xl-8">
         <DashCard 
             Title="Saldo" 
             Value="1080.95M" 
-            QtdItems="0"
             IconClass="feather-dollar-sign" />
     </div>
 </div>

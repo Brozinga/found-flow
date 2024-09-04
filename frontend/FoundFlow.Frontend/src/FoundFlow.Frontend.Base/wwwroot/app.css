@@ -17,6 +17,8 @@
     --menu-separator-color: #9b9b9b;
     --menu-icon-color: #8e94a4;
     --bs-toast-bg: #ffffff;
+    --dash-icon-bg: #4e7fe8;
+    --dash-icon-text: #ffffff;
 }
 
 .noto-sans-jp-base {
@@ -100,13 +102,11 @@ h1, h2, h3, h4, h5, h5.card-title, p, label, small, select, .form-select {
     .nav-menu-items > li > a:hover, .nav-menu-items > li > a:hover > .menu-icon {
         background-color: var(--menu-active-item);
         color: var(--menu-enable-text-color);
-        ;
     }
 
 .nav-menu-items > li.active > a, .nav-menu-items > li.active > a .menu-icon {
     background-color: var(--menu-active-item);
     color: var(--menu-enable-text-color);
-    ;
 }
 
 hr.separator {
@@ -155,16 +155,20 @@ hr.separator {
     }
 
 .dash-icon {
-    color: #4e7fe8;
-    background-color: #ecf1fd;
+    color: var(--dash-icon-text);
+    background-color: var(--dash-icon-bg);
     border: 1px solid var(--border-color);
-    padding: 10px;
     width: 56px;
     border-radius: 100%;
     display: block;
     text-align: center;
     height: 56px;
     margin-right: 10px;
+    font-size: 20pt;
+    padding: 8px 10px 10px;
+}
+.value {
+    margin-top: 20px;
 }
 
 .value .dash-text {
@@ -177,6 +181,7 @@ hr.separator {
 
 .dash-text {
     font-weight: bold;
+    font-size: 22pt;
 }
 
 .form-select {
