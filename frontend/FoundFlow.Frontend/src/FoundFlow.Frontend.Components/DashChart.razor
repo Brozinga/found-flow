@@ -1,0 +1,39 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+
+<div class="card position-relative">
+    @if (!_loadingChart)
+    {
+        <div class="d-flex justify-content-center align-items-center position-absolute loading">
+            <h1>Carregando...</h1>
+        </div>
+    } else
+    {
+        <div class="chart-title">
+            <h4>@Title</h4>
+        </div>
+    }
+    <div class="@(_loadingChart ? "chart" : "chart loading")">
+            <div class="content">
+                <canvas id="@ChartId"></canvas>
+            </div>
+        </div>   
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string ChartId { get; set; } = "myChart";
+    [Parameter] public string[] LabelsList { get; set; } = [];
+    [Parameter] public decimal[] ValueData { get; set; } = [];
+    private bool _loadingChart = false;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _loadingChart = true;
+            await JsRuntime.InvokeVoidAsync("RunningDashChart", ChartId, LabelsList, ValueData);
+            StateHasChanged(); // Força o re-render após a atualização do estado
+        }
+    }
+}

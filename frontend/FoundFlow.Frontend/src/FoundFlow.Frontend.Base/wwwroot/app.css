@@ -34,7 +34,8 @@
 }
 
 html, body, main {
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
     width: 100%;
 }
 
@@ -186,6 +187,21 @@ hr.separator {
 
 .form-select {
     height: 47px;
+}
+
+.chart {
+    padding: 20px 40px 30px 40px;
+    width: 100%;
+}
+
+.chart-title h4 {
+    padding: 20px 20px 10px 30px;
+}
+
+.card > .loading {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #content {

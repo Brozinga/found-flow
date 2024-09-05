@@ -53,6 +53,24 @@
             IconClass="feather-dollar-sign" />
     </div>
 </div>
+<div class="row justify-content-between p-2">
+    <div class="col-24 col-xl-12 mb-3">
+        <DashChart
+            ChartId="ReceitasChart"
+            Title="Progressão das Receitas"
+            LabelsList="@Months"
+            ValueData="@Values"
+        />
+    </div>
+    <div class="col-24 col-xl-12 mb-3">
+        <DashChart
+            ChartId="DespesasChart"
+            Title="Progressão das Despesas"
+            LabelsList="@Months"
+            ValueData="@Values"
+        />
+    </div>
+</div>
 
 
 @code {
@@ -60,6 +78,9 @@
     private int SelectedYear { get; set; } = DateTime.Now.Year;
     private int SelectedMonth { get; set; } = DateTime.Now.Month;
     private int _currentMonth;
+
+    private string[] Months = ["Jan", "Fev", "Mar" ];
+    private decimal[] Values = [1233.22M, 8923.92M, 4033.13M ];
 
     protected override void OnInitialized()
     {
