@@ -51,39 +51,39 @@ public class Users : EntityBase<Guid>
     /// Nome do usuário.
     /// </summary>
     /// <example>Antonio da Silva</example>
-    public string UserName { get; }
+    public string UserName { get; init; }
 
     /// <summary>
     /// E-mail do usuário.
     /// </summary>
     /// <example>antonio@email.com</example>
-    public string Email { get; }
+    public string Email { get; init; }
 
     /// <summary>
     /// Senha do usuário criptografado.
     /// </summary>
     /// <example>$2a$10$5zhIpU7rV/MJdbfMN6L5T.EnF719ITbbCvqUdiQ5Vnpr2IHKyrk/2</example>
-    public string Password { get; }
+    public string Password { get; init; }
 
     /// <summary>
     /// Flag para informar se as notificações estão habilitadas ou não.
     /// </summary>
     /// <example>true</example>
     /// <example>false</example>
-    public bool? NotificationEnabled { get; }
+    public bool? NotificationEnabled { get; init; }
 
     /// <summary>
     /// Flag para informar se o usuário está bloqueado ou não.
     /// </summary>
     /// <example>true</example>
     /// <example>false</example>
-    public bool? Blocked { get; }
+    public bool? Blocked { get; init; }
 
     /// <summary>
     /// Data da criação.
     /// </summary>
     /// <example>2024-01-01T22:40:32</example>
-    public DateTime CreationDate { get; }
+    public DateTime CreationDate { get; init; }
 
     /// <summary>
     /// Transações associadas a este usuário.

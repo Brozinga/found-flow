@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using FoundFlow.Domain.Entities.Base;
-using FoundFlow.Domain.Enums;
 using FoundFlow.Shared.Extensions;
 
 namespace FoundFlow.Domain.Entities;
@@ -16,10 +15,7 @@ public class Transactions : EntityBase<Guid>
         Guid id,
         Categories category,
         Users user,
-        string transactionName,
-        decimal amount,
-        TransactionType transactionType,
-        PaymentType paymentStatus,
+        TransactionValueObject transactionValue,
         DateTime creationDate = default,
         DateTime paymentDate = default)
     {
@@ -28,21 +24,18 @@ public class Transactions : EntityBase<Guid>
         Category = category;
         UserId = user.Id;
         User = user;
-        TransactionName = transactionName;
-        Amount = amount;
-        TransactionType = transactionType.GetDescription();
+        TransactionName = transactionValue.TransactionName;
+        Amount = transactionValue.Amount;
+        TransactionType = transactionValue.TransactionType.GetDescription();
+        PaymentStatus = transactionValue.PaymentStatus.GetDescription();
         CreationDate = creationDate;
         PaymentDate = paymentDate;
-        PaymentStatus = paymentStatus.GetDescription();
     }
 
     public Transactions(
         Categories category,
         Users user,
-        string transactionName,
-        decimal amount,
-        TransactionType transactionType,
-        PaymentType paymentStatus,
+        TransactionValueObject transactionValue,
         DateTime creationDate = default,
         DateTime paymentDate = default)
     {
@@ -51,36 +44,12 @@ public class Transactions : EntityBase<Guid>
         Category = category;
         UserId = user.Id;
         User = user;
-        TransactionName = transactionName;
-        Amount = amount;
-        TransactionType = transactionType.GetDescription();
+        TransactionName = transactionValue.TransactionName;
+        Amount = transactionValue.Amount;
+        TransactionType = transactionValue.TransactionType.GetDescription();
+        PaymentStatus = transactionValue.PaymentStatus.GetDescription();
         CreationDate = creationDate;
         PaymentDate = paymentDate;
-        PaymentStatus = paymentStatus.GetDescription();
-    }
-
-    public Transactions(
-        Guid id,
-        Categories category,
-        Users user,
-        string transactionName,
-        decimal amount,
-        string transactionType,
-        string paymentStatus,
-        DateTime creationDate = default,
-        DateTime paymentDate = default)
-    {
-        Id = id;
-        CategoryId = category.Id;
-        Category = category;
-        UserId = user.Id;
-        User = user;
-        TransactionName = transactionName;
-        Amount = amount;
-        TransactionType = transactionType;
-        CreationDate = creationDate;
-        PaymentDate = paymentDate;
-        PaymentStatus = paymentStatus;
     }
 
     /// <summary>
@@ -88,45 +57,45 @@ public class Transactions : EntityBase<Guid>
     /// </summary>
     /// <example>e281dbd8-e8a8-4b8d-aafd-a54eccc3e7c8</example>
     [ForeignKey("category_id")]
-    public Guid CategoryId { get; }
+    public Guid CategoryId { get; init; }
 
     /// <summary>
     /// Id de co-relação com a tabela de Usuários (Users).
     /// </summary>
     /// <example>e281dbd8-e8a8-4b8d-aafd-a54eccc3e7c8</example>
     [ForeignKey("user_id")]
-    public Guid UserId { get; }
+    public Guid UserId { get; init; }
 
     /// <summary>
     /// Nome da transação.
     /// </summary>
     /// <example>Salário</example>
-    public string TransactionName { get; }
+    public string TransactionName { get; init; }
 
     /// <summary>
     /// Valor da transação.
     /// </summary>
     /// <example>10.45</example>
-    public decimal Amount { get; }
+    public decimal Amount { get; init; }
 
     /// <summary>
     /// Indica o tipo da transação. Consulte a documentação do enum <see cref="Enums.TransactionType"/> para os valores possíveis.
     /// </summary>
     /// <example>RECEITA</example>
     /// <example>DESPESA</example>
-    public string TransactionType { get; }
+    public string TransactionType { get; init; }
 
     /// <summary>
     /// Data da criação.
     /// </summary>
     /// <example>2024-01-01T22:40:32</example>
-    public DateTime CreationDate { get; }
+    public DateTime CreationDate { get; init; }
 
     /// <summary>
     /// Data de pagamento.
     /// </summary>
     /// <example>2024-01-01T22:40:32</example>
-    public DateTime PaymentDate { get; }
+    public DateTime PaymentDate { get; init; }
 
     /// <summary>
     /// Indica o status do pagamento. Consulte a documentação do enum <see cref="Enums.PaymentType"/> para os valores possíveis.
@@ -134,15 +103,15 @@ public class Transactions : EntityBase<Guid>
     /// <example>OK</example>
     /// <example>PENDENTE</example>
     /// <example>CANCELADO</example>
-    public string PaymentStatus { get; }
+    public string PaymentStatus { get; init; }
 
     /// <summary>
     /// Usuário à qual esta transação pertence. Consulte a documentação de <see cref="Users"/> para mais detalhes.
     /// </summary>
-    public virtual Users User { get; }
+    public virtual Users User { get; init; }
 
     /// <summary>
     /// Categoria à qual esta transação pertence. Consulte a documentação de <see cref="Categories"/> para mais detalhes.
     /// </summary>
-    public virtual Categories Category { get; }
+    public virtual Categories Category { get; init; }
 }

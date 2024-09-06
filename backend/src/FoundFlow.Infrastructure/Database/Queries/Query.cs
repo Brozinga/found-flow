@@ -31,7 +31,6 @@ public class Query
     }
 
     [Authorize]
-    [UseProjection]
     [UseFiltering]
     [UseSorting(typeof(CategoriesSortInputType))]
     public IQueryable<Categories> GetCategories([Service] ApplicationDbContext context)
