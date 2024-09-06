@@ -37,38 +37,6 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
     }
 
     /// <summary>
-    /// Método privado para verificar e atualizar o bloqueio temporário de tentativas de login.
-    /// </summary>
-    /// <param name="blockData">Os dados de bloqueio existentes (ou nulos se não houver).</param>
-    /// <param name="loginAttemptsKey">A chave para identificar as tentativas de login do usuário.</param>
-    /// <param name="collectionName">O nome da coleção no cache onde os dados de bloqueio são armazenados.</param>
-    /// <param name="cleanData">Indica se os dados de bloqueio devem ser limpos (redefinidos).</param>
-    private async Task BlockCheck(BlockInfo blockData, string loginAttemptsKey, string collectionName, bool cleanData = false)
-    {
-        if (blockData is null)
-        {
-            var newAttemptsData = new BlockInfo()
-            {
-                EmailKey = loginAttemptsKey,
-                Attempts = cleanData ? 0 : 1,
-                BlockedSince = cleanData ? null : DateTime.UtcNow
-            };
-            await _cacheDbService.InsertValueAsync(collectionName, newAttemptsData);
-        }
-        else
-        {
-            var updateAttemptsData = new BlockInfo()
-            {
-                Id = blockData.Id,
-                EmailKey = loginAttemptsKey,
-                Attempts = cleanData ? 0 : blockData.Attempts + 1,
-                BlockedSince = cleanData ? null : blockData.BlockedSince ?? DateTime.UtcNow
-            };
-            await _cacheDbService.UpdateValueAsync(collectionName, "EmailKey", loginAttemptsKey, updateAttemptsData);
-        }
-    }
-
-    /// <summary>
     /// Manipula a solicitação de login, autenticando o usuário e gerando um token JWT se o login for bem-sucedido.
     /// </summary>
     /// <param name="request">A solicitação de login contendo o e-mail e a senha do usuário.</param>
@@ -126,5 +94,37 @@ public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
         (string token, var expires) = _tokenService.Generate(user);
         LoginResponse response = new(token, expires);
         return Result<LoginResponse>.Success(response);
+    }
+
+    /// <summary>
+    /// Método privado para verificar e atualizar o bloqueio temporário de tentativas de login.
+    /// </summary>
+    /// <param name="blockData">Os dados de bloqueio existentes (ou nulos se não houver).</param>
+    /// <param name="loginAttemptsKey">A chave para identificar as tentativas de login do usuário.</param>
+    /// <param name="collectionName">O nome da coleção no cache onde os dados de bloqueio são armazenados.</param>
+    /// <param name="cleanData">Indica se os dados de bloqueio devem ser limpos (redefinidos).</param>
+    private async Task BlockCheck(BlockInfo blockData, string loginAttemptsKey, string collectionName, bool cleanData = false)
+    {
+        if (blockData is null)
+        {
+            var newAttemptsData = new BlockInfo()
+            {
+                EmailKey = loginAttemptsKey,
+                Attempts = cleanData ? 0 : 1,
+                BlockedSince = cleanData ? null : DateTime.UtcNow
+            };
+            await _cacheDbService.InsertValueAsync(collectionName, newAttemptsData);
+        }
+        else
+        {
+            var updateAttemptsData = new BlockInfo()
+            {
+                Id = blockData.Id,
+                EmailKey = loginAttemptsKey,
+                Attempts = cleanData ? 0 : blockData.Attempts + 1,
+                BlockedSince = cleanData ? null : blockData.BlockedSince ?? DateTime.UtcNow
+            };
+            await _cacheDbService.UpdateValueAsync(collectionName, "EmailKey", loginAttemptsKey, updateAttemptsData);
+        }
     }
 }

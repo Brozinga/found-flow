@@ -24,47 +24,6 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, Result<Updat
     public UpdateUserHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
-    /// Converte uma solicitação `UpdateUserRequest` e os dados existentes do usuário em uma entidade `Users` atualizada, incluindo a nova senha criptografada.
-    /// </summary>
-    /// <param name="request">A solicitação contendo os novos dados do usuário.</param>
-    /// <param name="userData">Os dados atuais do usuário no banco de dados.</param>
-    /// <param name="hashPassword">A nova senha do usuário criptografada (hashed).</param>
-    /// <returns>A entidade `Users` atualizada com os novos dados e a nova senha.</returns>
-    private Domain.Entities.Users ConvertToAgreggate(UpdateUserRequest request, Domain.Entities.Users userData, string hashPassword)
-    {
-        var user = new Domain.Entities.Users(
-            request.UserId,
-            request.UserName,
-            userData.Email,
-            hashPassword,
-            request.Notification,
-            userData.Blocked,
-            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
-
-        return user;
-    }
-
-    /// <summary>
-    /// Converte uma solicitação `UpdateUserRequest` e os dados existentes do usuário em uma entidade `Users` atualizada, sem atualizar a senha.
-    /// </summary>
-    /// <param name="request">A solicitação contendo os novos dados do usuário.</param>
-    /// <param name="userData">Os dados atuais do usuário no banco de dados.</param>
-    /// <returns>A entidade `Users` atualizada com os novos dados, mantendo a senha antiga.</returns>
-    private Domain.Entities.Users ConvertToAgreggateNoUpdatePassword(UpdateUserRequest request, Domain.Entities.Users userData)
-    {
-        var user = new Domain.Entities.Users(
-            request.UserId,
-            request.UserName,
-            userData.Email,
-            userData.Password,
-            request.Notification,
-            userData.Blocked,
-            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
-
-        return user;
-    }
-
-    /// <summary>
     /// Manipula a solicitação de atualização de um usuário, atualizando seus dados no banco de dados.
     /// </summary>
     /// <param name="request">A solicitação contendo os novos dados do usuário.</param>
@@ -90,12 +49,12 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, Result<Updat
 
         if (string.IsNullOrEmpty(request.Password))
         {
-            entity = ConvertToAgreggateNoUpdatePassword(request, user);
+            entity = ConvertToAggregateNoUpdatePassword(request, user);
         }
         else
         {
             string hashedPassword = Crypto.Hash(request.Password);
-            entity = ConvertToAgreggate(request, user, hashedPassword);
+            entity = ConvertToAggregate(request, user, hashedPassword);
         }
 
         _ = _unitOfWork.UsersRepository.Update(entity);
@@ -105,5 +64,46 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, Result<Updat
             Result<UpdateUserResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<UpdateUserResponse>.Success(HttpStatusCode.NoContent, new UpdateUserResponse(entity.Id));
+    }
+
+    /// <summary>
+    /// Converte uma solicitação `UpdateUserRequest` e os dados existentes do usuário em uma entidade `Users` atualizada, incluindo a nova senha criptografada.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os novos dados do usuário.</param>
+    /// <param name="userData">Os dados atuais do usuário no banco de dados.</param>
+    /// <param name="hashPassword">A nova senha do usuário criptografada (hashed).</param>
+    /// <returns>A entidade `Users` atualizada com os novos dados e a nova senha.</returns>
+    private static Domain.Entities.Users ConvertToAggregate(UpdateUserRequest request, Domain.Entities.Users userData, string hashPassword)
+    {
+        var user = new Domain.Entities.Users(
+            request.UserId,
+            request.UserName,
+            userData.Email,
+            hashPassword,
+            request.Notification,
+            userData.Blocked,
+            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
+
+        return user;
+    }
+
+    /// <summary>
+    /// Converte uma solicitação `UpdateUserRequest` e os dados existentes do usuário em uma entidade `Users` atualizada, sem atualizar a senha.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os novos dados do usuário.</param>
+    /// <param name="userData">Os dados atuais do usuário no banco de dados.</param>
+    /// <returns>A entidade `Users` atualizada com os novos dados, mantendo a senha antiga.</returns>
+    private static Domain.Entities.Users ConvertToAggregateNoUpdatePassword(UpdateUserRequest request, Domain.Entities.Users userData)
+    {
+        var user = new Domain.Entities.Users(
+            request.UserId,
+            request.UserName,
+            userData.Email,
+            userData.Password,
+            request.Notification,
+            userData.Blocked,
+            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
+
+        return user;
     }
 }

@@ -23,23 +23,6 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
     public CreateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
-    /// Converte uma solicitação `CreateCategorieRequest` em uma entidade `Categories`.
-    /// </summary>
-    /// <param name="request">A solicitação contendo os dados da nova categoria.</param>
-    /// <param name="user">O usuário associado à categoria.</param>
-    /// <returns>A entidade `Categories` convertida.</returns>
-    private Domain.Entities.Categories ConvertToAgreggate(CreateCategorieRequest request, Domain.Entities.Users user)
-    {
-        var categorie = new Domain.Entities.Categories(
-            user,
-            request.Name,
-            request.Color,
-            DateTime.UtcNow);
-
-        return categorie;
-    }
-
-    /// <summary>
     /// Manipula a solicitação de criação de uma nova categoria.
     /// </summary>
     /// <param name="request">A solicitação contendo os dados da nova categoria.</param>
@@ -64,7 +47,7 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
         if (categorie is not null)
             Result<CreateCategorieResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.CategoriesCategorieIsRegisteredMessage);
 
-        var entity = ConvertToAgreggate(request, user);
+        var entity = ConvertToAggregate(request, user);
 
         _ = await _unitOfWork.CategoriesRepository.AddAsync(entity, cancellationToken);
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
@@ -73,5 +56,22 @@ public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Re
             Result<CreateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<CreateCategorieResponse>.Success(HttpStatusCode.Created, new CreateCategorieResponse(entity.Id));
+    }
+
+    /// <summary>
+    /// Converte uma solicitação `CreateCategorieRequest` em uma entidade `Categories`.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da nova categoria.</param>
+    /// <param name="user">O usuário associado à categoria.</param>
+    /// <returns>A entidade `Categories` convertida.</returns>
+    private static Domain.Entities.Categories ConvertToAggregate(CreateCategorieRequest request, Domain.Entities.Users user)
+    {
+        var categorie = new Domain.Entities.Categories(
+            user,
+            request.Name,
+            request.Color,
+            DateTime.UtcNow);
+
+        return categorie;
     }
 }

@@ -26,26 +26,6 @@ public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, Result
     public ResetPasswordHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
-    /// Converte um usuário existente (`userData`) e uma nova senha criptografada (`hashPassword`) em uma entidade `Users` atualizada.
-    /// </summary>
-    /// <param name="userData">Os dados do usuário a ser atualizado.</param>
-    /// <param name="hashPassword">A nova senha do usuário criptografada (hashed).</param>
-    /// <returns>A entidade `Users` atualizada com a nova senha.</returns>
-    private Domain.Entities.Users ConvertToAgreggate(Domain.Entities.Users userData, string hashPassword)
-    {
-        var user = new Domain.Entities.Users(
-            userData.Id,
-            userData.UserName,
-            userData.Email,
-            hashPassword,
-            userData.NotificationEnabled,
-            userData.Blocked,
-            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
-
-        return user;
-    }
-
-    /// <summary>
     /// Manipula a solicitação de redefinição de senha, gerando uma nova senha, criptografando-a, atualizando o usuário no banco de dados e retornando a nova senha.
     /// </summary>
     /// <param name="request">A solicitação contendo o e-mail do usuário que deseja redefinir a senha.</param>
@@ -71,7 +51,7 @@ public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, Result
 
         string hashedPassword = Crypto.Hash(newPassword);
 
-        var entity = ConvertToAgreggate(user, hashedPassword);
+        var entity = ConvertToAggregate(user, hashedPassword);
 
         _ = _unitOfWork.UsersRepository.Update(entity);
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
@@ -80,5 +60,25 @@ public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, Result
             Result<ResetPasswordResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<ResetPasswordResponse>.Success(HttpStatusCode.OK, new ResetPasswordResponse(newPassword));
+    }
+
+    /// <summary>
+    /// Converte um usuário existente (`userData`) e uma nova senha criptografada (`hashPassword`) em uma entidade `Users` atualizada.
+    /// </summary>
+    /// <param name="userData">Os dados do usuário a ser atualizado.</param>
+    /// <param name="hashPassword">A nova senha do usuário criptografada (hashed).</param>
+    /// <returns>A entidade `Users` atualizada com a nova senha.</returns>
+    private static Domain.Entities.Users ConvertToAggregate(Domain.Entities.Users userData, string hashPassword)
+    {
+        var user = new Domain.Entities.Users(
+            userData.Id,
+            userData.UserName,
+            userData.Email,
+            hashPassword,
+            userData.NotificationEnabled,
+            userData.Blocked,
+            DateTime.SpecifyKind(userData.CreationDate, DateTimeKind.Utc));
+
+        return user;
     }
 }

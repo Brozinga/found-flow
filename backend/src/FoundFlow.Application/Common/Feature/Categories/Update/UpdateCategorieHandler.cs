@@ -23,23 +23,6 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
     public UpdateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
-    /// Converte uma solicitação `UpdateCategorieRequest` em uma entidade `Categories`.
-    /// </summary>
-    /// <param name="request">A solicitação contendo os dados da categoria a ser atualizada.</param>
-    /// <param name="categorieData">Os dados atuais da categoria a ser atualizada.</param>
-    /// <param name="user">O usuário associado à categoria.</param>
-    /// <returns>A entidade `Categories` convertida e atualizada.</returns>
-    private Domain.Entities.Categories ConvertToAgreggate(UpdateCategorieRequest request, Domain.Entities.Categories categorieData, Domain.Entities.Users user)
-    {
-        return new Domain.Entities.Categories(
-            request.Id,
-            user,
-            request.Name,
-            request.Color,
-            DateTime.SpecifyKind(categorieData.CreationDate, DateTimeKind.Utc));
-    }
-
-    /// <summary>
     /// Manipula a solicitação de atualização de uma categoria.
     /// </summary>
     /// <param name="request">A solicitação contendo os dados da categoria a ser atualizada.</param>
@@ -75,7 +58,7 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
         if (categorieExists)
             Result<UpdateCategorieResponse>.Failure(HttpStatusCode.BadRequest, ErrorMessages.CategoriesCategorieIsRegisteredWithNameMessage);
 
-        var entity = ConvertToAgreggate(request, categorie, user);
+        var entity = ConvertToAggregate(request, categorie, user);
 
         _ = _unitOfWork.CategoriesRepository.Update(entity);
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
@@ -84,5 +67,22 @@ public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Re
             Result<UpdateCategorieResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<UpdateCategorieResponse>.Success(HttpStatusCode.NoContent, new UpdateCategorieResponse(entity.Id));
+    }
+
+    /// <summary>
+    /// Converte uma solicitação `UpdateCategorieRequest` em uma entidade `Categories`.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados da categoria a ser atualizada.</param>
+    /// <param name="categorieData">Os dados atuais da categoria a ser atualizada.</param>
+    /// <param name="user">O usuário associado à categoria.</param>
+    /// <returns>A entidade `Categories` convertida e atualizada.</returns>
+    private static Domain.Entities.Categories ConvertToAggregate(UpdateCategorieRequest request, Domain.Entities.Categories categorieData, Domain.Entities.Users user)
+    {
+        return new Domain.Entities.Categories(
+            request.Id,
+            user,
+            request.Name,
+            request.Color,
+            DateTime.SpecifyKind(categorieData.CreationDate, DateTimeKind.Utc));
     }
 }

@@ -25,25 +25,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<Creat
     public CreateUserHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     /// <summary>
-    /// Converte uma solicitação `CreateUserRequest` em uma entidade `Users`.
-    /// </summary>
-    /// <param name="request">A solicitação contendo os dados do novo usuário.</param>
-    /// <param name="hashPassword">A senha do usuário criptografada (hashed).</param>
-    /// <returns>A entidade `Users` convertida.</returns>
-    private Domain.Entities.Users ConvertToAgreggate(CreateUserRequest request, string hashPassword)
-    {
-        var user = new Domain.Entities.Users(
-            request.UserName,
-            request.Email,
-            hashPassword,
-            request.Notification,
-            false,
-            DateTime.UtcNow);
-
-        return user;
-    }
-
-    /// <summary>
     /// Manipula a solicitação de criação de um novo usuário.
     /// </summary>
     /// <param name="request">A solicitação contendo os dados do novo usuário.</param>
@@ -67,7 +48,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<Creat
 
         string hashedPassword = Crypto.Hash(request.Password);
 
-        var entity = ConvertToAgreggate(request, hashedPassword);
+        var entity = ConvertToAggregate(request, hashedPassword);
 
         _ = await _unitOfWork.UsersRepository.AddAsync(entity, cancellationToken);
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
@@ -76,5 +57,24 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<Creat
             Result<CreateUserResponse>.Failure(HttpStatusCode.InternalServerError, ErrorMessages.DatabaseSaveErrorMessage);
 
         return Result<CreateUserResponse>.Success(HttpStatusCode.Created, new (entity.Id));
+    }
+
+    /// <summary>
+    /// Converte uma solicitação `CreateUserRequest` em uma entidade `Users`.
+    /// </summary>
+    /// <param name="request">A solicitação contendo os dados do novo usuário.</param>
+    /// <param name="hashPassword">A senha do usuário criptografada (hashed).</param>
+    /// <returns>A entidade `Users` convertida.</returns>
+    private static Domain.Entities.Users ConvertToAggregate(CreateUserRequest request, string hashPassword)
+    {
+        var user = new Domain.Entities.Users(
+            request.UserName,
+            request.Email,
+            hashPassword,
+            request.Notification,
+            false,
+            DateTime.UtcNow);
+
+        return user;
     }
 }
