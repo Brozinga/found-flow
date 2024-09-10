@@ -1,5 +1,39 @@
 ﻿@page "/"
 @layout Layout.CleanLayout
+@inject NavigationManager NavigationManager
 @rendermode InteractiveWebAssembly
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Found Flow | Login</PageTitle>
+
+<div class="login-card d-flex justify-content-center align-items-center">
+    <div class="card">
+        <div class="col-24 pt-5">
+            <div class="logo">
+                <img src="img/logo-with-text-02.svg" class="w-100" alt="logo-found-flow"/>
+            </div>
+        </div>
+        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="NavigateToDashboard" class="card-body p-4">
+            <div class="col-24 p-3">
+                <label for="user" class="form-label">Email</label>
+                <input type="email" class="form-control" id="user" placeholder="name@example.com" autocomplete="email">
+            </div>
+            <div class="col-24 pt-3">
+                <label for="pass" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="pass" placeholder="******" autocomplete="current-password"/>
+            </div>
+            <br/>
+            <div class="col-24 p-3">
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Entrar</button>
+            </div>
+            <div class="col-24 p-3">
+                <p>Não está cadastrado? <a href="#" @onclick:preventDefault @onclick="NavigateToRegister">Comece aqui!</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code
+{
+    private void NavigateToDashboard() => NavigationManager.NavigateTo("/dashboard");
+    private void NavigateToRegister() => NavigationManager.NavigateTo("/register");
+}
