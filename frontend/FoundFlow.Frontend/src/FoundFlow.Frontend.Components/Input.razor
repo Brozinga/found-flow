@@ -1,0 +1,40 @@
+﻿<div class="@(AdditionalClass)">
+    @if(!string.IsNullOrEmpty(Label)){
+        <label for="@Id" class="@Label">@Label</label>
+    }
+    <input 
+        type="@Type" 
+        class="form-control @(!string.IsNullOrEmpty(ErrorMessage) ? "is-invalid" : string.Empty)" 
+        id="@Id" 
+        placeholder="@Placeholder" 
+        autocomplete="@AutoComplete" 
+        @bind="Value" 
+        @oninput="e => OnValueChanged(e.Value?.ToString())"
+        required="@Required"
+    />
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <small class="invalid-feedback">
+            @ErrorMessage
+        </small>
+    }
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? AutoComplete { get; set; } = string.Empty;
+    [Parameter] public string? Label { get; set; } = string.Empty;
+    [Parameter] public string? Placeholder { get; set; } = string.Empty;
+    [Parameter] public string? AdditionalClass { get; set; } = string.Empty;
+    [Parameter] public string? ErrorMessage { get; set; } = string.Empty;
+    [Parameter] public bool Required { get; set; }
+    
+    private async Task OnValueChanged(string value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

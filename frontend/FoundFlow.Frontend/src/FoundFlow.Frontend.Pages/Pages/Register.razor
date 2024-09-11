@@ -1,5 +1,7 @@
 ﻿@page "/register"
 @layout Layout.CleanLayout
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Pages.Helpers
 @inject NavigationManager NavigationManager
 @rendermode InteractiveWebAssembly
 
@@ -15,23 +17,47 @@
                 </div>
             </div>
         </div>
-        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="NavigateToLogin" class="card-body p-4">
-            <div class="col-24 pt-3">
-                <label for="name" class="form-label">Nome Completo</label>
-                <input type="text" class="form-control" id="name" placeholder="Seu nome completo" autocomplete="name">
-            </div>
-            <div class="col-24 pt-3">
-                <label for="username" class="form-label">Email</label>
-                <input type="email" class="form-control" id="username" placeholder="name@example.com" autocomplete="email">
-            </div>
-            <div class="col-24 pt-3">
-                <label for="pass" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="pass" placeholder="******" autocomplete="new-password"/>
-            </div>
-            <div class="col-24 pt-3 pb-3">
-                <label for="pass-confirm" class="form-label">Confirmação de Senha</label>
-                <input type="password" class="form-control" id="pass-confirm" placeholder="******" autocomplete="new-password"/>
-            </div>
+        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="OnSubmit" class="card-body p-4">
+
+            <Input Id="name"
+                   Type="text"
+                   Value="@Name"
+                   ValueChanged="@(value => { Name = value; })"
+                   Label="Nome Completo"
+                   Placeholder="Seu nome completo"
+                   ErrorMessage="@NameError"
+                   AdditionalClass="col-24 p-3"
+            />
+            <Input Id="email"
+                   Type="text"
+                   Value="@Email"
+                   ValueChanged="@(value => { Email = value; })"
+                   Label="Email"
+                   Placeholder="nome@exemplo.com.br"
+                   ErrorMessage="@EmailError"
+                   AutoComplete="email"
+                   AdditionalClass="col-24 p-3"
+            />
+            <Input Id="password"
+                   Type="password"
+                   Value="@Password"
+                   ValueChanged="@(value => { Password = value; })"
+                   Label="Senha"
+                   Placeholder="******"
+                   ErrorMessage="@PasswordError"
+                   AdditionalClass="col-24 p-3"
+                   AutoComplete="new-password"
+            />
+            <Input Id="password-confirm"
+                   Type="password"
+                   Value="@PasswordConfirm"
+                   ValueChanged="@(value => { PasswordConfirm = value; })"
+                   Label="Confirmação de Senha"
+                   Placeholder="******"
+                   ErrorMessage="@PasswordConfirmError"
+                   AutoComplete="new-password"
+                   AdditionalClass="col-24 p-3"
+            />
             <div class="col-24 pt-3 pb-3">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
@@ -111,7 +137,34 @@
 </div>
 
 @code {
+    
+    private string Name { get; set; } = string.Empty;
+    private string NameError { get; set; } = string.Empty;
+
+    private string Email { get; set; } = string.Empty;
+    private string EmailError { get; set; } = string.Empty;
+
+    private string Password { get; set; } = string.Empty;
+    private string PasswordError { get; set; } = string.Empty;
+    
+    private string PasswordConfirm { get; set; } = string.Empty;
+    private string PasswordConfirmError { get; set; } = string.Empty;
+
+    private bool NotificationEnabled { get; set; } = true;
 
     private void NavigateToLogin() => NavigationManager.NavigateTo("/");
 
+    private void OnSubmit()
+    {
+        StateHasChanged();
+        NameError = Validations.MinOrEqualsLength(Name, 3, ErrorMessages.NameLengthInvalid);
+        EmailError = Validations.EmailIsValid(Email,ErrorMessages.EmailInvalid);
+        PasswordError = Validations.ValidatePassword(Password,ErrorMessages.PasswordLengthInvalid);
+        PasswordConfirmError = Validations.Equals(Password, PasswordConfirm, ErrorMessages.PasswordConfirmInvalid);
+
+        if (Validations.VerifyIfNoExistErrors(NameError, EmailError, PasswordError, PasswordConfirmError))
+        {
+            NavigateToLogin();
+        }
+    }
 }

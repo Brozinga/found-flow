@@ -1,4 +1,7 @@
 ﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Pages.Helpers
 @layout Layout.CleanLayout
 @inject NavigationManager NavigationManager
 @rendermode InteractiveWebAssembly
@@ -12,15 +15,29 @@
                 <img src="img/logo-with-text-02.svg" class="w-100" alt="logo-found-flow"/>
             </div>
         </div>
-        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="NavigateToDashboard" class="card-body p-4">
-            <div class="col-24 p-3">
-                <label for="user" class="form-label">Email</label>
-                <input type="email" class="form-control" id="user" placeholder="name@example.com" autocomplete="email">
-            </div>
-            <div class="col-24 pt-3">
-                <label for="pass" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="pass" placeholder="******" autocomplete="current-password"/>
-            </div>
+        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="OnSubmit" class="card-body p-4">
+            
+            <Input Id="username" 
+                   Type="text" 
+                   Autocomplete="email"
+                   Value="@Email"
+                   ValueChanged="@(value => { Email = value; })"
+                   Label="Email" 
+                   Placeholder="nome@exemplo.com.br" 
+                   AdditionalClass="col-24 p-3"
+                   ErrorMessage="@EmailError"
+            />
+
+            <Input Id="password"
+                   Type="password"
+                   Autocomplete="current-password"
+                   Value="@Password"
+                   ValueChanged="@(value => { Password = value; })"
+                   Label="Senha"
+                   Placeholder="******"
+                   AdditionalClass="col-24 p-3"
+                   ErrorMessage="@PasswordError"
+            />
             <br/>
             <div class="col-24 p-3">
                 <button type="submit" class="btn btn-primary w-100 btn-lg">Entrar</button>
@@ -31,9 +48,26 @@
         </form>
     </div>
 </div>
-
 @code
 {
+    private string Email { get; set; } = string.Empty;
+    private string EmailError { get; set; } = string.Empty;
+
+    private string Password { get; set; } = string.Empty;
+    private string PasswordError { get; set; } = string.Empty;
+    
     private void NavigateToDashboard() => NavigationManager.NavigateTo("/dashboard");
     private void NavigateToRegister() => NavigationManager.NavigateTo("/register");
+
+    private void OnSubmit()
+    {
+        StateHasChanged();
+        EmailError = Validations.EmailIsValid(Email, ErrorMessages.EmailInvalid);
+        PasswordError = Validations.TextIsNullOrEmpty(Password, ErrorMessages.PasswordInvalid);
+
+        if (Validations.VerifyIfNoExistErrors(EmailError, PasswordError))
+        {
+            NavigateToDashboard();
+        }
+    }
 }
