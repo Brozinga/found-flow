@@ -81,7 +81,11 @@
     private string GetActiveClass(string href)
     {
         var currentUri = Navigation.ToBaseRelativePath(Navigation.Uri);
-        return currentUri.Equals(href.TrimStart('/'), StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
+        var uriSegments = currentUri.Split('/');
+        if (uriSegments.Length > 0 && uriSegments[0].Equals(href.TrimStart('/'), StringComparison.OrdinalIgnoreCase))
+            return "active";
+
+        return string.Empty;
     }
 
     protected override void OnInitialized()

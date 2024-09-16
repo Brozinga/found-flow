@@ -53,6 +53,7 @@ h1, h2, h3, h4, h5, h5.card-title, p, label, small, select, .form-select {
 .container-fluid {
     background-color: var(--background-color);
     height: calc(100% - var(--menu-height));
+    min-height: calc(100vh - var(--menu-height));
 }
 
 .btn.btn-notification {
@@ -231,4 +232,20 @@ hr.separator {
 
 .login-card .logo > img {
     max-width: 200px;
+}
+
+.hide {
+    display: none;
+}
+
+.color-item {
+    display: block;
+    width: 100px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+}
+
+table.dataTable td {
+    vertical-align: middle;
 }

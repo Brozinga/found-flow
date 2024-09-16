@@ -11,6 +11,32 @@ const notification = new Notyf({
     }
 });
 
+window.DataTableCreate = (table, additionalOptions) => {
+    $(document).ready(function () {
+        $(table).DataTable({
+            ...additionalOptions,
+            "language": {
+                "url": "./datatables@2.1.6/pt-BR.json"
+            },
+            "responsive": true
+        });
+    });
+}
+
+window.DataTableRemove = (table) => {
+    $(document).ready(function () {
+        $(table).DataTable().destroy();
+    });
+}
+
+window.Show = (element) => {
+    $(element).show();
+}
+
+window.Hide = (element) => {
+    $(element).hide();
+}
+
 window.alertError = (html, duration, dismissible) => {
     notification.error({
         message: html,
@@ -34,3 +60,6 @@ window.alertBasic = (html, duration, dismissible) => {
         dismissible: dismissible
     });
 }
+
+$(document).ready(() => {
+})
