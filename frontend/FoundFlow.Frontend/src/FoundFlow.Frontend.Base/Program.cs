@@ -1,5 +1,6 @@
 using System.Globalization;
 using FoundFlow.Frontend.Base.Components;
+using FoundFlow.Frontend.Core.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddLocalization();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddStates();
 
 var app = builder.Build();
 

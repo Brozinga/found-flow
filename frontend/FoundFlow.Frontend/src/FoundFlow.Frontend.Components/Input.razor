@@ -1,6 +1,6 @@
 ﻿<div class="@(AdditionalClass)">
     @if(!string.IsNullOrEmpty(Label)){
-        <label for="@Id" class="@Label">@Label</label>
+        <label for="@Id" class="form-label">@Label</label>
     }
     <input 
         type="@Type" 
@@ -9,7 +9,7 @@
         placeholder="@Placeholder" 
         autocomplete="@AutoComplete" 
         @bind="Value" 
-        @oninput="e => OnValueChanged(e.Value?.ToString())"
+        @oninput="e => OnValueChanged(e.Value?.ToString() ?? string.Empty)"
         required="@Required"
     />
     @if (!string.IsNullOrEmpty(ErrorMessage))
@@ -21,9 +21,9 @@
 </div>
 
 @code {
-    [Parameter] public string Value { get; set; }
+    [Parameter] public string Value { get; set; } = string.Empty;
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
-    [Parameter] public string Id { get; set; }
+    [Parameter] public string Id { get; set; } = string.Empty;
     [Parameter] public string Type { get; set; } = "text";
     [Parameter] public string? AutoComplete { get; set; } = string.Empty;
     [Parameter] public string? Label { get; set; } = string.Empty;

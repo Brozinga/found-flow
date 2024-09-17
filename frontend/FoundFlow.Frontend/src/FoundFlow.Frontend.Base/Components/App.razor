@@ -25,23 +25,7 @@
 <body>
     <Routes @rendermode="InteractiveWebAssembly" />
 
-    <div id="wasm-error" style="display: none;">
-        <p>Este navegador não suporta WebAssembly, necessário para o funcionamento desta aplicação.</p>
-    </div>
-
-    <script>
-        // Checa suporte ao WASM e exibe uma mensagem se não for suportado
-        if (!('WebAssembly' in window)) {
-            document.getElementById('app').style.display = 'none';
-            document.getElementById('wasm-error').style.display = 'block';
-        } else {
-            // Carrega Blazor caso o WASM seja suportado
-            const script = document.createElement('script');
-            script.src = '_framework/blazor.webassembly.js';
-            document.body.appendChild(script);
-        }
-    </script>
-
+    <script src="_framework/blazor.webassembly.js"></script>
     <script src="./jquery@3.7.1/jquery-3.7.1.min.js"></script>
     <script src="./datatables@2.1.6/datatables.min.js"></script>
     <script src="./popper.js/umd/popper.min.js"></script>

@@ -5,13 +5,22 @@ namespace FoundFlow.Frontend.Pages.Helpers;
 public abstract partial class Validations
 {
     private const string EmailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+    private const string ColorPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
 
     [GeneratedRegex(EmailPattern)]
     private static partial Regex MyEmailRegex();
     
+    [GeneratedRegex(ColorPattern)]
+    private static partial Regex MyColorRegex();
+    
     public static string EmailIsValid(string email, string message)
     {
         return MyEmailRegex().IsMatch(email) ? string.Empty : message;
+    }
+    
+    public static string ColorValid(string color, string message)
+    {
+        return MyColorRegex().IsMatch(color) ? string.Empty : message;
     }
     
     public static string TextIsNullOrEmpty(string text, string message)

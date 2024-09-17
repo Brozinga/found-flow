@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\MainLayout.razor.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\MainLayout.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -24,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\FoundFlow.Frontend.Core\FoundFlow.Frontend.Core.csproj" />
     <ProjectReference Include="..\FoundFlow.Frontend.Components\FoundFlow.Frontend.Components.csproj" />
   </ItemGroup>
 
