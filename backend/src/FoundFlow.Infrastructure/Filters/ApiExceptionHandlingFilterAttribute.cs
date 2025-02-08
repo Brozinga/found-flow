@@ -11,11 +11,18 @@ using Microsoft.Extensions.Logging;
 
 namespace FoundFlow.Infrastructure.Filters;
 
-public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribute
+public abstract class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribute
 {
+    private const string TypeBadRequest = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1";
+    private const string TypeServiceUnavailable = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.4";
+    private const string TypeForbidden = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.3";
+    private const string TypeNotFound = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.4";
+    private const string TypeUnauthorized = "https://www.rfc-editor.org/rfc/rfc7235#section-3.1";
+    private const string TypeInternalServerError = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.1";
+
     private readonly IDictionary<Type, Func<ExceptionContext, Task>> _exceptionHandlers;
 
-    public ApiExceptionHandlingFilterAttribute()
+    protected ApiExceptionHandlingFilterAttribute()
     {
         _exceptionHandlers = new Dictionary<Type, Func<ExceptionContext, Task>>
         {
@@ -73,7 +80,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
     {
         var details = new ValidationProblemDetails(context.ModelState)
         {
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1"
+            Type = TypeBadRequest
         };
 
         context.Result = new BadRequestObjectResult(details);
@@ -91,7 +98,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status400BadRequest,
             Title = "Requisição mal formatada.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1",
+            Type = TypeBadRequest,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -110,7 +117,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status503ServiceUnavailable,
             Title = "Serviço Temporariamente Indisponível.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.4",
+            Type = TypeServiceUnavailable,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -133,7 +140,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status403Forbidden,
             Title = "Acesso proibido.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.3",
+            Type = TypeForbidden,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -156,7 +163,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status404NotFound,
             Title = "Recurso não encontrado.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.4",
+            Type = TypeNotFound,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -175,7 +182,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status401Unauthorized,
             Title = "Acesso não autorizado.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7235#section-3.1",
+            Type = TypeUnauthorized,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -210,7 +217,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status500InternalServerError,
             Title = "Erro interno do servidor.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.1",
+            Type = TypeInternalServerError,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -234,7 +241,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = newException.Message,
             Status = StatusCodes.Status400BadRequest,
             Title = "Erro (EF) no banco de dados.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1",
+            Type = TypeBadRequest,
             Instance = context.HttpContext.Request.Path
         };
 
@@ -253,7 +260,7 @@ public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribu
             Detail = exception.Message,
             Status = StatusCodes.Status500InternalServerError,
             Title = "Ocorreu um erro não tratado.",
-            Type = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.1",
+            Type = TypeInternalServerError,
             Instance = context.HttpContext.Request.Path
         };
 

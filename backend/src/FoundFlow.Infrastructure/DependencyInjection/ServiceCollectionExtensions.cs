@@ -86,7 +86,6 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureSwagger(this IServiceCollection services)
     {
-        services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
             options.DescribeAllParametersInCamelCase();

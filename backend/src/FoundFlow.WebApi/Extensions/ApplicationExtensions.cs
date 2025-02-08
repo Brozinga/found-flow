@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class ApplicationExtensions
 {
-    public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
+    public static void AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.ConfigureOpenTelemetry();
         builder.AddDefaultHealthChecks();
@@ -19,11 +19,9 @@ public static class ApplicationExtensions
             http.AddStandardResilienceHandler();
             http.AddServiceDiscovery();
         });
-
-        return builder;
     }
 
-    private static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
+    private static void ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>
         {
@@ -50,11 +48,9 @@ public static class ApplicationExtensions
             });
 
         builder.AddOpenTelemetryExporters();
-
-        return builder;
     }
 
-    private static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
+    private static void AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
     {
         bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
@@ -62,15 +58,11 @@ public static class ApplicationExtensions
         {
             builder.Services.AddOpenTelemetry().UseOtlpExporter();
         }
-
-        return builder;
     }
 
-    private static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
+    private static void AddDefaultHealthChecks(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
-
-        return builder;
     }
 }

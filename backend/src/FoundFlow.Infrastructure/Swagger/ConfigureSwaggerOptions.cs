@@ -19,9 +19,9 @@ namespace FoundFlow.Infrastructure.Swagger;
 public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider;
-    private readonly SwaggerSettings _settings;
+    private readonly DocumentationSettings _settings;
 
-    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IOptions<SwaggerSettings> settings)
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IOptions<DocumentationSettings> settings)
     {
         _provider = provider;
         _settings = settings.Value;
@@ -75,6 +75,8 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
     private OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
     {
+        ArgumentNullException.ThrowIfNull(_settings);
+
         var info = new OpenApiInfo()
         {
             Title = _settings.ApiName,
@@ -84,16 +86,6 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             {
                 Name = _settings.ContactName,
                 Url = new Uri(_settings.ContactUrl)
-            },
-            Extensions = new Dictionary<string, IOpenApiExtension>
-            {
-                {
-                    "x-logo", new OpenApiObject
-                    {
-                        { "url", new OpenApiString("/images/logo.png") },
-                        { "altText", new OpenApiString("found flow logo") }
-                    }
-                }
             }
         };
         return info;

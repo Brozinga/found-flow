@@ -44,13 +44,12 @@ public sealed class LoginResponse
     /// </summary>
     /// <param name="expireDate">A data de expiração (opcional).</param>
     /// <returns>O tempo em milissegundos desde a época Unix ou 0 se a data de expiração for nula.</returns>
-    private long SetExpires(DateTime? expireDate)
+    private static long SetExpires(DateTime? expireDate)
     {
         if (expireDate == null)
             return 0;
 
         var dt = new DateTimeOffset(expireDate.Value);
         return dt.ToUnixTimeMilliseconds();
-
     }
 }

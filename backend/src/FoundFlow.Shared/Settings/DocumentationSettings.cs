@@ -2,7 +2,7 @@ using FoundFlow.Shared.Interfaces;
 
 namespace FoundFlow.Shared.Settings;
 
-public class SwaggerSettings : IAppSettings
+public class DocumentationSettings : IAppSettings
 {
     public bool Enable { get;  init; }
     public string? ContactName { get;  init; }
