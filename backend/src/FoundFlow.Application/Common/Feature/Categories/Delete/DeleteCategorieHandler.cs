@@ -12,15 +12,13 @@ namespace FoundFlow.Application.Common.Feature.Categories.Delete;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de exclusão de uma categoria (`DeleteCategorieRequest`).
 /// </summary>
-public class DeleteCategorieHandler : IRequestHandler<DeleteCategorieRequest, Result<DeleteCategorieResponse>>
+/// <remarks>
+/// Cria uma nova instância de `DeleteCategorieHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class DeleteCategorieHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteCategorieRequest, Result<DeleteCategorieResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `DeleteCategorieHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public DeleteCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de exclusão de uma categoria.

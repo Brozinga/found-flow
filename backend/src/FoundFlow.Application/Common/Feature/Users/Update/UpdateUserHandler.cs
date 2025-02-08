@@ -13,15 +13,13 @@ namespace FoundFlow.Application.Common.Feature.Users.Update;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de atualização de um usuário (`UpdateUserRequest`).
 /// </summary>
-public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, Result<UpdateUserResponse>>
+/// <remarks>
+/// Cria uma nova instância de `UpdateUserHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class UpdateUserHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateUserRequest, Result<UpdateUserResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `UpdateUserHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public UpdateUserHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de atualização de um usuário, atualizando seus dados no banco de dados.

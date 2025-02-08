@@ -84,5 +84,4 @@ public class CategoryController(ISender sender, ILogger<CategoryController> logg
         var result = await Sender.Send(request, cancellationToken);
         return StatusCode(result.Status, result.Data);
     }
-
 }

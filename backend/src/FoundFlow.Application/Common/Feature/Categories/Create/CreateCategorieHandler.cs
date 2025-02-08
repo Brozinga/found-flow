@@ -12,15 +12,13 @@ namespace FoundFlow.Application.Common.Feature.Categories.Create;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de criação de uma nova categoria (`CreateCategorieRequest`).
 /// </summary>
-public class CreateCategorieHandler : IRequestHandler<CreateCategorieRequest, Result<CreateCategorieResponse>>
+/// <remarks>
+/// Cria uma nova instância de `CreateCategorieHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class CreateCategorieHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateCategorieRequest, Result<CreateCategorieResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `CreateCategorieHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public CreateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de criação de uma nova categoria.

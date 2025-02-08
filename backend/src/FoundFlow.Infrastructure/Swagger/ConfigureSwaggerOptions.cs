@@ -16,16 +16,10 @@ using System.Collections.Generic;
 namespace FoundFlow.Infrastructure.Swagger;
 
 [ExcludeFromCodeCoverage]
-public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IOptions<DocumentationSettings> settings)
+    : IConfigureOptions<SwaggerGenOptions>
 {
-    private readonly IApiVersionDescriptionProvider _provider;
-    private readonly DocumentationSettings _settings;
-
-    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider, IOptions<DocumentationSettings> settings)
-    {
-        _provider = provider;
-        _settings = settings.Value;
-    }
+    private readonly DocumentationSettings _settings = settings.Value;
 
     public void Configure(SwaggerGenOptions options)
     {
@@ -52,7 +46,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             }
         });
 
-        foreach (var description in _provider.ApiVersionDescriptions)
+        foreach (var description in provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }

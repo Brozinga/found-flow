@@ -14,27 +14,20 @@ namespace FoundFlow.Application.Common.Feature.Users.Login;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de login do usuário (`LoginRequest`).
 /// </summary>
-public class LoginHandler : IRequestHandler<LoginRequest, Result<LoginResponse>>
+/// <remarks>
+/// Cria uma nova instância de `LoginHandler`.
+/// </remarks>
+/// <param name="tokenService">O serviço para gerar tokens JWT.</param>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+/// <param name="cacheDbService">O serviço para gerenciar dados em cache.</param>
+public class LoginHandler(
+    ITokenService tokenService,
+    IUnitOfWork unitOfWork,
+    IManagerService cacheDbService) : IRequestHandler<LoginRequest, Result<LoginResponse>>
 {
-    private readonly ITokenService _tokenService;
-    private readonly IManagerService _cacheDbService;
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `LoginHandler`.
-    /// </summary>
-    /// <param name="tokenService">O serviço para gerar tokens JWT.</param>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    /// <param name="cacheDbService">O serviço para gerenciar dados em cache.</param>
-    public LoginHandler(
-        ITokenService tokenService,
-        IUnitOfWork unitOfWork,
-        IManagerService cacheDbService)
-    {
-        _tokenService = tokenService;
-        _unitOfWork = unitOfWork;
-        _cacheDbService = cacheDbService;
-    }
+    private readonly ITokenService _tokenService = tokenService;
+    private readonly IManagerService _cacheDbService = cacheDbService;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de login, autenticando o usuário e gerando um token JWT se o login for bem-sucedido.

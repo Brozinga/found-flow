@@ -15,15 +15,13 @@ namespace FoundFlow.Application.Common.Feature.Users.ResetPassword;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de redefinição de senha do usuário (`ResetPasswordRequest`).
 /// </summary>
-public class ResetPasswordHandler : IRequestHandler<ResetPasswordRequest, Result<ResetPasswordResponse>>
+/// <remarks>
+/// Cria uma nova instância de `ResetPasswordHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class ResetPasswordHandler(IUnitOfWork unitOfWork) : IRequestHandler<ResetPasswordRequest, Result<ResetPasswordResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `ResetPasswordHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public ResetPasswordHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de redefinição de senha, gerando uma nova senha, criptografando-a, atualizando o usuário no banco de dados e retornando a nova senha.

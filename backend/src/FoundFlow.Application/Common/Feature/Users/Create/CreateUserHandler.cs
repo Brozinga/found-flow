@@ -14,15 +14,13 @@ namespace FoundFlow.Application.Common.Feature.Users.Create;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de criação de um novo usuário (`CreateUserRequest`).
 /// </summary>
-public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result<CreateUserResponse>>
+/// <remarks>
+/// Cria uma nova instância de `CreateUserHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class CreateUserHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateUserRequest, Result<CreateUserResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `CreateUserHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public CreateUserHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de criação de um novo usuário.

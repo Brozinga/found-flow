@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FoundFlow.Infrastructure.Filters;
-
-public abstract class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribute
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttribute
 {
     private const string TypeBadRequest = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1";
     private const string TypeServiceUnavailable = "https://www.rfc-editor.org/rfc/rfc7231#section-6.6.4";
@@ -22,7 +22,7 @@ public abstract class ApiExceptionHandlingFilterAttribute : ExceptionFilterAttri
 
     private readonly IDictionary<Type, Func<ExceptionContext, Task>> _exceptionHandlers;
 
-    protected ApiExceptionHandlingFilterAttribute()
+    public ApiExceptionHandlingFilterAttribute()
     {
         _exceptionHandlers = new Dictionary<Type, Func<ExceptionContext, Task>>
         {

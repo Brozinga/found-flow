@@ -13,15 +13,13 @@ namespace FoundFlow.Application.Common.Feature.Transactions.Create;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de criação de uma nova transação (`CreateTransactionRequest`).
 /// </summary>
-public class CreateTransactionsHandler : IRequestHandler<CreateTransactionRequest, Result<CreateTransactionResponse>>
+/// <remarks>
+/// Cria uma nova instância de `CreateTransactionsHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class CreateTransactionsHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateTransactionRequest, Result<CreateTransactionResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `CreateTransactionsHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public CreateTransactionsHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de criação de uma nova transação.

@@ -11,43 +11,35 @@ namespace FoundFlow.Application.Models;
 /// Representa uma lista paginada de itens do tipo T.
 /// </summary>
 /// <typeparam name="T">O tipo dos itens na lista.</typeparam>
+/// <remarks>
+/// Cria uma nova instância.
+/// </remarks>
+/// <param name="items">A lista de itens da página atual.</param>
+/// <param name="count">O número total de itens.</param>
+/// <param name="pageNumber">O número da página atual.</param>
+/// <param name="pageSize">O tamanho de cada página.</param>
 [ExcludeFromCodeCoverage]
-public class PaginatedList<T>
+public class PaginatedList<T>(List<T> items, int count, int pageNumber, int pageSize)
 {
-    /// <summary>
-    /// Cria uma nova instância.
-    /// </summary>
-    /// <param name="items">A lista de itens da página atual.</param>
-    /// <param name="count">O número total de itens.</param>
-    /// <param name="pageNumber">O número da página atual.</param>
-    /// <param name="pageSize">O tamanho de cada página.</param>
-    public PaginatedList(List<T> items, int count, int pageNumber, int pageSize)
-    {
-        PageNumber = pageNumber;
-        TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-        TotalCount = count;
-        Items = items;
-    }
-
     /// <summary>
     /// A lista de itens da página atual.
     /// </summary>
-    public List<T> Items { get; }
+    public List<T> Items { get; } = items;
 
     /// <summary>
     /// O número da página atual (começando em 1).
     /// </summary>
-    public int PageNumber { get; }
+    public int PageNumber { get; } = pageNumber;
 
     /// <summary>
     /// O número total de páginas.
     /// </summary>
-    public int TotalPages { get; }
+    public int TotalPages { get; } = (int)Math.Ceiling(count / (double)pageSize);
 
     /// <summary>
     /// O número total de itens em todas as páginas.
     /// </summary>
-    public int TotalCount { get; }
+    public int TotalCount { get; } = count;
 
     /// <summary>
     /// Indica se existe uma página anterior.

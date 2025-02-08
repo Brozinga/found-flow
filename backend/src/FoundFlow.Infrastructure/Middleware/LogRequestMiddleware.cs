@@ -8,35 +8,24 @@ using Microsoft.Extensions.Logging;
 
 namespace FoundFlow.Infrastructure.Middleware;
 
-public class LogRequestMiddleware
+public class LogRequestMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
-    private readonly string[] _ignoredRoutes;
-
-    public LogRequestMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
-    {
-        _next = next;
-        _logger = loggerFactory.CreateLogger<LogRequestMiddleware>();
-        _ignoredRoutes = new[] { "/dashboard", "/swagger" };  // Adicione todas as rotas que deseja ignorar aqui
-    }
+    private readonly ILogger _logger = loggerFactory.CreateLogger<LogRequestMiddleware>();
+    private readonly string[] _ignoredRoutes = ["/dashboard", "/swagger", "/openapi", "scalar"]; // Adicione todas as rotas que deseja ignorar aqui
 
     public async Task Invoke(HttpContext context)
     {
-        foreach (string path in _ignoredRoutes)
+        if (_ignoredRoutes.Any(path => context.Request.Path.StartsWithSegments(path, StringComparison.CurrentCultureIgnoreCase)))
         {
-            if (context.Request.Path.StartsWithSegments(path, StringComparison.CurrentCultureIgnoreCase))
-            {
-                await _next(context);
-                return;
-            }
+            await next(context);
+            return;
         }
 
         context.Request.EnableBuffering();
 
         await LogRequestBody(context.Request);
 
-        await _next(context);
+        await next(context);
     }
 
     private async Task LogRequestBody(HttpRequest demand)

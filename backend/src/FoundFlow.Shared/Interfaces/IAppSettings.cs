@@ -1,5 +1,3 @@
 namespace FoundFlow.Shared.Interfaces;
 
-public interface IAppSettings
-{
-}
+public interface IAppSettings;

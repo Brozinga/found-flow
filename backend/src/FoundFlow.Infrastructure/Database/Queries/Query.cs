@@ -10,23 +10,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace FoundFlow.Infrastructure.Database.Queries;
 
-public class Query
+public class Query(ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
 {
-    private readonly ITokenService _tokenService;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public Query(ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
-    {
-        _tokenService = tokenService;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     private Guid GetUserId()
     {
-        string token = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
+        string token = httpContextAccessor.HttpContext!.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
         ArgumentNullException.ThrowIfNull(token);
 
-        var (_, _, userId) = _tokenService.Read(token);
+        var (_, _, userId) = tokenService.Read(token);
         return userId;
     }
 

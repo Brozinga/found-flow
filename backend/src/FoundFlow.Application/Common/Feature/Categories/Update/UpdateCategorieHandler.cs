@@ -12,15 +12,13 @@ namespace FoundFlow.Application.Common.Feature.Categories.Update;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de atualização de uma categoria (`UpdateCategorieRequest`).
 /// </summary>
-public class UpdateCategorieHandler : IRequestHandler<UpdateCategorieRequest, Result<UpdateCategorieResponse>>
+/// <remarks>
+/// Cria uma nova instância de `UpdateCategorieHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class UpdateCategorieHandler(IUnitOfWork unitOfWork) : IRequestHandler<UpdateCategorieRequest, Result<UpdateCategorieResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `UpdateCategorieHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public UpdateCategorieHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de atualização de uma categoria.
