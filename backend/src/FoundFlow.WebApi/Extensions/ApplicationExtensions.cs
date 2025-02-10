@@ -1,5 +1,6 @@
 #pragma warning disable SA1010
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Npgsql;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -8,7 +9,7 @@ namespace Microsoft.Extensions.Hosting;
 
 public static class ApplicationExtensions
 {
-    public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
+    public static void AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.ConfigureOpenTelemetry();
         builder.AddDefaultHealthChecks();
@@ -18,17 +19,17 @@ public static class ApplicationExtensions
             http.AddStandardResilienceHandler();
             http.AddServiceDiscovery();
         });
-
-        return builder;
     }
 
-    public static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
+    private static void ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
     {
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.IncludeFormattedMessage = true;
             logging.IncludeScopes = true;
         });
+
+        builder.Services.AddApplicationInsightsTelemetry();
 
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
@@ -40,15 +41,16 @@ public static class ApplicationExtensions
             .WithTracing(tracing =>
             {
                 tracing.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
+                    .AddNpgsql()
                     .AddHttpClientInstrumentation();
             });
 
         builder.AddOpenTelemetryExporters();
-
-        return builder;
     }
 
-    private static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
+    private static void AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
     {
         bool useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
@@ -56,15 +58,11 @@ public static class ApplicationExtensions
         {
             builder.Services.AddOpenTelemetry().UseOtlpExporter();
         }
-
-        return builder;
     }
 
-    public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
+    private static void AddDefaultHealthChecks(this IHostApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
-
-        return builder;
     }
 }

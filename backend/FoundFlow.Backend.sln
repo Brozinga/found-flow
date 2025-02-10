@@ -69,8 +69,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundFlow.Shared", "src\Fou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundFlow.WebApi", "src\FoundFlow.WebApi\FoundFlow.WebApi.csproj", "{0CF687EA-A20C-4CDF-8400-370B19034F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundFlow.Backend.AppHost", "src\FoundFlow.Backend.AppHost\FoundFlow.Backend.AppHost.csproj", "{1C7273CE-54BE-4321-8F14-8226D40FFD25}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,10 +103,6 @@ Global
 		{0CF687EA-A20C-4CDF-8400-370B19034F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CF687EA-A20C-4CDF-8400-370B19034F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CF687EA-A20C-4CDF-8400-370B19034F70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C7273CE-54BE-4321-8F14-8226D40FFD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C7273CE-54BE-4321-8F14-8226D40FFD25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C7273CE-54BE-4321-8F14-8226D40FFD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C7273CE-54BE-4321-8F14-8226D40FFD25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,7 +125,6 @@ Global
 		{CF941423-4927-41F0-9CEB-30924CF3C631} = {42DBD16B-022D-4EA1-93C0-EF048EBB60C5}
 		{9455F10A-D00C-4B89-B2E9-811AD998F4C0} = {EB7F6070-5300-463F-9FEB-DEC3D50676AB}
 		{0CF687EA-A20C-4CDF-8400-370B19034F70} = {1D4EFDE4-7FF6-4B99-ADDD-0438E59B7B61}
-		{1C7273CE-54BE-4321-8F14-8226D40FFD25} = {1D4EFDE4-7FF6-4B99-ADDD-0438E59B7B61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11CD9A9D-BE00-4CD2-83ED-17092E5E111E}

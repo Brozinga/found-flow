@@ -6,29 +6,20 @@ using FoundFlow.Domain.Interfaces.Repositories;
 
 namespace FoundFlow.Infrastructure.Database.UoW;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(
+    IApplicationDbContext dbContext,
+    IUsersRepository usersRepository,
+    ICategoriesRepository categoriesRepository,
+    ITransactionsRepository transactionsRepository)
+    : IUnitOfWork
 {
-    private readonly IApplicationDbContext _dbContext;
-
-    public UnitOfWork(
-        IApplicationDbContext dbContext,
-        IUsersRepository usersRepository,
-        ICategoriesRepository categoriesRepository,
-        ITransactionsRepository transactionsRepository)
-    {
-        _dbContext = dbContext;
-        UsersRepository = usersRepository;
-        CategoriesRepository = categoriesRepository;
-        TransactionsRepository = transactionsRepository;
-    }
-
-    public IUsersRepository UsersRepository { get; }
-    public ICategoriesRepository CategoriesRepository { get; }
-    public ITransactionsRepository TransactionsRepository { get; }
+    public IUsersRepository UsersRepository { get; } = usersRepository;
+    public ICategoriesRepository CategoriesRepository { get; } = categoriesRepository;
+    public ITransactionsRepository TransactionsRepository { get; } = transactionsRepository;
 
     public Task<int> CommitAsync(CancellationToken cancellationToken)
     {
-        return _dbContext.SaveAsync(cancellationToken);
+        return dbContext.SaveAsync(cancellationToken);
     }
 
     public void Dispose()
@@ -42,7 +33,7 @@ public class UnitOfWork : IUnitOfWork
     {
         if (!this._disposed && disposing)
         {
-            _dbContext.Dispose();
+            dbContext.Dispose();
         }
 
         this._disposed = true;

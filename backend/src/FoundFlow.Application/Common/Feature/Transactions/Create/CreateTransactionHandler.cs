@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FoundFlow.Application.Models;
+using FoundFlow.Domain.Entities;
 using FoundFlow.Domain.Interfaces;
 using FoundFlow.Shared.Messages;
 using MediatR;
@@ -12,15 +13,13 @@ namespace FoundFlow.Application.Common.Feature.Transactions.Create;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de criação de uma nova transação (`CreateTransactionRequest`).
 /// </summary>
-public class CreateTransactionsHandler : IRequestHandler<CreateTransactionRequest, Result<CreateTransactionResponse>>
+/// <remarks>
+/// Cria uma nova instância de `CreateTransactionsHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class CreateTransactionsHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateTransactionRequest, Result<CreateTransactionResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `CreateTransactionsHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public CreateTransactionsHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de criação de uma nova transação.
@@ -45,7 +44,7 @@ public class CreateTransactionsHandler : IRequestHandler<CreateTransactionReques
         if (categorie is null)
             Result<CreateTransactionResponse>.Failure(HttpStatusCode.NotFound, ErrorMessages.CategoriesCategorieNotFoundMessage);
 
-        var entity = ConvertToAgreggate(request, user, categorie);
+        var entity = ConvertToAggregate(request, user, categorie);
 
         _ = await _unitOfWork.TransactionsRepository.AddAsync(entity, cancellationToken);
         int isSaved = await _unitOfWork.CommitAsync(cancellationToken);
@@ -63,15 +62,16 @@ public class CreateTransactionsHandler : IRequestHandler<CreateTransactionReques
     /// <param name="user">O usuário associado à transação.</param>
     /// <param name="categorie">A categoria associada à transação.</param>
     /// <returns>A entidade `Transactions` convertida.</returns>
-    private Domain.Entities.Transactions ConvertToAgreggate(CreateTransactionRequest request, Domain.Entities.Users user, Domain.Entities.Categories categorie)
+    private static Domain.Entities.Transactions ConvertToAggregate(CreateTransactionRequest request, Domain.Entities.Users user, Domain.Entities.Categories categorie)
     {
         return new(
             categorie,
             user,
-            request.Title,
-            request.Amount,
-            request.TransactionType,
-            request.PaymentStatus,
+            new TransactionValueObject(
+                request.Title,
+                request.Amount,
+                request.TransactionType,
+                request.PaymentStatus),
             DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
             DateTime.SpecifyKind(request.PaymentDate, DateTimeKind.Utc));
     }

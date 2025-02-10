@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>0b95b311-04e1-4240-8545-57c9b95c9ced</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="8.0.0" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\backend\src\FoundFlow.WebApi\FoundFlow.WebApi.csproj" />
+    <ProjectReference Include="..\..\..\frontend\FoundFlow.Frontend\src\FoundFlow.Frontend.Base\FoundFlow.Frontend.Base.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -16,6 +16,6 @@ public static class SettingExtensions
             .Configure<JwtSettings>(config.GetSection(nameof(JwtSettings)))
             .Configure<MongoDBSettings>(config.GetSection(nameof(MongoDBSettings)))
             .Configure<CorsSettings>(config.GetSection(nameof(CorsSettings)))
-            .Configure<SwaggerSettings>(config.GetSection(nameof(SwaggerSettings)));
+            .Configure<DocumentationSettings>(config.GetSection(nameof(DocumentationSettings)));
     }
 }

@@ -4,19 +4,14 @@ using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Asp.Versioning.ApiExplorer;
 using FoundFlow.Infrastructure.Middleware;
 using FoundFlow.Shared.Settings;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using SharpCompress.Common;
-using System.IO;
-using Microsoft.Extensions.Options;
+using Scalar.AspNetCore;
 
 namespace FoundFlow.Infrastructure.DependencyInjection;
 
@@ -35,34 +30,14 @@ public static class ApplicationBuilderExtensions
 
         app.UseProblemDetails();
 
-        var swaggerSettings = config.GetValueOrThrow<SwaggerSettings>("SwaggerSettings");
+        var documentationSettings = config.GetValueOrThrow<DocumentationSettings>("DocumentationSettings");
 
-        if (swaggerSettings.Enable)
+        if (documentationSettings.Enable)
         {
-            app.UseSwagger();
-
-            var provider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
-            var descriptions = provider.ApiVersionDescriptions.Select(x => x.GroupName).Where(x => x != null);
-
-            app.UseSwaggerUI(options =>
+            app.UseSwagger(options =>
             {
-                foreach (string? description in descriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description}/swagger.json", description.ToUpperInvariant());
-                }
+                options.RouteTemplate = "/openapi/{documentName}.json";
             });
-
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "redoc.html");
-
-            foreach (string? description in descriptions)
-            {
-                app.UseReDoc(c =>
-                {
-                    c.IndexStream = () => new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                    c.RoutePrefix = $"api-docs/{description}";
-                });
-            }
-
         }
 
         app.UseHttpsRedirection();
@@ -91,6 +66,12 @@ public static class ApplicationBuilderExtensions
             endpoints.MapControllers().RequireCors(CorsPoliceName);
 
             endpoints.MapGraphQL();
+
+            if (documentationSettings.Enable)
+            {
+                endpoints.MapOpenApi();
+                endpoints.MapScalarApiReference();
+            }
 
             endpoints.MapHealthChecks("/ready", new HealthCheckOptions()
             {

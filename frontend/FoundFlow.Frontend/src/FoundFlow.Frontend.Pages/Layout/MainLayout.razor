@@ -1,0 +1,34 @@
+﻿@using FoundFlow.Frontend.Components
+@inherits LayoutComponentBase
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveWebAssembly
+
+
+<div class="d-flex h-100 visualization">
+    <NavMenu />
+    <div class="w-100">
+        <div>
+            <!-- Top Menu -->
+            <nav class="navbar navbar-expand-lg bg-light p-3 d-flex justify-content-end">
+                <button id="notification-trigger" type="button" class="btn btn-notification" @onclick="ShowToast">
+                    <i class="feather-bell"></i>
+                </button>
+            </nav>
+        </div>
+
+        <main class="container-fluid">
+            @Body
+        </main>
+    </div>
+</div>
+<Toast @ref="_toastComponent" Messages="@_messages" />
+
+@code {
+    private readonly List<string> _messages = ["Mensagem 1", "Mensagem 2", "Mensagem 3"];
+    private Toast? _toastComponent;
+
+    private async Task ShowToast()
+    {
+        await _toastComponent!.ShowToast();
+    }
+}

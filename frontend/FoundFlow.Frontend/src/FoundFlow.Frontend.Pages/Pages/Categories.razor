@@ -1,0 +1,142 @@
+﻿@page "/categoria"
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Core.States
+@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigate
+@inject CategoryState CategoryState
+
+<PageTitle>Found Flow | Categorias</PageTitle>
+
+<div class="pt-3 pb-3">
+    <h3>Categorias</h3>
+</div>
+
+<div class="row pb-3 pt-3">
+    <div class="col-24">
+        <button @onclick="NavigateAdd" type="button" class="btn btn-primary pt-2 pb-2">
+            <span>
+                <i class="feather-plus"></i>
+            </span>
+            <span>Adicionar</span>
+        </button>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body position-relative">
+       @if (LoadTable)
+       {
+           <div class="table-category">
+               <table id="table" class="display table" >
+                   <thead>
+                   <tr>
+                       <th>Nome</th>
+                       <th>Cor</th>
+                       <th>Data Criação</th>
+                       <th class="dt-center">Ações</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   <tr>
+                       <td>Trabalho</td>
+                       <td>
+                           <ColorItem Color="#0a53be"/>
+                       </td>
+                       <td>01/09/2024</td>
+                       <td class="dt-center">
+                           <button
+                               @onclick="@(_ => Edit("fe3c87cd-4574-4190-8069-d815796603ee","Trabalho","#3386ff"))"
+                               type="button" 
+                                   class="btn btn-secondary">
+                               <i class="feather-edit-2"></i>
+                           </button>
+                           <button type="button" 
+                                   class="btn btn-danger">
+                               <i class="feather-trash-2"></i>
+                           </button>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>Casa</td>
+                       <td>
+                           <ColorItem Color="#28be0a"/>
+                       </td>
+                       <td>01/09/2024</td>
+                       <td class="dt-center">
+                           <button
+                               @onclick="@(_ => Edit("fe3c87cd-4574-4190-8069-d815796603ee","Casa","#ff3333"))"
+                                   type="button" 
+                                   class="btn btn-secondary">
+                               <i class="feather-edit-2"></i>
+                           </button>
+                           <button type="button" 
+                                   class="btn btn-danger">
+                               <i class="feather-trash-2"></i>
+                           </button>
+                       </td>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+       } else {
+           <div id="loading" class="d-flex justify-content-center align-items-center loading mt-3 mb-3 hiding">
+               <h1>Carregando...</h1>
+           </div>
+        }
+    </div>
+</div>
+
+@code {
+    private const string ManagePath = "/categoria/gerenciar";
+    private bool LoadTable { get; set; }
+    
+    
+    protected override void OnInitialized()
+    {
+        // Adicione um ponto de interrupção aqui e verifique se o CategoryState foi injetado corretamente
+        if (CategoryState == null)
+        {
+            Console.WriteLine("CategoryState is null!"); // Ou use um logger mais apropriado
+        }
+        else
+        {
+            // Continue com a lógica normal do seu componente
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var columnDefs = new List<object>
+            {
+                new {  width = "40%", targets = 0  },
+                new {  width = "20%", targets = 1  },
+                new {  width = "20%", targets = 2  },
+                new {  width = "20%", targets = 3  }
+            };
+            await JsRuntime.InvokeVoidAsync("DataTableCreate", "#table", new
+            {
+                scrollX = true,
+                columnDefs
+            });
+            LoadTable = true;
+            StateHasChanged();
+        }
+    }
+    
+    public void Dispose()
+    {
+        JsRuntime.InvokeVoidAsync("DataTableRemove", "#table");
+    }
+    
+    private void NavigateAdd()
+    {
+        Navigate.NavigateTo(ManagePath);
+    }
+
+    private void Edit(string id, string name, string color)
+    {
+        CategoryState.SetSelectedCategory(id, name, color);
+        Navigate.NavigateTo($"{ManagePath}/{id}");
+    }
+
+}

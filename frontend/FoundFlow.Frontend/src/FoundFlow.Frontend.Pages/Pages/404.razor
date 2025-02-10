@@ -1,0 +1,24 @@
+﻿@page "/404"
+@layout Layout.CleanLayout
+@inject NavigationManager NavigationManager
+
+<PageTitle>Found Flow | Erro</PageTitle>
+
+<link href="./404.css" rel="stylesheet">
+
+<img class="background col-md-8 col-sm-24" src="./img/planet.png"/>
+<div class="error">
+    <h1 class="title">404</h1>
+    <p>Essa página está de férias em outro planeta!</p>
+    <br/>
+    <a href="/" @onclick:preventDefault @onclick="BackToInit">Vamos voltar pro início...</a>
+</div>
+
+@code {
+
+    private void BackToInit()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+}

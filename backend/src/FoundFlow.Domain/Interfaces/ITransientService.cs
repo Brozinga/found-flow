@@ -1,5 +1,3 @@
 namespace FoundFlow.Domain.Interfaces;
 
-public interface ITransientService
-{
-}
+public interface ITransientService;

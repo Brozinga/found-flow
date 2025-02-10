@@ -5,10 +5,5 @@ using FoundFlow.Domain.Interfaces.Repositories;
 
 namespace FoundFlow.Infrastructure.Database.Repositories;
 
-public sealed class CategoriesRepository : RepositoryBase<Categories, Guid>, ICategoriesRepository
-{
-    public CategoriesRepository(IApplicationDbContext database)
-        : base(database)
-    {
-    }
-}
+public sealed class CategoriesRepository(IApplicationDbContext database)
+    : RepositoryBase<Categories, Guid>(database), ICategoriesRepository;

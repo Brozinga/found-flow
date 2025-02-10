@@ -1,0 +1,134 @@
+﻿@page "/transacao"
+@using FoundFlow.Frontend.Core.States
+@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigate
+
+<PageTitle>Found Flow | Transações</PageTitle>
+
+<div class="pt-3 pb-3">
+    <h3>Transações</h3>
+</div>
+
+<div class="row pb-3 pt-3">
+    <div class="col-24">
+        <button @onclick="NavigateAdd" type="button" class="btn btn-primary pt-2 pb-2">
+            <span>
+                <i class="feather-plus"></i>
+            </span>
+            <span>Adicionar</span>
+        </button>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body position-relative">
+       @if (LoadTable)
+       {
+           <div class="table-category">
+               <table id="table" class="display table" >
+                   <thead>
+                   <tr>
+                       <th>Nome</th>
+                       <th>Categoria</th>
+                       <th>Tipo de Transação</th>
+                       <th>Status de Pagamento</th>
+                       <th>Data Pagamento</th>
+                       <th>Valor</th>
+                       <th class="dt-center">Ações</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   <tr>
+                       <td>Salário</td>
+                       <td>Trabalho</td>
+                       <td>RECEITA</td>
+                       <td class="text-success fw-bold">OK</td>
+                       <td>02/09/2024</td>
+                       <td>R$ 1.520,00</td>
+                       <td class="dt-center">
+                           <button
+                               @onclick="@(_ => Edit("fe3c87cd-4574-4190-8069-d815796603ee","Trabalho","#3386ff"))"
+                               type="button" 
+                               class="btn btn-secondary">
+                               <i class="feather-edit-2"></i>
+                           </button>
+                           <button type="button" 
+                                   class="btn btn-danger">
+                               <i class="feather-trash-2"></i>
+                           </button>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>Venda de bolos</td>
+                       <td>Trabalho</td>
+                       <td>RECEITA</td>
+                       <td class="text-success fw-bold">OK</td>
+                       <td>02/09/2024</td>
+                       <td>R$ 233,12</td>
+                       <td class="dt-center">
+                           <button
+                               @onclick="@(_ => Edit("fe3c87cd-4574-4190-8069-d815796603ee","Trabalho","#3386ff"))"
+                               type="button"
+                               class="btn btn-secondary">
+                               <i class="feather-edit-2"></i>
+                           </button>
+                           <button type="button"
+                                   class="btn btn-danger">
+                               <i class="feather-trash-2"></i>
+                           </button>
+                       </td>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
+       } else {
+           <div id="loading" class="d-flex justify-content-center align-items-center loading mt-3 mb-3 hiding">
+               <h1>Carregando...</h1>
+           </div>
+        }
+    </div>
+</div>
+
+@code {
+    private const string ManagePath = "/transacao/gerenciar";
+    private bool LoadTable { get; set; }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var columnDefs = new List<object>
+            {
+                new {  width = "150px", targets = 0  },
+                new {  width = "100px", targets = 1  },
+                new {  width = "100px", targets = 2  },
+                new {  width = "80px", targets = 3  },
+                new {  width = "80px", targets = 4  },
+                new {  width = "80px", targets = 5  },
+                new {  width = "50px", targets = 6  }
+            };
+            await JsRuntime.InvokeVoidAsync("DataTableCreate", "#table", new
+            {
+                scrollX = true,
+                columnDefs
+            });
+            LoadTable = true;
+            StateHasChanged();
+        }
+    }
+    
+    public void Dispose()
+    {
+        JsRuntime.InvokeVoidAsync("DataTableRemove", "#table");
+    }
+    
+    private void NavigateAdd()
+    {
+        Navigate.NavigateTo(ManagePath);
+    }
+
+    private void Edit(string id, string name, string color)
+    {
+        Navigate.NavigateTo($"{ManagePath}/{id}");
+    }
+
+}

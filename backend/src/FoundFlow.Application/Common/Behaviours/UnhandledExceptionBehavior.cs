@@ -8,16 +8,11 @@ using System.Threading.Tasks;
 namespace FoundFlow.Application.Common.Behaviours;
 
 [ExcludeFromCodeCoverage]
-internal sealed class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+internal sealed class UnhandledExceptionBehavior<TRequest, TResponse>(
+    ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> _logger;
-
-    public UnhandledExceptionBehavior(ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         try
@@ -27,9 +22,9 @@ internal sealed class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelin
         catch (Exception ex)
         {
             string requestName = typeof(TRequest).Name;
-            _logger.LogError(ex, "Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
-
-            throw;
+            logger.LogError(ex, "Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
         }
+
+        return default;
     }
 }

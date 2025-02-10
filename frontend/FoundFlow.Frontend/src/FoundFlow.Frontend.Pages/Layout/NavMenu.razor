@@ -1,0 +1,105 @@
+﻿@inject NavigationManager Navigation
+
+@rendermode InteractiveWebAssembly
+
+<!-- Sidebar -->
+<nav id="sidebar" class="bg-light sidebar">
+    <div>
+        <div class="logo pt-4 pb-4">
+            <img src="img/logo-with-text-02.svg" alt="Found Flow Logo" />
+        </div>
+    </div>
+    <div class="ps-4 mt-4 mb-1 menu-subtitle">
+        <p>MENU PRINCIPAL</p>
+    </div>
+    <ul class="list-unstyled nav-menu-items">
+        <li class="@GetActiveClass(DashboardUrl)">
+            <a href="@DashboardUrl" 
+               @onclick="@(e => Navigation.NavigateTo(DashboardUrl))" 
+               @onclick:preventDefault>
+                <span class="menu-icon me-2">
+                    <i class="feather-bar-chart-2"></i>
+                </span>
+                Dashboard
+            </a>
+        </li>
+        <li class="@GetActiveClass(TransactionUrl)">
+            <a href="@TransactionUrl" 
+               @onclick="@(e => Navigation.NavigateTo(TransactionUrl))" 
+               @onclick:preventDefault>
+                <span class="menu-icon me-2">
+                    <i class="feather-repeat"></i>
+                </span>
+                Transações
+            </a>
+        </li>
+        <li class="@GetActiveClass(CategoryUrl)">
+            <a href="@CategoryUrl" 
+               @onclick="@(e => Navigation.NavigateTo(CategoryUrl))" 
+               @onclick:preventDefault>
+                <span class="menu-icon me-2">
+                    <i class="feather-layers"></i>
+                </span>
+                Categorias
+            </a>
+        </li>
+    </ul>
+
+    <hr class="separator" />
+    <div class="ps-4 mt-4 mb-1 menu-subtitle">
+        <p>CONTA</p>
+    </div>
+    <ul class="list-unstyled nav-menu-items">
+        <li class="@GetActiveClass(UserUrl)" @onclick:preventDefault>
+            <a href="@UserUrl" 
+               @onclick="@(e => Navigation.NavigateTo(CategoryUrl))" 
+               @onclick:preventDefault>
+                <span class="menu-icon me-2">
+                    <i class="feather-user"></i>
+                </span>
+                Usuário
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="menu-icon me-2">
+                    <i class="feather-log-out"></i>
+                </span>
+                Sair
+            </a>
+        </li>
+    </ul>
+</nav>
+
+    @code
+    {
+    private const string DashboardUrl = "/dashboard";
+    private const string TransactionUrl = "/transacao";
+    private const string CategoryUrl = "/categoria";
+    private const string UserUrl = "/usuario";
+
+    private string GetActiveClass(string href)
+    {
+        var currentUri = Navigation.ToBaseRelativePath(Navigation.Uri);
+        var uriSegments = currentUri.Split('/');
+        if (uriSegments.Length > 0 && uriSegments[0].Equals(href.TrimStart('/'), StringComparison.OrdinalIgnoreCase))
+            return "active";
+
+        return string.Empty;
+    }
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+    }

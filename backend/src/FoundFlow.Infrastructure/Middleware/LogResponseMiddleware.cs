@@ -8,35 +8,24 @@ using Microsoft.Extensions.Logging;
 
 namespace FoundFlow.Infrastructure.Middleware;
 
-public class LogResponseMiddleware
+public class LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
-    private readonly string[] _ignoredRoutes;
-
-    public LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
-    {
-        _next = next;
-        _logger = loggerFactory.CreateLogger<LogResponseMiddleware>();
-        _ignoredRoutes = new[] { "/graphql" };
-    }
+    private readonly ILogger _logger = loggerFactory.CreateLogger<LogResponseMiddleware>();
+    private readonly string[] _ignoredRoutes = new[] { "/graphql" };
 
     public async Task Invoke(HttpContext context)
     {
-        foreach (string path in _ignoredRoutes)
+        if (_ignoredRoutes.Any(path => context.Request.Path.StartsWithSegments(path, StringComparison.CurrentCultureIgnoreCase)))
         {
-            if (context.Request.Path.StartsWithSegments(path, StringComparison.CurrentCultureIgnoreCase))
-            {
-                await _next(context);
-                return;
-            }
+            await next(context);
+            return;
         }
 
-        var originalBodyStream = context.Response.Body;
-        using var responseBody = new MemoryStream();
+        Stream originalBodyStream = context.Response.Body;
+        await using MemoryStream responseBody = new();
         context.Response.Body = responseBody;
 
-        await _next(context);
+        await next(context);
 
         await LogResponseBody(context.Response);
 

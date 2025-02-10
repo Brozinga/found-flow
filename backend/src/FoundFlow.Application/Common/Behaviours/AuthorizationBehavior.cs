@@ -9,23 +9,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace FoundFlow.Application.Common.Behaviours;
 
-public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class AuthorizationBehavior<TRequest, TResponse>(
+    IHttpContextAccessor httpContextAccessor,
+    ITokenService tokenService)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ITokenService _tokenService;
-
-    public AuthorizationBehavior(IHttpContextAccessor httpContextAccessor, ITokenService tokenService)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _tokenService = tokenService;
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (request is IAuthorize authorizeRequest)
         {
-            var authorizationHeader = _httpContextAccessor.HttpContext!.Request.Headers["Authorization"];
+            var authorizationHeader = httpContextAccessor.HttpContext!.Request.Headers["Authorization"];
             if (authorizationHeader.Count == 0)
             {
                 throw new UnauthorizedAccessException(ErrorMessages.TokenJwtNotSentCorrectlyMessage);
@@ -40,7 +34,7 @@ public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TReq
                 throw new UnauthorizedAccessException(ErrorMessages.TokenJwtNotSentCorrectlyMessage);
             }
 
-            var user = _tokenService.Read(token);
+            var user = tokenService.Read(token);
 
             authorizeRequest.UserId = user.UserId;
         }

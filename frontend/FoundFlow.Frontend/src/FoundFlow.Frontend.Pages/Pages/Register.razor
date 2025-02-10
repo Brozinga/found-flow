@@ -1,0 +1,170 @@
+﻿@page "/register"
+@layout Layout.CleanLayout
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Pages.Helpers
+@inject NavigationManager NavigationManager
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Found Flow | Cadastro</PageTitle>
+
+<div class="login-card d-flex justify-content-center align-items-center">
+    <div class="card">
+        <div class="col-24 pt-5">
+            <div class="col-24 text-center">
+                <h2>Hora de se cadastrar</h2>
+                <div class="col-24 pt-3 pb-3 text-center">
+                    <small>Ao se cadastrar, você estará aceitando os <a href="#" data-bs-toggle="modal" data-bs-target="#termos-uso">Termos de uso</a></small>
+                </div>
+            </div>
+        </div>
+        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="OnSubmit" class="card-body p-4">
+
+            <Input Id="name"
+                   Type="text"
+                   Value="@Name"
+                   ValueChanged="@(value => { Name = value; })"
+                   Label="Nome Completo"
+                   Placeholder="Seu nome completo"
+                   ErrorMessage="@NameError"
+                   AdditionalClass="col-24 p-3"
+            />
+            <Input Id="email"
+                   Type="text"
+                   Value="@Email"
+                   ValueChanged="@(value => { Email = value; })"
+                   Label="Email"
+                   Placeholder="nome@exemplo.com.br"
+                   ErrorMessage="@EmailError"
+                   AutoComplete="email"
+                   AdditionalClass="col-24 p-3"
+            />
+            <Input Id="password"
+                   Type="password"
+                   Value="@Password"
+                   ValueChanged="@(value => { Password = value; })"
+                   Label="Senha"
+                   Placeholder="******"
+                   ErrorMessage="@PasswordError"
+                   AdditionalClass="col-24 p-3"
+                   AutoComplete="new-password"
+            />
+            <Input Id="password-confirm"
+                   Type="password"
+                   Value="@PasswordConfirm"
+                   ValueChanged="@(value => { PasswordConfirm = value; })"
+                   Label="Confirmação de Senha"
+                   Placeholder="******"
+                   ErrorMessage="@PasswordConfirmError"
+                   AutoComplete="new-password"
+                   AdditionalClass="col-24 p-3"
+            />
+            <div class="col-24 pt-3 pb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Habilitar notificações
+                    </label>
+                </div>
+            </div>
+            <div class="col-24 p-3">
+                <button type="submit" class="btn btn-primary w-100 btn-lg">Cadastrar</button>
+            </div>
+            <div class="col-24 pt-3">
+                <p>Já tem cadastrado? <a href="#" @onclick:preventDefault @onclick="NavigateToLogin">Logar!</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Termos de uso -->
+<div class="modal modal-lg fade" id="termos-uso" tabindex="-1" aria-labelledby="termos-uso" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fs-5" id="termos-uso-label"><strong>Termos de Uso - Found Flow</strong></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p>Estes Termos de Uso regem o acesso e utilização do sistema Found Flow. Ao utilizar o Found Flow, você concorda em cumprir integralmente estes Termos. Se você não concordar com qualquer parte destes Termos, não utilize o Found Flow.</p>
+
+                <h4>1. Uso do Sistema</h4>
+
+                <ul>
+                    <li><strong>Acesso e Conta:</strong> O acesso ao Found Flow pode exigir a criação de uma conta. Você é responsável por manter a confidencialidade de suas informações de login e por todas as atividades que ocorram em sua conta.</li>
+                    <li><strong>Licença Limitada:</strong> Concedemos a você uma licença limitada, não exclusiva, não transferível e revogável para acessar e utilizar o Found Flow para seus próprios fins internos.</li>
+                    <li><strong>Uso Aceitável:</strong> Você concorda em não utilizar o Found Flow para qualquer finalidade ilegal, prejudicial ou que viole estes Termos. Isso inclui, mas não se limita a:
+                        <ul>
+                            <li>Violação de qualquer lei ou regulamento aplicável.</li>
+                            <li>Transmissão de qualquer material ilegal, difamatório, obsceno, fraudulento ou prejudicial.</li>
+                            <li>Interferência no funcionamento do Found Flow ou na experiência de outros usuários.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>2. Propriedade Intelectual</h4>
+
+                <ul>
+                    <li><strong>Conteúdo do Found Flow:</strong> Todo o conteúdo do Found Flow, incluindo texto, gráficos, logotipos, ícones, imagens, clipes de áudio, downloads digitais, compilações de dados e software, é propriedade da  
+                        Found Flow ou de seus licenciadores e é protegido por leis de propriedade intelectual.</li>
+                    <li><strong>Suas Informações:</strong> Você concede à Found Flow uma licença irrevogável, perpétua, mundial, livre de royalties e não exclusiva para usar, reproduzir, modificar, adaptar, publicar, traduzir, criar trabalhos derivados, distribuir e exibir qualquer conteúdo que você enviar, postar ou exibir no Found Flow ou através dele.</li>
+                </ul>
+
+                <h4>3. Limitação de Responsabilidade</h4>
+
+                <ul>
+                    <li><strong>Isenção de Garantias:</strong> O Found Flow é fornecido "como está", sem garantias de qualquer tipo, expressas ou implícitas.</li>
+                    <li><strong>Limitação de Responsabilidade:</strong> Em nenhuma circunstância a Found Flow ou seus afiliados serão responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais, consequenciais ou punitivos decorrentes do uso ou da incapacidade de usar  
+                        o Found Flow.</li>
+                </ul>
+
+                <h4>4. Alterações nos Termos</h4>
+
+                <ul>
+                    <li><strong>Direito de Modificação:</strong> Reservamo-nos o direito de modificar estes Termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação no  
+                        Found Flow.</li>
+                    <li><strong>Seu Dever de Verificação:</strong> É sua responsabilidade revisar periodicamente estes Termos para se manter informado sobre quaisquer alterações.</li>
+                </ul>
+
+                <h4>5. Contato</h4>
+
+                <p>Em caso de dúvidas sobre estes Termos, entre em contato conosco.</p>
+
+                <p><strong>Ao usar o Found Flow, você reconhece que leu, compreendeu e concorda em ficar vinculado a estes Termos de Uso.</strong></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+    private string Name { get; set; } = string.Empty;
+    private string NameError { get; set; } = string.Empty;
+
+    private string Email { get; set; } = string.Empty;
+    private string EmailError { get; set; } = string.Empty;
+
+    private string Password { get; set; } = string.Empty;
+    private string PasswordError { get; set; } = string.Empty;
+    
+    private string PasswordConfirm { get; set; } = string.Empty;
+    private string PasswordConfirmError { get; set; } = string.Empty;
+
+    private bool NotificationEnabled { get; set; } = true;
+
+    private void NavigateToLogin() => NavigationManager.NavigateTo("/");
+
+    private void OnSubmit()
+    {
+        StateHasChanged();
+        NameError = Validations.MinOrEqualsLength(Name, 3, ErrorMessages.NameLengthInvalid);
+        EmailError = Validations.EmailIsValid(Email,ErrorMessages.EmailInvalid);
+        PasswordError = Validations.ValidatePassword(Password,ErrorMessages.PasswordLengthInvalid);
+        PasswordConfirmError = Validations.Equals(Password, PasswordConfirm, ErrorMessages.PasswordConfirmInvalid);
+
+        if (Validations.VerifyIfNoExistErrors(NameError, EmailError, PasswordError, PasswordConfirmError))
+        {
+            NavigateToLogin();
+        }
+    }
+}

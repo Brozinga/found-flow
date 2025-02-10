@@ -11,17 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoundFlow.Infrastructure.Database.Repositories;
 
-public abstract class RepositoryBase<T, TId> : IRepositoryBase<T, TId>
+public abstract class RepositoryBase<T, TId>(IApplicationDbContext database) : IRepositoryBase<T, TId>
     where T : class, IEntityBase<TId>
 {
-    protected readonly IApplicationDbContext _database;
-    protected readonly DbSet<T> _table;
-
-    protected RepositoryBase(IApplicationDbContext database)
-    {
-        _database = database;
-        _table = database.Set<T>();
-    }
+    protected readonly IApplicationDbContext _database = database;
+    protected readonly DbSet<T> _table = database.Set<T>();
 
     public Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {

@@ -10,6 +10,11 @@ using FoundFlow.Shared.Documentation.Responses;
 
 namespace FoundFlow.WebApi.Controllers;
 
+/// <summary>
+/// Cria uma nova instï¿½ncia de `BaseController`.
+/// </summary>
+/// <param name="sender">O objeto `ISender` usado para enviar solicitaï¿½ï¿½es MediatR.</param>
+/// <param name="logger">O objeto `ILogger` usado para registrar logs.</param>
 [ExcludeFromCodeCoverage]
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -18,26 +23,15 @@ namespace FoundFlow.WebApi.Controllers;
 [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno no servidor.", typeof(ErrorResponse))]
 [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(InternalServerProblemDetailsExample))]
 
-public abstract class BaseController : ControllerBase
+public abstract class BaseController(ISender sender, ILogger logger) : ControllerBase
 {
-    /// <summary>
-    /// Cria uma nova instância de `BaseController`.
-    /// </summary>
-    /// <param name="sender">O objeto `ISender` usado para enviar solicitações MediatR.</param>
-    /// <param name="logger">O objeto `ILogger` usado para registrar logs.</param>
-    protected BaseController(ISender sender, ILogger logger)
-    {
-        Sender = sender;
-        Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-    }
-
     /// <summary>
     /// O objeto `ILogger` usado para registrar logs.
     /// </summary>
-    protected ILogger Logger { get; }
+    protected ILogger Logger { get; } = logger ?? throw new System.ArgumentNullException(nameof(logger));
 
     /// <summary>
-    /// O objeto `ISender` usado para enviar solicitações MediatR.
+    /// O objeto `ISender` usado para enviar solicitaï¿½ï¿½es MediatR.
     /// </summary>
-    protected ISender Sender { get; }
+    protected ISender Sender { get; } = sender;
 }

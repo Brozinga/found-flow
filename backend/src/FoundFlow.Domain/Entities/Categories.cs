@@ -42,28 +42,28 @@ public class Categories : EntityBase<Guid>
     /// Id de co-relação com a tabela de usuários (Users).
     /// </summary>
     /// <example>e281dbd8-e8a8-4b8d-aafd-a54eccc3e7c8</example>
-    public Guid UserId { get; }
+    public Guid UserId { get; init; }
 
     /// <summary>
     /// Nome da categoria.
     /// </summary>
     /// <example>Casa</example>
-    public string CategoryName { get; }
+    public string CategoryName { get; init; }
 
     /// <summary>
     /// Hexadecimal com o valor da cor.
     /// </summary>
     /// <example>#FFFFFF</example>
-    public string Color { get; }
+    public string Color { get; init; }
 
     /// <summary>
     /// Data da criação.
     /// </summary>
     /// <example>2024-01-01T22:40:32</example>
-    public DateTime CreationDate { get; }
+    public DateTime CreationDate { get; init; }
 
     /// <summary>
     /// Usuário à qual esta categoria pertence. Consulte a documentação de <see cref="Users"/> para mais detalhes.
     /// </summary>
-    public virtual Users User { get; }
+    public virtual Users User { get; init; }
 }

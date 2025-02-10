@@ -1,0 +1,91 @@
+﻿@page "/categoria/gerenciar/{CategoryId?}"
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Core.Enums
+@using FoundFlow.Frontend.Core.States
+@using FoundFlow.Frontend.Pages.Helpers
+@inject NavigationManager NavigationManager;
+@inject CategoryState CategoryState;
+
+
+<PageTitle>Found Flow | Categorias</PageTitle>
+
+<div class="pt-3 pb-3">
+    <h3>@Operation - Categoria</h3>
+</div>
+
+<div class="card">
+    <div class="card-body position-relative">
+        <form enctype="application/x-www-form-urlencoded" @onsubmit:preventDefault @onsubmit="OnSubmit" class="card-body p-4">
+            <div class="row">
+                <div class="col-24 col-md-12 p-3">
+                    <Input Id="categoryName"
+                           Type="text"
+                           Value="@CategoryName"
+                           ValueChanged="@(value => { CategoryName = value; })"
+                           Label="Nome"
+                           Placeholder="Nome da Categoria"
+                           AdditionalClass="col-24"
+                           ErrorMessage="@CategoryNameError"/>
+                </div>
+                <div class="col-24 col-md-12 p-3 small-botom">
+                    <Input Id="categoryColor"
+                           Type="color"
+                           Value="@CategoryColor"
+                           ValueChanged="@(value => { CategoryColor = value; })"
+                           Label="Cor para a Categoria"
+                           Placeholder="******"
+                           AdditionalClass="col-24"
+                           ErrorMessage="@CategoryColorError"/>
+                    <small class="text-small">Click na cor pra abrir o painel de seleção</small>
+                </div>
+                    <br/>
+                <div class="col-24 col-md-6 p-3">
+                    <div class="col-24">
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            <i class="feather-save"></i>
+                            <span>Salvar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? CategoryId { get; set; }
+    private OperationType OperationType { get; set; } = OperationType.Include;
+    private string Operation { get; set; } = "Adicionar";
+    
+    private string CategoryName { get; set; } = string.Empty;
+    private string? CategoryNameError { get; set; }
+
+    private string CategoryColor { get; set; } = "#4287f5";
+    private string? CategoryColorError { get; set; }
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        StateHasChanged();
+        if (string.IsNullOrEmpty(CategoryId)) return;
+        
+        if (CategoryState.SelectedCategory?.Name is null)
+            NavigationManager.NavigateTo("categoria/gerenciar");
+        
+        OperationType = OperationType.Edit;
+        Operation = "Editar";
+        CategoryName = CategoryState.SelectedCategory?.Name ?? string.Empty;
+        CategoryColor = CategoryState.SelectedCategory?.Color ?? "#4287f5";
+    }
+
+    private void OnSubmit()
+    {
+        CategoryNameError = Validations.MinOrEqualsLength(CategoryName, 3, ErrorMessages.CategoryLengthInvalid);
+        CategoryColorError = Validations.ColorValid(CategoryColor, ErrorMessages.ColorTextInvalid);
+
+        if (Validations.VerifyIfNoExistErrors(CategoryNameError, CategoryColorError))
+        {
+            Console.WriteLine("Send");
+        }
+    }
+
+}

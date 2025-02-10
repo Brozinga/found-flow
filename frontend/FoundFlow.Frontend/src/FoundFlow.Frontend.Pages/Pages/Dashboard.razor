@@ -1,0 +1,100 @@
+﻿@page "/dashboard"
+@using FoundFlow.Frontend.Components
+@using FoundFlow.Frontend.Pages.Models
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Found Flow | Dashboard</PageTitle>
+
+<div class="row p-2 pt-3">
+    <div class="mb-3 col-sm-24 col-md-12 col-xl-6">
+        <label for="mes" class="form-label">Mês</label>
+        <select id="mes" class="form-select" aria-label="Seleção de mês para análise" @bind="SelectedMonth">
+            <option value="1" selected="@((1 == _currentMonth) ? true : null)">Janeiro</option>
+            <option value="2" selected="@((2 == _currentMonth) ? true : null)">Fevereiro</option>
+            <option value="3" selected="@((3 == _currentMonth) ? true : null)">Março</option>
+            <option value="4" selected="@((4 == _currentMonth) ? true : null)">Abril</option>
+            <option value="5" selected="@((5 == _currentMonth) ? true : null)">Maio</option>
+            <option value="6" selected="@((6 == _currentMonth) ? true : null)">Junho</option>
+            <option value="7" selected="@((7 == _currentMonth) ? true : null)">Julho</option>
+            <option value="8" selected="@((8 == _currentMonth) ? true : null)">Agosto</option>
+            <option value="9" selected="@((9 == _currentMonth) ? true : null)">Setembro</option>
+            <option value="10" selected="@((10 == _currentMonth) ? true : null)">Outubro</option>
+            <option value="11" selected="@((11 == _currentMonth) ? true : null)">Novembro</option>
+            <option value="12" selected="@((12 == _currentMonth) ? true : null)">Dezembro</option>
+        </select>
+    </div>
+    <div class="mb-3 col-sm-24 col-md-12 col-xl-4">
+        <label for="ano" class="form-label">Ano</label>
+        <select id="ano" class="form-select" aria-label="Seleção do ano para análise" @bind="SelectedYear">
+            @foreach (var year in _years)
+            {
+                <option value="@year.Value" selected="@year.IsSelected">@year.Value</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row justify-content-between p-2">
+    <div class="col-md-24 col-lg-12 col-xl-8">
+        <DashCard
+            Title="Receitas" 
+            Value="8515.86M" 
+            IconClass="feather-trending-up" />
+    </div>
+    <div class="col-md-24 col-lg-12 col-xl-8">
+        <DashCard 
+            Title="Despesas" 
+            Value="7434.91M" 
+            IconClass="feather-trending-down" />
+    </div>
+    <div class="col-md-24 col-lg-24 col-xl-8">
+        <DashCard 
+            Title="Saldo" 
+            Value="1080.95M" 
+            IconClass="feather-dollar-sign" />
+    </div>
+</div>
+<div class="row justify-content-between p-2">
+    <div class="col-24 col-xl-12 mb-3">
+        <DashChart
+            ChartId="ReceitasChart"
+            Title="Progressão das Receitas"
+            LabelsList="@Months"
+            ValueData="@Values"
+        />
+    </div>
+    <div class="col-24 col-xl-12 mb-3">
+        <DashChart
+            ChartId="DespesasChart"
+            Title="Progressão das Despesas"
+            LabelsList="@Months"
+            ValueData="@Values"
+        />
+    </div>
+</div>
+
+
+@code {
+    private readonly List<IntListSelect> _years = [];
+    private int SelectedYear { get; set; } = DateTime.Now.Year;
+    private int SelectedMonth { get; set; } = DateTime.Now.Month;
+    private int _currentMonth;
+
+    private string[] Months = ["Jan", "Fev", "Mar" ];
+    private decimal[] Values = [1233.22M, 8923.92M, 4033.13M ];
+
+    protected override void OnInitialized()
+    {
+        int currentYear = DateTime.Now.Year + 1;
+        _currentMonth = DateTime.Now.Month;
+
+        for (int i = 0; i <= 5; i++)
+        {
+            _years.Add(new IntListSelect()
+            {
+                IsSelected = i == 1,
+                    Value = currentYear - i
+            });
+        }
+
+    }
+}

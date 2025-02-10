@@ -5,10 +5,5 @@ using FoundFlow.Domain.Interfaces.Repositories;
 
 namespace FoundFlow.Infrastructure.Database.Repositories;
 
-public sealed class UsersRepository : RepositoryBase<Users, Guid>, IUsersRepository
-{
-    public UsersRepository(IApplicationDbContext database)
-        : base(database)
-    {
-    }
-}
+public sealed class UsersRepository(IApplicationDbContext database)
+    : RepositoryBase<Users, Guid>(database), IUsersRepository;

@@ -12,15 +12,13 @@ namespace FoundFlow.Application.Common.Feature.Transactions.Delete;
 /// <summary>
 /// Manipulador (Handler) para a solicitação de exclusão de uma transação (`DeleteTransactionRequest`).
 /// </summary>
-public class DeleteTransactionHandler : IRequestHandler<DeleteTransactionRequest, Result<DeleteTransactionResponse>>
+/// <remarks>
+/// Cria uma nova instância de `DeleteTransactionHandler`.
+/// </remarks>
+/// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
+public class DeleteTransactionHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteTransactionRequest, Result<DeleteTransactionResponse>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Cria uma nova instância de `DeleteTransactionHandler`.
-    /// </summary>
-    /// <param name="unitOfWork">A unidade de trabalho para gerenciar o acesso aos dados.</param>
-    public DeleteTransactionHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     /// <summary>
     /// Manipula a solicitação de exclusão de uma transação.

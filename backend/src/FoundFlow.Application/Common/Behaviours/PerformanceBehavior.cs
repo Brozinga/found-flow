@@ -9,19 +9,11 @@ using FoundFlow.Domain.Interfaces;
 namespace FoundFlow.Application.Common.Behaviours;
 
 [ExcludeFromCodeCoverage]
-internal sealed class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+internal sealed class PerformanceBehavior<TRequest, TResponse>(ILogger<PerformanceBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : MediatR.IRequest<TResponse>
 {
-    private readonly Stopwatch _timer;
-    private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger;
-
-    public PerformanceBehavior(
-        ILogger<PerformanceBehavior<TRequest, TResponse>> logger)
-    {
-        _timer = new Stopwatch();
-
-        _logger = logger;
-    }
+    private readonly Stopwatch _timer = new();
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -37,7 +29,7 @@ internal sealed class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavi
         {
             string requestName = typeof(TRequest).Name;
 
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
                 requestName,
                 elapsedMilliseconds,
